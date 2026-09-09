@@ -1,58 +1,77 @@
 :host {
   display: block;
+  width: 100%;
   min-height: 100vh;
 }
 
+
+/* =========================================
+   APP SHELL
+   ========================================= */
+
 .app-shell {
+  width: 100%;
   min-height: 100vh;
 
-  display: grid;
-
-  grid-template-columns: 270px 1fr;
-
   background: #f4f1e8;
-
   color: #111111;
 
-  font-family: Arial, Helvetica, sans-serif;
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
 }
 
 
 /* =========================================
    SIDEBAR
-========================================= */
+   ========================================= */
 
 .sidebar {
-  min-height: 100vh;
+  position: fixed;
+
+  top: 0;
+  left: 0;
+
+  width: 270px;
+  height: 100vh;
 
   box-sizing: border-box;
 
   display: flex;
-
   flex-direction: column;
-
   justify-content: space-between;
 
-  background: #111111;
+  overflow: hidden;
 
+  background: #111111;
   color: #ffffff;
 
   border-right: 5px solid #111111;
+
+  z-index: 1000;
 }
 
 
+/* =========================================
+   SIDEBAR TOP
+   ========================================= */
+
 .sidebar-top {
   padding: 22px 18px;
+
+  flex: 1;
+
+  min-height: 0;
 }
 
 
 /* =========================================
    BRAND
-========================================= */
+   ========================================= */
 
 .brand-block {
   display: flex;
-
   align-items: center;
 
   gap: 12px;
@@ -65,63 +84,60 @@
 
 .brand-mark {
   width: 44px;
-
   height: 44px;
 
   flex-shrink: 0;
 
   display: grid;
-
   place-items: center;
 
   background: #ffdf00;
-
   color: #111111;
 
   font-size: 13px;
-
   font-weight: 1000;
 }
 
 
 .brand-text {
   display: flex;
-
   flex-direction: column;
 
   gap: 4px;
+
+  min-width: 0;
 }
 
 
 .brand-text strong {
   font-size: 13px;
-
   font-weight: 1000;
 
   letter-spacing: 0.04em;
+
+  white-space: nowrap;
 }
 
 
 .brand-text span {
   font-size: 8px;
-
   font-weight: 900;
 
   letter-spacing: 0.1em;
+
+  white-space: nowrap;
 }
 
 
 /* =========================================
    NAVIGATION
-========================================= */
+   ========================================= */
 
 .navigation-label {
   margin-top: 28px;
-
   margin-bottom: 10px;
 
   font-size: 9px;
-
   font-weight: 900;
 
   letter-spacing: 0.14em;
@@ -132,7 +148,6 @@
 
 .navigation {
   display: flex;
-
   flex-direction: column;
 
   gap: 5px;
@@ -142,7 +157,9 @@
 .navigation a {
   display: grid;
 
-  grid-template-columns: 32px 1fr;
+  grid-template-columns:
+    32px
+    1fr;
 
   align-items: center;
 
@@ -157,7 +174,6 @@
   text-decoration: none;
 
   font-size: 11px;
-
   font-weight: 1000;
 
   letter-spacing: 0.06em;
@@ -171,14 +187,12 @@
 
 .navigation a:hover {
   background: #ffdf00;
-
   color: #111111;
 }
 
 
 .navigation a.active {
   background: #ffdf00;
-
   color: #111111;
 
   border-color: #ffffff;
@@ -187,7 +201,6 @@
 
 .nav-number {
   font-size: 9px;
-
   font-weight: 900;
 
   opacity: 0.65;
@@ -196,18 +209,21 @@
 
 /* =========================================
    SIDEBAR BOTTOM
-========================================= */
+   ========================================= */
 
 .sidebar-bottom {
+  flex-shrink: 0;
+
   padding: 18px;
 
   border-top: 3px solid #ffffff;
+
+  background: #111111;
 }
 
 
 .user-block {
   display: flex;
-
   align-items: center;
 
   gap: 10px;
@@ -218,21 +234,17 @@
 
 .user-initial {
   width: 38px;
-
   height: 38px;
 
   flex-shrink: 0;
 
   display: grid;
-
   place-items: center;
 
   background: #ffffff;
-
   color: #111111;
 
   font-size: 13px;
-
   font-weight: 1000;
 }
 
@@ -241,7 +253,6 @@
   min-width: 0;
 
   display: flex;
-
   flex-direction: column;
 
   gap: 4px;
@@ -256,35 +267,36 @@
   white-space: nowrap;
 
   font-size: 11px;
-
   font-weight: 1000;
 }
 
 
 .user-details span {
   font-size: 8px;
-
   font-weight: 900;
 
   letter-spacing: 0.08em;
 
   color: #bdbdbd;
+
+  white-space: nowrap;
 }
 
 
+/* =========================================
+   LOGOUT BUTTON
+   ========================================= */
+
 .logout-button {
   width: 100%;
-
   height: 42px;
 
   border: 3px solid #ffffff;
 
   background: transparent;
-
   color: #ffffff;
 
   font-size: 10px;
-
   font-weight: 1000;
 
   letter-spacing: 0.08em;
@@ -293,37 +305,57 @@
 
   transition:
     background 0.12s ease,
-    color 0.12s ease;
+    color 0.12s ease,
+    transform 0.12s ease;
 }
 
 
 .logout-button:hover {
   background: #ff6b6b;
-
   color: #111111;
+
+  transform: translateY(-1px);
+}
+
+
+.logout-button:active {
+  transform: translateY(0);
 }
 
 
 /* =========================================
    MAIN AREA
-========================================= */
+   ========================================= */
 
 .main-area {
-  min-width: 0;
+  width: calc(100% - 270px);
 
+  min-width: 0;
   min-height: 100vh;
+
+  margin-left: 270px;
+
+  box-sizing: border-box;
+
+  overflow-x: hidden;
 }
 
 
+/* =========================================
+   MAIN HEADER
+   ========================================= */
+
 .main-header {
+  position: sticky;
+
+  top: 0;
+
   min-height: 68px;
 
   box-sizing: border-box;
 
   display: flex;
-
   align-items: center;
-
   justify-content: space-between;
 
   gap: 20px;
@@ -333,21 +365,29 @@
   background: #ffffff;
 
   border-bottom: 5px solid #111111;
+
+  z-index: 900;
 }
 
 
 .header-label {
-  font-size: 9px;
+  min-width: 0;
 
+  font-size: 9px;
   font-weight: 1000;
 
   letter-spacing: 0.1em;
 }
 
 
-.system-status {
-  display: flex;
+/* =========================================
+   SYSTEM STATUS
+   ========================================= */
 
+.system-status {
+  flex-shrink: 0;
+
+  display: flex;
   align-items: center;
 
   gap: 8px;
@@ -356,8 +396,9 @@
 
   border: 3px solid #111111;
 
-  font-size: 8px;
+  background: #ffffff;
 
+  font-size: 8px;
   font-weight: 1000;
 
   letter-spacing: 0.08em;
@@ -366,8 +407,9 @@
 
 .status-dot {
   width: 8px;
-
   height: 8px;
+
+  flex-shrink: 0;
 
   background: #32c766;
 
@@ -377,20 +419,299 @@
 }
 
 
+.system-status.offline {
+  background: #ffe0e0;
+}
+
+
+.system-status.offline .status-dot {
+  background: #d00000;
+}
+
+
+/* =========================================
+   PAGE AREA
+   ========================================= */
+
 .page-area {
+  width: 100%;
+
   min-width: 0;
+
+  box-sizing: border-box;
+}
+
+
+/* =========================================
+   LOGOUT MODAL BACKDROP
+   ========================================= */
+
+.logout-modal-backdrop {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 5000;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 24px;
+
+  background: rgba(17, 17, 17, 0.72);
+
+  animation:
+    logoutBackdropIn
+    0.16s
+    ease-out;
+}
+
+
+/* =========================================
+   LOGOUT MODAL
+   ========================================= */
+
+.logout-modal {
+  width: min(440px, 100%);
+
+  background: #f4f1e8;
+
+  color: #111111;
+
+  border: 4px solid #111111;
+
+  box-shadow:
+    10px 10px 0 #111111;
+
+  animation:
+    logoutModalIn
+    0.18s
+    ease-out;
+}
+
+
+/* =========================================
+   MODAL HEADER
+   ========================================= */
+
+.logout-modal-header {
+  display: flex;
+
+  align-items: center;
+
+  gap: 14px;
+
+  padding: 22px;
+
+  background: #ffdf00;
+
+  border-bottom: 3px solid #111111;
+}
+
+
+.logout-modal-mark {
+  width: 40px;
+  height: 40px;
+
+  flex-shrink: 0;
+
+  display: grid;
+  place-items: center;
+
+  border: 3px solid #111111;
+
+  background: #ffffff;
+
+  font-size: 18px;
+  font-weight: 1000;
+}
+
+
+.logout-modal-label {
+  margin: 0 0 4px;
+
+  font-size: 8px;
+  font-weight: 1000;
+
+  letter-spacing: 0.14em;
+}
+
+
+.logout-modal-header h2 {
+  margin: 0;
+
+  font-size: 28px;
+  line-height: 1;
+
+  font-weight: 1000;
+
+  letter-spacing: -0.04em;
+}
+
+
+/* =========================================
+   MODAL BODY
+   ========================================= */
+
+.logout-modal-body {
+  padding: 26px 22px 22px;
+}
+
+
+.logout-question {
+  margin: 0;
+
+  font-size: 22px;
+  font-weight: 1000;
+
+  letter-spacing: -0.02em;
+}
+
+
+.logout-description {
+  margin: 10px 0 0;
+
+  max-width: 360px;
+
+  color: #555555;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  line-height: 1.5;
+}
+
+
+/* =========================================
+   MODAL ACTIONS
+   ========================================= */
+
+.logout-modal-actions {
+  display: grid;
+
+  grid-template-columns:
+    1fr
+    1fr;
+
+  gap: 10px;
+
+  padding: 18px 22px 22px;
+
+  border-top: 2px solid #111111;
+}
+
+
+.logout-modal-actions button {
+  min-height: 46px;
+
+  border: 3px solid #111111;
+
+  font-size: 9px;
+  font-weight: 1000;
+
+  letter-spacing: 0.08em;
+
+  cursor: pointer;
+
+  transition:
+    background 0.12s ease,
+    color 0.12s ease,
+    transform 0.12s ease;
+}
+
+
+.logout-cancel-button {
+  background: #ffffff;
+
+  color: #111111;
+}
+
+
+.logout-cancel-button:hover {
+  background: #e5e5e5;
+
+  transform: translateY(-1px);
+}
+
+
+.logout-confirm-button {
+  background: #ff6b6b;
+
+  color: #111111;
+}
+
+
+.logout-confirm-button:hover {
+  background: #111111;
+
+  color: #ffffff;
+
+  transform: translateY(-1px);
+}
+
+
+.logout-modal-actions button:active {
+  transform: translateY(0);
+}
+
+
+/* =========================================
+   MODAL ANIMATION
+   ========================================= */
+
+@keyframes logoutBackdropIn {
+
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+
+}
+
+
+@keyframes logoutModalIn {
+
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(12px)
+      scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0)
+      scale(1);
+  }
+
 }
 
 
 /* =========================================
    RESPONSIVE
-========================================= */
+   ========================================= */
 
 @media (max-width: 900px) {
 
-  .app-shell {
-    grid-template-columns: 220px 1fr;
+  .sidebar {
+    width: 220px;
   }
+
+
+  .main-area {
+    width: calc(100% - 220px);
+
+    margin-left: 220px;
+  }
+
 
   .header-label {
     font-size: 8px;
@@ -399,15 +720,31 @@
 }
 
 
+/* =========================================
+   MOBILE
+   ========================================= */
+
 @media (max-width: 700px) {
 
   .app-shell {
-    display: block;
+    width: 100%;
+
+    min-height: 100vh;
   }
 
 
   .sidebar {
+    position: relative;
+
+    top: auto;
+    left: auto;
+
+    width: 100%;
+    height: auto;
+
     min-height: auto;
+
+    overflow: visible;
 
     border-right: none;
 
@@ -423,14 +760,17 @@
   .navigation {
     display: grid;
 
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns:
+      repeat(2, 1fr);
   }
 
 
   .sidebar-bottom {
     display: grid;
 
-    grid-template-columns: 1fr auto;
+    grid-template-columns:
+      1fr
+      auto;
 
     align-items: center;
 
@@ -448,7 +788,20 @@
   }
 
 
+  .main-area {
+    width: 100%;
+
+    min-height: auto;
+
+    margin-left: 0;
+
+    overflow: visible;
+  }
+
+
   .main-header {
+    position: relative;
+
     min-height: 58px;
 
     padding: 12px 16px;
@@ -456,6 +809,10 @@
 
 }
 
+
+/* =========================================
+   SMALL MOBILE
+   ========================================= */
 
 @media (max-width: 480px) {
 
@@ -483,11 +840,37 @@
     display: none;
   }
 
-}
-.system-status.offline {
-  background: #ffe0e0;
-}
 
-.system-status.offline .status-dot {
-  background: #d00000;
+  .logout-modal-backdrop {
+    padding: 16px;
+  }
+
+
+  .logout-modal {
+    box-shadow:
+      6px 6px 0 #111111;
+  }
+
+
+  .logout-modal-header {
+    padding: 18px;
+  }
+
+
+  .logout-modal-body {
+    padding: 22px 18px 18px;
+  }
+
+
+  .logout-modal-actions {
+    grid-template-columns: 1fr;
+
+    padding: 16px 18px 18px;
+  }
+
+
+  .logout-confirm-button {
+    order: -1;
+  }
+
 }
