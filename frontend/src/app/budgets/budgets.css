@@ -1,0 +1,2294 @@
+/* =========================================================
+   BUDGET MONITOR
+   BUDGET ALLOCATION PAGE
+   ========================================================= */
+
+.budgets-page {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+
+  padding: 40px 32px 60px;
+
+  background: #f5f2e9;
+
+  box-sizing: border-box;
+
+  overflow-x: hidden;
+}
+
+.budgets-page *,
+.budgets-page *::before,
+.budgets-page *::after {
+  box-sizing: border-box;
+}
+
+
+/* =========================================================
+   HERO
+   ========================================================= */
+
+.budgets-hero {
+  width: 100%;
+  min-width: 0;
+
+  display: grid;
+
+  /*
+   * Large left column for BUDGET ALLOCATION.
+   * Separate right column for description/button.
+   */
+  grid-template-columns:
+    minmax(0, 1fr)
+    minmax(250px, 300px);
+
+  column-gap: 35px;
+
+  align-items: end;
+
+  padding-bottom: 38px;
+
+  border-bottom: 4px solid #111;
+
+  overflow: visible;
+}
+
+
+/* =========================================================
+   HERO LEFT
+   ========================================================= */
+
+.budgets-hero > div:first-child {
+  width: 100%;
+  min-width: 0;
+}
+
+
+/* =========================================================
+   HERO EYEBROW
+   ========================================================= */
+
+.budgets-hero .eyebrow {
+  margin: 0 0 16px;
+
+  font-size: 10px;
+
+  line-height: 1.2;
+
+  font-weight: 950;
+
+  letter-spacing: 1.5px;
+
+  color: #111;
+}
+
+
+/* =========================================================
+   HERO TITLE
+   ========================================================= */
+
+.budgets-hero h1 {
+  display: block;
+
+  width: 100%;
+
+  max-width: none;
+
+  margin: 0;
+
+  /*
+   * Sized to fit the actual application content area.
+   */
+  font-size: clamp(
+    52px,
+    6vw,
+    96px
+  );
+
+  line-height: 0.82;
+
+  letter-spacing: -4px;
+
+  font-weight: 950;
+
+  color: #111;
+
+  /*
+   * IMPORTANT:
+   * Do not clip the final N in ALLOCATION.
+   */
+  overflow: visible;
+
+  white-space: normal;
+}
+
+
+/* =========================================================
+   HERO RIGHT SIDE
+   ========================================================= */
+
+.hero-side {
+  width: 100%;
+
+  max-width: 300px;
+
+  min-width: 0;
+
+  justify-self: end;
+
+  align-self: end;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: flex-start;
+
+  justify-content: flex-end;
+
+  padding-bottom: 4px;
+}
+
+
+/* =========================================================
+   HERO DESCRIPTION
+   ========================================================= */
+
+.hero-side p {
+  width: 100%;
+
+  max-width: 300px;
+
+  margin: 0 0 22px;
+
+  font-size: 14px;
+
+  line-height: 1.45;
+
+  font-weight: 700;
+
+  color: #111;
+}
+
+
+/* =========================================================
+   CREATE BUDGET BUTTON
+   ========================================================= */
+
+.hero-side .primary-button {
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  width: max-content;
+
+  min-width: 170px;
+
+  min-height: 48px;
+
+  margin: 0;
+
+  padding: 0 20px;
+
+  background: #ffdd00;
+
+  color: #111;
+
+  border: 3px solid #111;
+
+  font-family: inherit;
+
+  font-size: 10px;
+
+  font-weight: 950;
+
+  letter-spacing: 0.5px;
+
+  white-space: nowrap;
+
+  position: relative;
+
+  z-index: 5;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.15s ease,
+    background 0.15s ease;
+}
+
+.hero-side .primary-button:hover {
+  background: #ffe52e;
+
+  transform: translateY(-2px);
+}
+
+.hero-side .primary-button:active {
+  transform: translateY(0);
+}
+
+
+/* =========================================================
+   GENERAL BUTTONS
+   ========================================================= */
+
+.primary-button,
+.secondary-button,
+.edit-button,
+.delete-button,
+.close-button {
+  font-family: inherit;
+
+  font-weight: 950;
+
+  letter-spacing: 0.5px;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.15s ease,
+    background 0.15s ease,
+    opacity 0.15s ease;
+}
+
+
+/* =========================================================
+   PRIMARY BUTTON
+   ========================================================= */
+
+.primary-button {
+  min-height: 48px;
+
+  padding: 0 22px;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  background: #ffdd00;
+
+  color: #111;
+
+  border: 3px solid #111;
+
+  font-size: 10px;
+
+  white-space: nowrap;
+}
+
+.primary-button:hover {
+  background: #ffe52e;
+
+  transform: translateY(-2px);
+}
+
+.primary-button:active {
+  transform: translateY(0);
+}
+
+
+/* =========================================================
+   SECONDARY BUTTON
+   ========================================================= */
+
+.secondary-button {
+  min-height: 46px;
+
+  padding: 0 20px;
+
+  background: #fff;
+
+  color: #111;
+
+  border: 3px solid #111;
+
+  font-size: 10px;
+}
+
+.secondary-button:hover {
+  background: #eeeae0;
+
+  transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   CLOSE BUTTON
+   ========================================================= */
+
+.close-button {
+  width: 42px;
+
+  height: 42px;
+
+  min-width: 42px;
+
+  flex: 0 0 42px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  background: #111;
+
+  color: #fff;
+
+  border: 0;
+
+  font-size: 25px;
+
+  line-height: 1;
+}
+
+.close-button:hover {
+  background: #333;
+}
+
+
+/* =========================================================
+   DISABLED BUTTON
+   ========================================================= */
+
+.primary-button:disabled,
+.secondary-button:disabled,
+.edit-button:disabled,
+.delete-button:disabled,
+.close-button:disabled {
+  opacity: 0.45;
+
+  cursor: not-allowed;
+
+  transform: none;
+}
+
+
+/* =========================================================
+   MESSAGES
+   ========================================================= */
+
+.message {
+  width: 100%;
+
+  margin-top: 18px;
+
+  padding: 14px 18px;
+
+  border: 3px solid #111;
+
+  font-size: 11px;
+
+  line-height: 1.4;
+
+  font-weight: 900;
+}
+
+.success-message {
+  background: #b7e36b;
+
+  color: #111;
+}
+
+.error-message {
+  background: #ff666b;
+
+  color: #111;
+}
+
+.form-message {
+  margin: 20px 24px 0;
+}
+
+
+/* =========================================================
+   SUMMARY GRID
+   ========================================================= */
+
+.budget-summary {
+  width: 100%;
+
+  min-width: 0;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+
+  gap: 16px;
+
+  margin-top: 24px;
+}
+
+
+/* =========================================================
+   SUMMARY CARD
+   ========================================================= */
+
+.summary-card {
+  width: 100%;
+
+  min-width: 0;
+
+  min-height: 165px;
+
+  padding: 24px;
+
+  border: 4px solid #111;
+
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: space-between;
+
+  /*
+   * Prevent content from escaping into
+   * neighbouring cards.
+   */
+  overflow: hidden;
+
+  position: relative;
+}
+
+
+/* =========================================================
+   SUMMARY COLORS
+   ========================================================= */
+
+.summary-card.yellow {
+  background: #ffdd00;
+
+  color: #111;
+}
+
+.summary-card.white {
+  background: #fff;
+
+  color: #111;
+}
+
+.summary-card.black {
+  background: #111;
+
+  color: #fff;
+}
+
+.summary-card.red {
+  background: #ff666b;
+
+  color: #111;
+}
+
+
+/* =========================================================
+   SUMMARY LABEL
+   ========================================================= */
+
+.summary-label {
+  display: block;
+
+  width: 100%;
+
+  font-size: 10px;
+
+  line-height: 1.2;
+
+  font-weight: 950;
+
+  letter-spacing: 1px;
+}
+
+
+/* =========================================================
+   SUMMARY NUMBER
+   ========================================================= */
+
+.summary-card strong {
+  display: block;
+
+  width: 100%;
+
+  min-width: 0;
+
+  margin: 14px 0;
+
+  /*
+   * Long Indian currency values stay on ONE LINE.
+   */
+  font-size: clamp(
+    13px,
+    1.35vw,
+    30px
+  );
+
+  line-height: 1;
+
+  letter-spacing: -1.3px;
+
+  font-weight: 950;
+
+  white-space: nowrap;
+
+  overflow: hidden;
+
+  text-overflow: clip;
+}
+
+
+/* =========================================================
+   SUMMARY FOOTER
+   ========================================================= */
+
+.summary-card small {
+  display: block;
+
+  width: 100%;
+
+  font-size: 8px;
+
+  line-height: 1.3;
+
+  font-weight: 900;
+
+  letter-spacing: 0.7px;
+}
+
+
+/* =========================================================
+   FORM PANEL
+   ========================================================= */
+
+.budget-form-panel {
+  width: 100%;
+
+  min-width: 0;
+
+  margin-top: 16px;
+
+  border: 4px solid #111;
+
+  background: #fff;
+
+  overflow: hidden;
+}
+
+
+/* =========================================================
+   FORM HEADER
+   ========================================================= */
+
+.form-header {
+  width: 100%;
+
+  min-height: 90px;
+
+  padding: 20px 24px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 20px;
+
+  border-bottom: 4px solid #111;
+}
+
+.form-header > div {
+  min-width: 0;
+}
+
+.form-header .eyebrow {
+  margin-bottom: 8px;
+}
+
+.form-header h2 {
+  margin: 0;
+
+  font-size: clamp(
+    24px,
+    3vw,
+    38px
+  );
+
+  line-height: 1;
+
+  letter-spacing: -1px;
+
+  font-weight: 950;
+}
+
+
+/* =========================================================
+   FORM
+   ========================================================= */
+
+.budget-form {
+  width: 100%;
+
+  min-width: 0;
+
+  padding: 26px 24px;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 20px;
+}
+
+.form-group {
+  min-width: 0;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 8px;
+}
+
+.form-group-wide {
+  grid-column: span 2;
+}
+
+.form-group-full {
+  grid-column: 1 / -1;
+}
+
+
+/* =========================================================
+   FORM LABEL
+   ========================================================= */
+
+.form-group label {
+  font-size: 9px;
+
+  line-height: 1.2;
+
+  font-weight: 950;
+
+  letter-spacing: 0.9px;
+}
+
+
+/* =========================================================
+   FORM INPUTS
+   ========================================================= */
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+
+  min-width: 0;
+
+  border: 3px solid #111;
+
+  border-radius: 0;
+
+  background: #f7f4ec;
+
+  color: #111;
+
+  font-family: inherit;
+
+  font-size: 13px;
+
+  font-weight: 700;
+
+  outline: none;
+
+  transition:
+    background 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.form-group input,
+.form-group select {
+  height: 48px;
+
+  padding: 0 13px;
+}
+
+.form-group textarea {
+  min-height: 110px;
+
+  padding: 13px;
+
+  resize: vertical;
+
+  line-height: 1.45;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  background: #fff;
+
+  box-shadow: 4px 4px 0 #111;
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: #777;
+}
+
+
+/* =========================================================
+   CURRENCY INPUT
+   ========================================================= */
+
+.currency-input {
+  width: 100%;
+
+  height: 48px;
+
+  display: flex;
+
+  border: 3px solid #111;
+
+  background: #f7f4ec;
+}
+
+.currency-input span {
+  width: 46px;
+
+  min-width: 46px;
+
+  flex: 0 0 46px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-right: 3px solid #111;
+
+  font-size: 16px;
+
+  font-weight: 950;
+}
+
+.currency-input input {
+  width: 100%;
+
+  height: 100%;
+
+  min-width: 0;
+
+  padding: 0 12px;
+
+  border: 0;
+
+  outline: none;
+
+  background: transparent;
+
+  box-shadow: none;
+}
+
+.currency-input input:focus {
+  background: transparent;
+
+  box-shadow: none;
+}
+
+.currency-input input::-webkit-inner-spin-button,
+.currency-input input::-webkit-outer-spin-button {
+  margin: 0;
+
+  -webkit-appearance: none;
+}
+
+
+/* =========================================================
+   FORM ACTIONS
+   ========================================================= */
+
+.form-actions {
+  grid-column: 1 / -1;
+
+  width: 100%;
+
+  display: flex;
+
+  justify-content: flex-end;
+
+  align-items: center;
+
+  gap: 10px;
+
+  padding-top: 12px;
+
+  border-top: 3px solid #111;
+}
+
+
+/* =========================================================
+   BUDGET REGISTER
+   ========================================================= */
+
+.budget-list-panel {
+  width: 100%;
+
+  min-width: 0;
+
+  margin-top: 16px;
+
+  border: 4px solid #111;
+
+  background: #fff;
+
+  overflow: hidden;
+}
+
+
+/* =========================================================
+   SECTION HEADER
+   ========================================================= */
+
+.section-header {
+  width: 100%;
+
+  min-height: 90px;
+
+  padding: 20px 24px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 20px;
+
+  border-bottom: 4px solid #111;
+}
+
+.section-header > div {
+  min-width: 0;
+}
+
+.section-header .eyebrow {
+  margin-bottom: 8px;
+}
+
+.section-header h2 {
+  margin: 0;
+
+  font-size: clamp(
+    24px,
+    3vw,
+    38px
+  );
+
+  line-height: 1;
+
+  letter-spacing: -1px;
+
+  font-weight: 950;
+}
+
+
+/* =========================================================
+   RECORD COUNT
+   ========================================================= */
+
+.record-count {
+  flex: 0 0 auto;
+
+  padding: 10px 12px;
+
+  border: 3px solid #111;
+
+  font-size: 9px;
+
+  font-weight: 950;
+
+  letter-spacing: 0.7px;
+
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   EMPTY / LOADING STATE
+   ========================================================= */
+
+.empty-state {
+  min-height: 220px;
+
+  padding: 40px 24px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 10px;
+
+  text-align: center;
+}
+
+.empty-state strong {
+  font-size: 18px;
+
+  font-weight: 950;
+
+  letter-spacing: 0.5px;
+}
+
+.empty-state span {
+  font-size: 11px;
+
+  font-weight: 700;
+
+  color: #555;
+}
+
+.empty-state .primary-button {
+  margin-top: 12px;
+}
+
+
+/* =========================================================
+   TABLE WRAPPER
+   ========================================================= */
+
+.budget-table-wrapper {
+  width: 100%;
+
+  min-width: 0;
+
+  overflow-x: auto;
+
+  overflow-y: hidden;
+
+  -webkit-overflow-scrolling: touch;
+}
+
+
+/* =========================================================
+   TABLE
+   ========================================================= */
+
+.budget-table {
+  width: 100%;
+
+  min-width: 1080px;
+
+  border-collapse: collapse;
+
+  table-layout: fixed;
+}
+
+
+/* =========================================================
+   TABLE HEAD
+   ========================================================= */
+
+.budget-table th {
+  padding: 15px 12px;
+
+  background: #111;
+
+  color: #fff;
+
+  text-align: left;
+
+  font-size: 8px;
+
+  line-height: 1.2;
+
+  font-weight: 950;
+
+  letter-spacing: 0.8px;
+}
+
+
+/* =========================================================
+   TABLE BODY
+   ========================================================= */
+
+.budget-table td {
+  padding: 17px 12px;
+
+  border-bottom: 3px solid #111;
+
+  vertical-align: middle;
+
+  font-size: 11px;
+
+  font-weight: 700;
+
+  color: #111;
+}
+
+.budget-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.budget-table tbody tr:hover {
+  background: #faf7ed;
+}
+
+
+/* =========================================================
+   TABLE COLUMN WIDTHS
+   ========================================================= */
+
+.budget-table th:nth-child(1),
+.budget-table td:nth-child(1) {
+  width: 55px;
+}
+
+.budget-table th:nth-child(2),
+.budget-table td:nth-child(2) {
+  width: 19%;
+}
+
+.budget-table th:nth-child(3),
+.budget-table td:nth-child(3) {
+  width: 20%;
+}
+
+.budget-table th:nth-child(4),
+.budget-table td:nth-child(4) {
+  width: 12%;
+}
+
+.budget-table th:nth-child(5),
+.budget-table td:nth-child(5) {
+  width: 17%;
+}
+
+.budget-table th:nth-child(6),
+.budget-table td:nth-child(6) {
+  width: 10%;
+}
+
+.budget-table th:nth-child(7),
+.budget-table td:nth-child(7) {
+  width: 9%;
+}
+
+.budget-table th:nth-child(8),
+.budget-table td:nth-child(8) {
+  width: 145px;
+}
+
+
+/* =========================================================
+   TABLE CONTENT
+   ========================================================= */
+
+.index-cell {
+  font-size: 10px !important;
+
+  font-weight: 950 !important;
+}
+
+.department-cell,
+.project-cell,
+.period-cell {
+  min-width: 0;
+
+  width: 100%;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 5px;
+}
+
+.department-cell strong,
+.project-cell strong,
+.period-cell strong {
+  display: block;
+
+  min-width: 0;
+
+  max-width: 100%;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+
+  font-size: 11px;
+
+  line-height: 1.25;
+
+  font-weight: 950;
+}
+
+.department-cell span,
+.project-cell span,
+.period-cell span {
+  display: block;
+
+  min-width: 0;
+
+  max-width: 100%;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+
+  font-size: 8px;
+
+  line-height: 1.25;
+
+  font-weight: 900;
+
+  letter-spacing: 0.4px;
+
+  color: #555;
+}
+
+
+/* =========================================================
+   TABLE AMOUNT
+   ========================================================= */
+
+.amount-cell {
+  font-size: 12px !important;
+
+  font-weight: 950 !important;
+
+  white-space: nowrap;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+}
+
+
+/* =========================================================
+   DATE
+   ========================================================= */
+
+.date-cell {
+  font-size: 9px !important;
+
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   STATUS
+   ========================================================= */
+
+.status-badge {
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  min-width: 65px;
+
+  min-height: 28px;
+
+  padding: 0 9px;
+
+  border: 2px solid #111;
+
+  font-size: 8px;
+
+  line-height: 1;
+
+  font-weight: 950;
+
+  letter-spacing: 0.5px;
+
+  white-space: nowrap;
+}
+
+.status-badge.active {
+  background: #b7e36b;
+
+  color: #111;
+}
+
+.status-badge.closed {
+  background: #e3dfd4;
+
+  color: #111;
+}
+
+
+/* =========================================================
+   ACTION BUTTONS
+   ========================================================= */
+
+.action-buttons {
+  display: flex;
+
+  align-items: center;
+
+  gap: 6px;
+
+  flex-wrap: nowrap;
+}
+
+.edit-button,
+.delete-button {
+  min-height: 32px;
+
+  padding: 0 9px;
+
+  border: 2px solid #111;
+
+  font-size: 7px;
+
+  line-height: 1;
+
+  white-space: nowrap;
+}
+
+.edit-button {
+  background: #ffdd00;
+
+  color: #111;
+}
+
+.delete-button {
+  background: #ff666b;
+
+  color: #111;
+}
+
+.edit-button:hover,
+.delete-button:hover {
+  transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   MOBILE BUDGET LIST
+   ========================================================= */
+
+.budget-mobile-list {
+  display: none;
+}
+
+
+/* =========================================================
+   LAPTOP
+   ========================================================= */
+
+@media (max-width: 1200px) {
+
+  .budgets-page {
+    padding: 32px 24px 50px;
+  }
+
+
+  /* HERO */
+
+  .budgets-hero {
+    grid-template-columns:
+      minmax(0, 1fr)
+      270px;
+
+    column-gap: 28px;
+  }
+
+  .budgets-hero h1 {
+    font-size: clamp(
+      50px,
+      6vw,
+      82px
+    );
+
+    letter-spacing: -3px;
+  }
+
+  .hero-side {
+    max-width: 270px;
+  }
+
+  .hero-side p {
+    max-width: 270px;
+
+    font-size: 13px;
+  }
+
+
+  /* SUMMARY */
+
+  .summary-card {
+    padding: 20px;
+  }
+
+  .summary-card strong {
+    font-size: clamp(
+      12px,
+      1.45vw,
+      27px
+    );
+
+    letter-spacing: -1px;
+
+    white-space: nowrap;
+  }
+
+  .budget-summary {
+    gap: 12px;
+  }
+}
+
+
+/* =========================================================
+   1000PX
+   ========================================================= */
+
+@media (max-width: 1000px) {
+
+  .budgets-hero {
+    grid-template-columns:
+      minmax(0, 1fr)
+      240px;
+
+    column-gap: 24px;
+  }
+
+  .budgets-hero h1 {
+    font-size: clamp(
+      46px,
+      6vw,
+      72px
+    );
+
+    letter-spacing: -3px;
+  }
+
+  .hero-side {
+    max-width: 240px;
+  }
+
+  .hero-side p {
+    max-width: 240px;
+
+    font-size: 12px;
+  }
+
+  .hero-side .primary-button {
+    min-width: 155px;
+
+    padding: 0 15px;
+  }
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 800px) {
+
+  .budgets-hero {
+    grid-template-columns: 1fr;
+
+    gap: 25px;
+
+    align-items: start;
+  }
+
+  .budgets-hero h1 {
+    font-size: clamp(
+      54px,
+      12vw,
+      90px
+    );
+
+    letter-spacing: -4px;
+  }
+
+  .hero-side {
+    width: 100%;
+
+    max-width: 500px;
+
+    justify-self: start;
+
+    align-self: start;
+  }
+
+  .hero-side p {
+    max-width: 500px;
+
+    font-size: 14px;
+  }
+
+
+  /* SUMMARY */
+
+  .budget-summary {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+  .summary-card strong {
+    font-size: clamp(
+      17px,
+      2.8vw,
+      30px
+    );
+
+    white-space: nowrap;
+  }
+
+
+  /* FORM */
+
+  .budget-form {
+    grid-template-columns: 1fr;
+  }
+
+  .form-group-wide,
+  .form-group-full {
+    grid-column: 1;
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 550px) {
+
+  .budgets-page {
+    padding: 22px 14px 35px;
+  }
+
+
+  /* HERO */
+
+  .budgets-hero {
+    gap: 22px;
+
+    padding-bottom: 28px;
+  }
+
+  .budgets-hero h1 {
+    font-size: clamp(
+      48px,
+      15vw,
+      78px
+    );
+
+    line-height: 0.84;
+
+    letter-spacing: -3px;
+  }
+
+  .hero-side {
+    max-width: 100%;
+  }
+
+  .hero-side p {
+    max-width: 100%;
+
+    margin-bottom: 18px;
+
+    font-size: 13px;
+  }
+
+  .hero-side .primary-button {
+    min-width: 170px;
+  }
+
+
+  /* SUMMARY */
+
+  .budget-summary {
+    grid-template-columns: 1fr;
+
+    gap: 12px;
+  }
+
+  .summary-card {
+    min-height: 145px;
+
+    padding: 20px;
+  }
+
+  .summary-card strong {
+    font-size: clamp(
+      14px,
+      7vw,
+      30px
+    );
+
+    line-height: 1;
+
+    letter-spacing: -1px;
+
+    white-space: nowrap;
+  }
+
+
+  /* FORM */
+
+  .budget-form-panel,
+  .budget-list-panel {
+    margin-top: 12px;
+  }
+
+  .form-header,
+  .section-header {
+    min-height: 76px;
+
+    padding: 16px;
+  }
+
+  .form-header h2,
+  .section-header h2 {
+    font-size: 22px;
+  }
+
+  .form-header .eyebrow,
+  .section-header .eyebrow {
+    margin-bottom: 6px;
+  }
+
+  .budget-form {
+    padding: 20px 16px;
+
+    grid-template-columns: 1fr;
+
+    gap: 16px;
+  }
+
+  .form-group-wide,
+  .form-group-full {
+    grid-column: 1;
+  }
+
+  .form-actions {
+    justify-content: stretch;
+
+    flex-direction: column-reverse;
+
+    align-items: stretch;
+  }
+
+  .form-actions button {
+    width: 100%;
+  }
+
+
+  /* REGISTER */
+
+  .record-count {
+    min-height: 30px;
+
+    padding: 0 8px;
+
+    display: flex;
+
+    align-items: center;
+  }
+
+  .budget-table-wrapper {
+    display: none;
+  }
+
+  .budget-mobile-list {
+    display: flex;
+
+    flex-direction: column;
+  }
+
+  .budget-mobile-card {
+    width: 100%;
+
+    min-width: 0;
+
+    padding: 20px 16px;
+
+    border-bottom: 3px solid #111;
+
+    background: #fff;
+  }
+
+  .budget-mobile-card:last-child {
+    border-bottom: 0;
+  }
+
+
+  /* MOBILE CARD */
+
+  .mobile-card-top {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 10px;
+
+    margin-bottom: 18px;
+  }
+
+  .mobile-index {
+    font-size: 10px;
+
+    font-weight: 950;
+
+    letter-spacing: 0.5px;
+  }
+
+  .mobile-department {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 5px;
+
+    margin-bottom: 12px;
+  }
+
+  .mobile-department strong {
+    font-size: 14px;
+
+    line-height: 1.25;
+
+    font-weight: 950;
+
+    overflow-wrap: anywhere;
+  }
+
+  .mobile-department span {
+    font-size: 9px;
+
+    font-weight: 900;
+
+    letter-spacing: 0.5px;
+
+    color: #555;
+  }
+
+  .budget-mobile-card h3 {
+    margin: 0 0 20px;
+
+    font-size: 19px;
+
+    line-height: 1.2;
+
+    font-weight: 950;
+
+    letter-spacing: -0.4px;
+
+    overflow-wrap: anywhere;
+  }
+
+  .mobile-details {
+    display: grid;
+
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+
+    gap: 12px;
+
+    padding: 16px 0;
+
+    border-top: 2px solid #111;
+
+    border-bottom: 2px solid #111;
+  }
+
+  .mobile-details > div {
+    min-width: 0;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 5px;
+  }
+
+  .mobile-details span {
+    font-size: 7px;
+
+    font-weight: 950;
+
+    letter-spacing: 0.7px;
+
+    color: #555;
+  }
+
+  .mobile-details strong {
+    min-width: 0;
+
+    font-size: 11px;
+
+    line-height: 1.25;
+
+    font-weight: 950;
+
+    overflow-wrap: anywhere;
+  }
+
+  .mobile-description {
+    margin: 16px 0 0;
+
+    font-size: 11px;
+
+    line-height: 1.45;
+
+    font-weight: 650;
+
+    color: #444;
+
+    overflow-wrap: anywhere;
+  }
+
+  .mobile-actions {
+    display: grid;
+
+    grid-template-columns:
+      1fr 1fr;
+
+    gap: 8px;
+
+    margin-top: 18px;
+  }
+
+  .mobile-actions button {
+    min-height: 40px;
+  }
+}
+
+
+/* =========================================================
+   VERY SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 400px) {
+
+  .budgets-page {
+    padding-left: 10px;
+
+    padding-right: 10px;
+  }
+
+  .budgets-hero h1 {
+    font-size: 48px;
+
+    letter-spacing: -2px;
+  }
+
+  .hero-side .primary-button {
+    width: 100%;
+  }
+
+  .summary-card {
+    border-width: 3px;
+  }
+
+  .summary-card strong {
+    font-size: 13px;
+
+    letter-spacing: -0.8px;
+
+    white-space: nowrap;
+  }
+
+  .budget-form-panel,
+  .budget-list-panel {
+    border-width: 3px;
+  }
+
+  .form-header,
+  .section-header {
+    border-bottom-width: 3px;
+  }
+
+  .mobile-details {
+    grid-template-columns: 1fr;
+  }
+}
+/* =========================================================
+   MODAL SYSTEM
+   CREATE / EDIT / DELETE
+   ========================================================= */
+
+.modal-backdrop {
+  position: fixed;
+
+  inset: 0;
+
+  width: 100vw;
+  height: 100vh;
+
+  padding: 24px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(17, 17, 17, 0.72);
+
+  z-index: 9999;
+
+  overflow-y: auto;
+
+  animation: modalBackdropIn 0.18s ease-out;
+}
+
+
+/* =========================================================
+   CREATE / EDIT MODAL
+   ========================================================= */
+
+.budget-form-backdrop {
+  z-index: 10000;
+}
+
+
+.budget-form-panel {
+  width: min(900px, 100%);
+
+  max-width: 900px;
+
+  max-height: calc(100vh - 48px);
+
+  margin: 0;
+
+  border: 4px solid #111;
+
+  background: #fff;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  box-shadow: 12px 12px 0 #111;
+
+  position: relative;
+
+  animation: modalPanelIn 0.2s ease-out;
+}
+
+
+/* =========================================================
+   DELETE MODAL
+   ========================================================= */
+
+.delete-modal {
+  width: min(520px, 100%);
+
+  max-width: 520px;
+
+  max-height: calc(100vh - 48px);
+
+  margin: 0;
+
+  background: #fff;
+
+  border: 4px solid #111;
+
+  box-shadow: 12px 12px 0 #111;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  position: relative;
+
+  animation: modalPanelIn 0.2s ease-out;
+}
+
+
+/* =========================================================
+   DELETE MODAL HEADER
+   ========================================================= */
+
+.delete-modal-header {
+  width: 100%;
+
+  min-height: 82px;
+
+  padding: 18px 20px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 18px;
+
+  border-bottom: 4px solid #111;
+}
+
+
+.delete-modal-header > div {
+  min-width: 0;
+}
+
+
+.delete-modal-header h2 {
+  margin: 0;
+
+  font-size: 30px;
+
+  line-height: 1;
+
+  letter-spacing: -1px;
+
+  font-weight: 950;
+
+  color: #111;
+}
+
+
+/* =========================================================
+   DELETE MODAL BODY
+   ========================================================= */
+
+.delete-modal-body {
+  padding: 26px 24px;
+}
+
+
+.delete-warning-icon {
+  width: 48px;
+  height: 48px;
+
+  margin-bottom: 20px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  background: #ff666b;
+
+  border: 3px solid #111;
+
+  color: #111;
+
+  font-size: 26px;
+
+  line-height: 1;
+
+  font-weight: 950;
+}
+
+
+.delete-question {
+  margin: 0 0 22px;
+
+  font-size: 15px;
+
+  line-height: 1.45;
+
+  font-weight: 900;
+
+  color: #111;
+}
+
+
+/* =========================================================
+   DELETE BUDGET PREVIEW
+   ========================================================= */
+
+.delete-budget-preview {
+  width: 100%;
+
+  display: grid;
+
+  grid-template-columns:
+    minmax(120px, 0.7fr)
+    minmax(0, 1.3fr);
+
+  border: 3px solid #111;
+
+  background: #f7f4ec;
+}
+
+
+.delete-budget-preview span,
+.delete-budget-preview strong {
+  min-width: 0;
+
+  padding: 12px 14px;
+
+  border-bottom: 2px solid #111;
+}
+
+
+.delete-budget-preview span {
+  font-size: 8px;
+
+  line-height: 1.3;
+
+  font-weight: 950;
+
+  letter-spacing: 0.7px;
+
+  background: #111;
+
+  color: #fff;
+}
+
+
+.delete-budget-preview strong {
+  font-size: 11px;
+
+  line-height: 1.35;
+
+  font-weight: 900;
+
+  color: #111;
+
+  overflow-wrap: anywhere;
+}
+
+
+.delete-budget-preview > :nth-last-child(-n + 2) {
+  border-bottom: 0;
+}
+
+
+/* =========================================================
+   DELETE WARNING
+   ========================================================= */
+
+.delete-warning-text {
+  margin: 20px 0 0;
+
+  padding: 14px;
+
+  border-left: 4px solid #ff666b;
+
+  background: #f5f2e9;
+
+  font-size: 10px;
+
+  line-height: 1.5;
+
+  font-weight: 800;
+
+  color: #444;
+}
+
+
+/* =========================================================
+   DELETE MODAL ACTIONS
+   ========================================================= */
+
+.delete-modal-actions {
+  width: 100%;
+
+  padding: 18px 20px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: flex-end;
+
+  gap: 10px;
+
+  border-top: 4px solid #111;
+}
+
+
+.delete-confirm-button {
+  min-height: 46px;
+
+  padding: 0 20px;
+
+  border: 3px solid #111;
+
+  background: #ff666b;
+
+  color: #111;
+
+  font-family: inherit;
+
+  font-size: 10px;
+
+  font-weight: 950;
+
+  letter-spacing: 0.5px;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.15s ease,
+    background 0.15s ease,
+    opacity 0.15s ease;
+}
+
+
+.delete-confirm-button:hover {
+  background: #ff7b80;
+
+  transform: translateY(-2px);
+}
+
+
+.delete-confirm-button:active {
+  transform: translateY(0);
+}
+
+
+.delete-confirm-button:disabled {
+  opacity: 0.45;
+
+  cursor: not-allowed;
+
+  transform: none;
+}
+
+
+/* =========================================================
+   MODAL ANIMATION
+   ========================================================= */
+
+@keyframes modalBackdropIn {
+
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+
+}
+
+
+@keyframes modalPanelIn {
+
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(16px)
+      scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0)
+      scale(1);
+  }
+
+}
+
+
+/* =========================================================
+   MODAL MOBILE
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+  .modal-backdrop {
+    padding: 14px;
+  }
+
+
+  .budget-form-panel,
+  .delete-modal {
+    width: 100%;
+
+    max-width: 100%;
+
+    max-height: calc(100vh - 28px);
+
+    box-shadow: 7px 7px 0 #111;
+  }
+
+
+  .form-header {
+    min-height: 70px;
+
+    padding: 15px 16px;
+  }
+
+
+  .form-header h2 {
+    font-size: 22px;
+  }
+
+
+  .budget-form {
+    padding: 20px 16px;
+  }
+
+
+  .delete-modal-header {
+    min-height: 70px;
+
+    padding: 15px 16px;
+  }
+
+
+  .delete-modal-header h2 {
+    font-size: 24px;
+  }
+
+
+  .delete-modal-body {
+    padding: 22px 18px;
+  }
+
+
+  .delete-budget-preview {
+    grid-template-columns: 1fr;
+  }
+
+
+  .delete-budget-preview span,
+  .delete-budget-preview strong {
+    border-bottom: 0;
+  }
+
+
+  .delete-budget-preview span {
+    padding-bottom: 5px;
+  }
+
+
+  .delete-budget-preview strong {
+    padding-top: 5px;
+    padding-bottom: 12px;
+  }
+
+
+  .delete-modal-actions {
+    padding: 16px;
+
+    flex-direction: column-reverse;
+
+    align-items: stretch;
+  }
+
+
+  .delete-modal-actions button {
+    width: 100%;
+  }
+
+}

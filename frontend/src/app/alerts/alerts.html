@@ -1,0 +1,639 @@
+<div class="alerts-page">
+
+  <!-- PAGE HEADER -->
+  <header class="alerts-header">
+
+    <div class="header-copy">
+      <p class="eyebrow">FINANCIAL CONTROL</p>
+
+      <h1>ALERTS</h1>
+
+      <p class="header-description">
+        Monitor budget utilization, overspending,
+        spending spikes, and threshold deviations.
+      </p>
+    </div>
+
+    <button
+      type="button"
+      class="scan-button"
+      (click)="scanBudgets()"
+      [disabled]="scanning"
+    >
+      <span
+        class="button-spinner"
+        *ngIf="scanning"
+      ></span>
+
+      <span>
+        {{
+          scanning
+            ? 'SCANNING...'
+            : 'SCAN BUDGETS'
+        }}
+      </span>
+    </button>
+
+  </header>
+
+
+  <!-- STATUS MESSAGES -->
+
+  <div
+    class="status-message success-message"
+    *ngIf="successMessage"
+  >
+    <span class="status-mark">✓</span>
+
+    <span>{{ successMessage }}</span>
+
+    <button
+      type="button"
+      class="status-close"
+      (click)="successMessage = ''"
+      aria-label="Close success message"
+    >
+      ×
+    </button>
+  </div>
+
+
+  <div
+    class="status-message error-message"
+    *ngIf="errorMessage"
+  >
+    <span class="status-mark">!</span>
+
+    <span>{{ errorMessage }}</span>
+
+    <button
+      type="button"
+      class="status-close"
+      (click)="errorMessage = ''"
+      aria-label="Close error message"
+    >
+      ×
+    </button>
+  </div>
+
+
+  <!-- ALERT SUMMARY -->
+
+  <section class="alert-summary">
+
+    <div class="summary-card">
+      <span class="summary-label">
+        ACTIVE ALERTS
+      </span>
+
+      <strong class="summary-value">
+        {{ activeAlerts.length }}
+      </strong>
+    </div>
+
+
+    <div class="summary-card critical-card">
+      <span class="summary-label">
+        CRITICAL
+      </span>
+
+      <strong class="summary-value">
+        {{ criticalAlerts }}
+      </strong>
+    </div>
+
+
+    <div class="summary-card high-card">
+      <span class="summary-label">
+        HIGH
+      </span>
+
+      <strong class="summary-value">
+        {{ highAlerts }}
+      </strong>
+    </div>
+
+
+    <div class="summary-card">
+      <span class="summary-label">
+        RESOLVED
+      </span>
+
+      <strong class="summary-value">
+        {{ resolvedAlerts.length }}
+      </strong>
+    </div>
+
+  </section>
+
+
+  <!-- ALERT REGISTER -->
+
+  <section class="alert-register">
+
+    <div class="register-header">
+
+      <div>
+        <p class="section-label">
+          MONITORING
+        </p>
+
+        <h2>
+          ALERT REGISTER
+        </h2>
+      </div>
+
+      <span class="record-count">
+        {{ alerts.length }}
+        {{ alerts.length === 1 ? 'ALERT' : 'ALERTS' }}
+      </span>
+
+    </div>
+
+
+    <!-- LOADING -->
+
+    <div
+      class="loading-state"
+      *ngIf="loading"
+    >
+
+      <div class="loading-row">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+
+      <div class="loading-row">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+
+      <div class="loading-row">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+
+      <div class="loading-row">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+
+    </div>
+
+
+    <!-- EMPTY STATE -->
+
+    <div
+      class="empty-state"
+      *ngIf="!loading && alerts.length === 0"
+    >
+
+      <div class="empty-mark">
+        ✓
+      </div>
+
+      <h3>
+        NO ALERTS FOUND
+      </h3>
+
+      <p>
+        No budget monitoring alerts are currently
+        recorded in the system.
+      </p>
+
+      <button
+        type="button"
+        class="secondary-button"
+        (click)="scanBudgets()"
+        [disabled]="scanning"
+      >
+        {{
+          scanning
+            ? 'SCANNING...'
+            : 'SCAN BUDGETS'
+        }}
+      </button>
+
+    </div>
+
+
+    <!-- ALERT TABLE -->
+
+    <div
+      class="table-wrapper"
+      *ngIf="!loading && alerts.length > 0"
+    >
+
+      <table class="alert-table">
+
+        <thead>
+
+          <tr>
+
+            <th>ALERT</th>
+
+            <th>SEVERITY</th>
+
+            <th>DEPARTMENT</th>
+
+            <th>BUDGET / PROJECT</th>
+
+            <th>UTILIZATION</th>
+
+            <th>EXPENDITURE</th>
+
+            <th>DETECTED</th>
+
+            <th>ACTIONS</th>
+
+          </tr>
+
+        </thead>
+
+
+        <tbody>
+
+          <tr
+            *ngFor="
+              let alert of alerts;
+              trackBy: trackByAlertId
+            "
+            [class.resolved-row]="
+              alert.status === 'Resolved'
+            "
+          >
+
+            <!-- ALERT -->
+
+            <td>
+
+              <div class="alert-type">
+                {{ alert.alertType }}
+              </div>
+
+              <div class="alert-message">
+                {{ alert.message }}
+              </div>
+
+            </td>
+
+
+            <!-- SEVERITY -->
+
+            <td>
+
+              <span
+                class="severity-badge"
+                [ngClass]="{
+                  'severity-low':
+                    alert.severity === 'Low',
+
+                  'severity-medium':
+                    alert.severity === 'Medium',
+
+                  'severity-high':
+                    alert.severity === 'High',
+
+                  'severity-critical':
+                    alert.severity === 'Critical'
+                }"
+              >
+                {{ alert.severity }}
+              </span>
+
+              <span
+                class="status-badge"
+                [ngClass]="{
+                  'status-active':
+                    alert.status === 'Active',
+
+                  'status-resolved':
+                    alert.status === 'Resolved'
+                }"
+              >
+                {{ alert.status }}
+              </span>
+
+            </td>
+
+
+            <!-- DEPARTMENT -->
+
+            <td>
+
+              <ng-container
+                *ngIf="
+                  getDepartment(alert) as department;
+                  else departmentFallback
+                "
+              >
+
+                <div class="department-name">
+                  {{ department.name }}
+                </div>
+
+                <div class="department-code">
+                  {{ department.code }}
+                </div>
+
+              </ng-container>
+
+              <ng-template #departmentFallback>
+                <span class="muted-value">
+                  —
+                </span>
+              </ng-template>
+
+            </td>
+
+
+            <!-- BUDGET / PROJECT -->
+
+            <td>
+
+              <ng-container
+                *ngIf="
+                  getBudget(alert) as budget;
+                  else budgetFallback
+                "
+              >
+
+                <div class="budget-year">
+                  {{ budget.financialYear }}
+                </div>
+
+                <div class="budget-project">
+                  {{ budget.project }}
+                </div>
+
+              </ng-container>
+
+              <ng-template #budgetFallback>
+                <span class="muted-value">
+                  —
+                </span>
+              </ng-template>
+
+            </td>
+
+
+            <!-- UTILIZATION -->
+
+            <td>
+
+              <div class="utilization-value">
+                {{
+                  formatPercentage(
+                    alert.utilizationPercentage
+                  )
+                }}
+              </div>
+
+              <div
+                class="threshold-value"
+                *ngIf="
+                  alert.thresholdPercentage !== null &&
+                  alert.thresholdPercentage !== undefined
+                "
+              >
+                Threshold:
+                {{
+                  formatPercentage(
+                    alert.thresholdPercentage
+                  )
+                }}
+              </div>
+
+            </td>
+
+
+            <!-- EXPENDITURE -->
+
+            <td>
+
+              <span class="expenditure-value">
+                {{
+                  formatCurrency(
+                    alert.expenditureAmount
+                  )
+                }}
+              </span>
+
+            </td>
+
+
+            <!-- DETECTED -->
+
+            <td>
+
+              <span class="date-value">
+                {{
+                  formatDate(
+                    alert.detectedAt
+                  )
+                }}
+              </span>
+
+            </td>
+
+
+            <!-- ACTIONS -->
+
+            <td>
+
+              <div class="action-group">
+
+                <button
+                  type="button"
+                  class="resolve-button"
+                  *ngIf="
+                    alert.status === 'Active'
+                  "
+                  (click)="resolveAlert(alert)"
+                  [disabled]="resolving"
+                >
+                  {{
+                    resolving
+                      ? 'RESOLVING...'
+                      : 'RESOLVE'
+                  }}
+                </button>
+
+
+                <span
+                  class="resolved-label"
+                  *ngIf="
+                    alert.status === 'Resolved'
+                  "
+                >
+                  RESOLVED
+                </span>
+
+
+                <button
+                  type="button"
+                  class="delete-button"
+                  (click)="openDeleteModal(alert)"
+                >
+                  DELETE
+                </button>
+
+              </div>
+
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </section>
+
+
+  <!-- DELETE CONFIRMATION MODAL -->
+
+  <div
+    class="modal-backdrop"
+    *ngIf="showDeleteModal"
+    (click)="closeDeleteModal()"
+  >
+
+    <section
+      class="delete-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="deleteAlertTitle"
+      (click)="$event.stopPropagation()"
+    >
+
+      <div class="delete-modal-header">
+
+        <div class="delete-symbol">
+          !
+        </div>
+
+        <div>
+
+          <p class="modal-kicker">
+            CONFIRM ACTION
+          </p>
+
+          <h2 id="deleteAlertTitle">
+            DELETE ALERT
+          </h2>
+
+        </div>
+
+      </div>
+
+
+      <div class="delete-modal-body">
+
+        <p class="delete-question">
+          Are you sure you want to permanently
+          delete this alert?
+        </p>
+
+
+        <div
+          class="alert-preview"
+          *ngIf="selectedAlert"
+        >
+
+          <div class="preview-row">
+
+            <span>ALERT TYPE</span>
+
+            <strong>
+              {{ selectedAlert.alertType }}
+            </strong>
+
+          </div>
+
+
+          <div class="preview-row">
+
+            <span>SEVERITY</span>
+
+            <strong>
+              {{ selectedAlert.severity }}
+            </strong>
+
+          </div>
+
+
+          <div class="preview-row">
+
+            <span>STATUS</span>
+
+            <strong>
+              {{ selectedAlert.status }}
+            </strong>
+
+          </div>
+
+        </div>
+
+
+        <div class="delete-warning">
+
+          <strong>WARNING</strong>
+
+          <span>
+            This alert will be permanently removed
+            from the monitoring records.
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <div class="delete-modal-actions">
+
+        <button
+          type="button"
+          class="secondary-button"
+          (click)="closeDeleteModal()"
+          [disabled]="deleting"
+        >
+          CANCEL
+        </button>
+
+
+        <button
+          type="button"
+          class="danger-button"
+          (click)="confirmDelete()"
+          [disabled]="deleting"
+        >
+
+          <span
+            class="button-spinner"
+            *ngIf="deleting"
+          ></span>
+
+          <span>
+            {{
+              deleting
+                ? 'DELETING...'
+                : 'DELETE ALERT'
+            }}
+          </span>
+
+        </button>
+
+      </div>
+
+    </section>
+
+  </div>
+
+</div>

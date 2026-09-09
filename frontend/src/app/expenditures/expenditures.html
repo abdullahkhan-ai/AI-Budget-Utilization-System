@@ -1,0 +1,766 @@
+<div class="expenditures-page">
+
+  <!-- PAGE HEADER -->
+  <section class="expenditures-hero">
+
+    <div class="hero-title">
+      <p class="eyebrow">
+        FINANCIAL CONTROL / 2026–27
+      </p>
+
+      <h1>
+        EXPENDITURE<br>
+        TRACKING.
+      </h1>
+    </div>
+
+    <div class="hero-side">
+
+      <p>
+        Record and manage expenditure transactions
+        against approved departmental budgets.
+      </p>
+
+      <button
+        type="button"
+        class="primary-button"
+        (click)="openCreateForm()"
+      >
+        + RECORD EXPENDITURE
+      </button>
+
+    </div>
+
+  </section>
+
+
+  <!-- SUCCESS MESSAGE -->
+  <div
+    class="message success-message"
+    *ngIf="successMessage"
+  >
+    {{ successMessage }}
+  </div>
+
+
+  <!-- ERROR MESSAGE -->
+  <div
+    class="message error-message"
+    *ngIf="errorMessage && !showForm"
+  >
+    {{ errorMessage }}
+  </div>
+
+
+  <!-- SUMMARY -->
+  <section class="expenditure-summary">
+
+    <article class="summary-card yellow">
+
+      <span class="summary-label">
+        TOTAL EXPENDITURE
+      </span>
+
+      <strong>
+        {{ formatCurrency(totalExpenditure) }}
+      </strong>
+
+      <small>
+        RECORDED SPENDING
+      </small>
+
+    </article>
+
+
+    <article class="summary-card white">
+
+      <span class="summary-label">
+        TRANSACTIONS
+      </span>
+
+      <strong>
+        {{ expenditures.length }}
+      </strong>
+
+      <small>
+        RECORDED EXPENDITURE RECORDS
+      </small>
+
+    </article>
+
+
+    <article class="summary-card black">
+
+      <span class="summary-label">
+        APPROVED BUDGETS
+      </span>
+
+      <strong>
+        {{ budgets.length }}
+      </strong>
+
+      <small>
+        AVAILABLE FOR EXPENDITURE
+      </small>
+
+    </article>
+
+
+    <article class="summary-card red">
+
+      <span class="summary-label">
+        DOCUMENTS
+      </span>
+
+      <strong>
+        {{
+          expenditures.filter(
+            item => item.supportingDocument?.fileName
+          ).length
+        }}
+      </strong>
+
+      <small>
+        SUPPORTING DOCUMENTS
+      </small>
+
+    </article>
+
+  </section>
+
+
+  <!-- CREATE / EDIT FORM -->
+  <section
+    class="expenditure-form-panel"
+    *ngIf="showForm"
+  >
+
+    <div class="form-header">
+
+      <div>
+
+        <p class="eyebrow">
+          {{
+            editingExpenditure
+              ? 'EDIT / EXPENDITURE'
+              : 'CREATE / EXPENDITURE'
+          }}
+        </p>
+
+        <h2>
+          {{
+            editingExpenditure
+              ? 'EDIT EXPENDITURE'
+              : 'RECORD NEW EXPENDITURE'
+          }}
+        </h2>
+
+      </div>
+
+
+      <button
+        type="button"
+        class="close-button"
+        (click)="closeForm()"
+        [disabled]="submitting"
+        aria-label="Close expenditure form"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <!-- FORM ERROR -->
+    <div
+      class="message error-message form-message"
+      *ngIf="formErrorMessage"
+    >
+
+      <span>
+        {{ formErrorMessage }}
+      </span>
+
+      <button
+        type="button"
+        class="message-close"
+        (click)="formErrorMessage = ''"
+        aria-label="Close error"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <form
+      #expenditureForm="ngForm"
+      class="expenditure-form"
+      (ngSubmit)="submitExpenditure(expenditureForm)"
+    >
+
+
+      <!-- BUDGET -->
+      <div class="form-group form-group-wide">
+
+        <label for="budgetId">
+          BUDGET
+        </label>
+
+        <select
+          id="budgetId"
+          name="budgetId"
+          [(ngModel)]="form.budgetId"
+          required
+          [disabled]="budgetsLoading || submitting"
+        >
+
+          <option
+            value=""
+            disabled
+          >
+            {{
+              budgetsLoading
+                ? 'Loading approved budgets...'
+                : 'Select a budget'
+            }}
+          </option>
+
+          <option
+            *ngFor="let budget of budgets"
+            [value]="budget._id"
+          >
+            {{ getBudgetLabel(budget._id) }}
+          </option>
+
+        </select>
+
+        <small
+          class="form-help"
+          *ngIf="budgetsLoading"
+        >
+          Loading approved budgets...
+        </small>
+
+      </div>
+
+
+      <!-- AMOUNT -->
+      <div class="form-group">
+
+        <label for="amountSpent">
+          AMOUNT SPENT
+        </label>
+
+        <input
+          id="amountSpent"
+          name="amountSpent"
+          type="number"
+          [(ngModel)]="form.amountSpent"
+          min="1"
+          step="1"
+          placeholder="Enter amount spent"
+          required
+          [disabled]="submitting"
+        >
+
+      </div>
+
+
+      <!-- CATEGORY -->
+      <div class="form-group">
+
+        <label for="expenseCategory">
+          EXPENSE CATEGORY
+        </label>
+
+        <select
+          id="expenseCategory"
+          name="expenseCategory"
+          [(ngModel)]="form.expenseCategory"
+          required
+          [disabled]="submitting"
+        >
+
+          <option
+            value=""
+            disabled
+          >
+            Select category
+          </option>
+
+          <option
+            *ngFor="let category of categories"
+            [value]="category"
+          >
+            {{ category }}
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <!-- DATE -->
+      <div class="form-group">
+
+        <label for="date">
+          EXPENDITURE DATE
+        </label>
+
+        <input
+          id="date"
+          name="date"
+          type="date"
+          [(ngModel)]="form.date"
+          required
+          [disabled]="submitting"
+        >
+
+      </div>
+
+
+      <!-- DOCUMENT REFERENCE -->
+      <div class="form-group">
+
+        <label for="supportingDocumentReference">
+          SUPPORTING DOCUMENT REFERENCE
+        </label>
+
+        <input
+          id="supportingDocumentReference"
+          name="supportingDocumentReference"
+          type="text"
+          [(ngModel)]="form.supportingDocumentReference"
+          placeholder="Enter document reference"
+          [disabled]="submitting"
+        >
+
+      </div>
+
+
+      <!-- SUPPORTING DOCUMENT -->
+      <div class="form-group form-group-wide">
+
+        <label for="supportingDocument">
+          SUPPORTING DOCUMENT
+        </label>
+
+        <input
+          id="supportingDocument"
+          name="supportingDocument"
+          type="file"
+          accept=".pdf,.doc,.docx,.xls,.xlsx,.csv,.jpg,.jpeg,.png"
+          (change)="onFileSelected($event)"
+          [disabled]="submitting"
+        >
+
+        <small class="form-help">
+          PDF, DOC, DOCX, XLS, XLSX, CSV, JPG, JPEG or PNG. Maximum size: 10 MB.
+        </small>
+
+
+        <!-- SELECTED FILE -->
+        <div
+          class="selected-file"
+          *ngIf="selectedFileName"
+        >
+
+          <span>
+            {{ selectedFileName }}
+          </span>
+
+          <button
+            type="button"
+            (click)="clearSelectedFile()"
+            [disabled]="submitting"
+            aria-label="Remove selected document"
+          >
+            ×
+          </button>
+
+        </div>
+
+
+        <!-- EXISTING FILE -->
+        <div
+          class="existing-document"
+          *ngIf="
+            editingExpenditure?.supportingDocument?.fileName &&
+            !selectedFileName
+          "
+        >
+
+          <span>
+            EXISTING DOCUMENT
+          </span>
+
+          <a
+            [href]="getDocumentUrl(editingExpenditure?.supportingDocument?.fileUrl)"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {{ getDocumentName(editingExpenditure?.supportingDocument) }}
+          </a>
+
+        </div>
+
+      </div>
+
+
+      <!-- FORM ACTIONS -->
+      <div class="form-actions">
+
+        <button
+          type="button"
+          class="secondary-button"
+          (click)="closeForm()"
+          [disabled]="submitting"
+        >
+          CANCEL
+        </button>
+
+        <button
+          type="submit"
+          class="submit-button"
+          [disabled]="submitting"
+        >
+
+          <span *ngIf="!submitting">
+            {{
+              editingExpenditure
+                ? 'UPDATE EXPENDITURE'
+                : 'RECORD EXPENDITURE'
+            }}
+          </span>
+
+          <span *ngIf="submitting">
+            SAVING...
+          </span>
+
+        </button>
+
+      </div>
+
+    </form>
+
+  </section>
+
+
+  <!-- EXPENDITURE RECORDS -->
+  <section class="records-panel">
+
+    <div class="section-header">
+
+      <div>
+
+        <p class="eyebrow">
+          EXPENDITURE / RECORDS
+        </p>
+
+        <h2>
+          EXPENDITURE RECORDS
+        </h2>
+
+      </div>
+
+      <span class="record-count">
+        {{ expenditures.length }} RECORDS
+      </span>
+
+    </div>
+
+
+    <!-- LOADING -->
+    <div
+      class="loading-state"
+      *ngIf="loading"
+    >
+      LOADING EXPENDITURE RECORDS...
+    </div>
+
+
+    <!-- EMPTY -->
+    <div
+      class="empty-state"
+      *ngIf="!loading && expenditures.length === 0"
+    >
+      NO EXPENDITURE RECORDS FOUND.
+    </div>
+
+
+    <!-- TABLE -->
+    <div
+      class="table-wrapper"
+      *ngIf="!loading && expenditures.length > 0"
+    >
+
+      <table>
+
+        <thead>
+
+          <tr>
+
+            <th>
+              TRANSACTION ID
+            </th>
+
+            <th>
+              BUDGET
+            </th>
+
+            <th>
+              AMOUNT SPENT
+            </th>
+
+            <th>
+              CATEGORY
+            </th>
+
+            <th>
+              DATE
+            </th>
+
+            <th>
+              SUPPORTING DOCUMENT
+            </th>
+
+            <th>
+              ACTIONS
+            </th>
+
+          </tr>
+
+        </thead>
+
+
+        <tbody>
+
+          <tr
+            *ngFor="
+              let expenditure of expenditures;
+              trackBy: trackByExpenditureId
+            "
+          >
+
+            <td>
+
+              <span class="transaction-id">
+                {{ expenditure.transactionId }}
+              </span>
+
+            </td>
+
+
+            <td>
+
+              <div class="budget-cell">
+
+                <strong>
+                  {{ getBudgetProject(expenditure.budgetId) }}
+                </strong>
+
+                <span>
+                  {{ getBudgetLabel(expenditure.budgetId) }}
+                </span>
+
+              </div>
+
+            </td>
+
+
+            <td class="amount">
+
+              {{ formatCurrency(expenditure.amountSpent) }}
+
+            </td>
+
+
+            <td>
+
+              <span class="category-tag">
+                {{ expenditure.expenseCategory }}
+              </span>
+
+            </td>
+
+
+            <td>
+
+              {{ expenditure.date | date:'dd MMM yyyy' }}
+
+            </td>
+
+
+            <td>
+
+              <div class="document-cell">
+
+                <a
+                  *ngIf="
+                    expenditure.supportingDocument?.fileUrl
+                  "
+                  class="document-link"
+                  [href]="
+                    getDocumentUrl(
+                      expenditure.supportingDocument?.fileUrl
+                    )
+                  "
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {{
+                    getDocumentName(
+                      expenditure.supportingDocument
+                    )
+                  }}
+                </a>
+
+
+                <span
+                  *ngIf="
+                    !expenditure.supportingDocument?.fileUrl &&
+                    expenditure.supportingDocumentReference
+                  "
+                  class="document-reference"
+                >
+                  {{ expenditure.supportingDocumentReference }}
+                </span>
+
+
+                <span
+                  *ngIf="
+                    !expenditure.supportingDocument?.fileUrl &&
+                    !expenditure.supportingDocumentReference
+                  "
+                  class="no-document"
+                >
+                  —
+                </span>
+
+              </div>
+
+            </td>
+
+
+            <td>
+
+              <div class="actions">
+
+                <button
+                  type="button"
+                  class="edit-button"
+                  (click)="openEditForm(expenditure)"
+                >
+                  EDIT
+                </button>
+
+                <button
+                  type="button"
+                  class="delete-button"
+                  (click)="openDeleteModal(expenditure)"
+                >
+                  DELETE
+                </button>
+
+              </div>
+
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </section>
+
+
+  <!-- DELETE MODAL -->
+  <div
+    class="modal-backdrop"
+    *ngIf="showDeleteModal"
+  >
+
+    <div
+      class="confirm-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="delete-title"
+    >
+
+      <div class="modal-header">
+
+        <p class="eyebrow">
+          EXPENDITURE / DELETE
+        </p>
+
+        <h2 id="delete-title">
+          DELETE EXPENDITURE?
+        </h2>
+
+      </div>
+
+
+      <div class="modal-body">
+
+        <p>
+          This will permanently delete the selected
+          expenditure record.
+        </p>
+
+        <div
+          class="modal-record"
+          *ngIf="expenditureToDelete"
+        >
+
+          <span>
+            TRANSACTION
+          </span>
+
+          <strong>
+            {{ expenditureToDelete.transactionId }}
+          </strong>
+
+        </div>
+
+      </div>
+
+
+      <div class="modal-actions">
+
+        <button
+          type="button"
+          class="secondary-button"
+          (click)="closeDeleteModal()"
+          [disabled]="deleting"
+        >
+          CANCEL
+        </button>
+
+        <button
+          type="button"
+          class="delete-confirm-button"
+          (click)="confirmDelete()"
+          [disabled]="deleting"
+        >
+
+          <span *ngIf="!deleting">
+            DELETE EXPENDITURE
+          </span>
+
+          <span *ngIf="deleting">
+            DELETING...
+          </span>
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

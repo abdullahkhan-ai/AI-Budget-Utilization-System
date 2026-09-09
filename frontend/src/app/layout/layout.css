@@ -1,0 +1,486 @@
+:host {
+  display: block;
+  min-height: 100vh;
+}
+
+.app-shell {
+  min-height: 100vh;
+
+  display: grid;
+
+  grid-template-columns: 270px 1fr;
+
+  background: #f4f1e8;
+
+  color: #111111;
+
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+
+/* =========================================
+   SIDEBAR
+========================================= */
+
+.sidebar {
+  min-height: 100vh;
+
+  box-sizing: border-box;
+
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: space-between;
+
+  background: #111111;
+
+  color: #ffffff;
+
+  border-right: 5px solid #111111;
+}
+
+
+.sidebar-top {
+  padding: 22px 18px;
+}
+
+
+/* =========================================
+   BRAND
+========================================= */
+
+.brand-block {
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  padding-bottom: 24px;
+
+  border-bottom: 3px solid #ffffff;
+}
+
+
+.brand-mark {
+  width: 44px;
+
+  height: 44px;
+
+  flex-shrink: 0;
+
+  display: grid;
+
+  place-items: center;
+
+  background: #ffdf00;
+
+  color: #111111;
+
+  font-size: 13px;
+
+  font-weight: 1000;
+}
+
+
+.brand-text {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 4px;
+}
+
+
+.brand-text strong {
+  font-size: 13px;
+
+  font-weight: 1000;
+
+  letter-spacing: 0.04em;
+}
+
+
+.brand-text span {
+  font-size: 8px;
+
+  font-weight: 900;
+
+  letter-spacing: 0.1em;
+}
+
+
+/* =========================================
+   NAVIGATION
+========================================= */
+
+.navigation-label {
+  margin-top: 28px;
+
+  margin-bottom: 10px;
+
+  font-size: 9px;
+
+  font-weight: 900;
+
+  letter-spacing: 0.14em;
+
+  color: #a9a9a9;
+}
+
+
+.navigation {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 5px;
+}
+
+
+.navigation a {
+  display: grid;
+
+  grid-template-columns: 32px 1fr;
+
+  align-items: center;
+
+  gap: 10px;
+
+  padding: 13px 10px;
+
+  border: 3px solid transparent;
+
+  color: #ffffff;
+
+  text-decoration: none;
+
+  font-size: 11px;
+
+  font-weight: 1000;
+
+  letter-spacing: 0.06em;
+
+  transition:
+    background 0.12s ease,
+    color 0.12s ease,
+    border-color 0.12s ease;
+}
+
+
+.navigation a:hover {
+  background: #ffdf00;
+
+  color: #111111;
+}
+
+
+.navigation a.active {
+  background: #ffdf00;
+
+  color: #111111;
+
+  border-color: #ffffff;
+}
+
+
+.nav-number {
+  font-size: 9px;
+
+  font-weight: 900;
+
+  opacity: 0.65;
+}
+
+
+/* =========================================
+   SIDEBAR BOTTOM
+========================================= */
+
+.sidebar-bottom {
+  padding: 18px;
+
+  border-top: 3px solid #ffffff;
+}
+
+
+.user-block {
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  margin-bottom: 16px;
+}
+
+
+.user-initial {
+  width: 38px;
+
+  height: 38px;
+
+  flex-shrink: 0;
+
+  display: grid;
+
+  place-items: center;
+
+  background: #ffffff;
+
+  color: #111111;
+
+  font-size: 13px;
+
+  font-weight: 1000;
+}
+
+
+.user-details {
+  min-width: 0;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 4px;
+}
+
+
+.user-details strong {
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+
+  font-size: 11px;
+
+  font-weight: 1000;
+}
+
+
+.user-details span {
+  font-size: 8px;
+
+  font-weight: 900;
+
+  letter-spacing: 0.08em;
+
+  color: #bdbdbd;
+}
+
+
+.logout-button {
+  width: 100%;
+
+  height: 42px;
+
+  border: 3px solid #ffffff;
+
+  background: transparent;
+
+  color: #ffffff;
+
+  font-size: 10px;
+
+  font-weight: 1000;
+
+  letter-spacing: 0.08em;
+
+  cursor: pointer;
+
+  transition:
+    background 0.12s ease,
+    color 0.12s ease;
+}
+
+
+.logout-button:hover {
+  background: #ff6b6b;
+
+  color: #111111;
+}
+
+
+/* =========================================
+   MAIN AREA
+========================================= */
+
+.main-area {
+  min-width: 0;
+
+  min-height: 100vh;
+}
+
+
+.main-header {
+  min-height: 68px;
+
+  box-sizing: border-box;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 20px;
+
+  padding: 14px 24px;
+
+  background: #ffffff;
+
+  border-bottom: 5px solid #111111;
+}
+
+
+.header-label {
+  font-size: 9px;
+
+  font-weight: 1000;
+
+  letter-spacing: 0.1em;
+}
+
+
+.system-status {
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  padding: 8px 11px;
+
+  border: 3px solid #111111;
+
+  font-size: 8px;
+
+  font-weight: 1000;
+
+  letter-spacing: 0.08em;
+}
+
+
+.status-dot {
+  width: 8px;
+
+  height: 8px;
+
+  background: #32c766;
+
+  border: 2px solid #111111;
+
+  border-radius: 50%;
+}
+
+
+.page-area {
+  min-width: 0;
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 900px) {
+
+  .app-shell {
+    grid-template-columns: 220px 1fr;
+  }
+
+  .header-label {
+    font-size: 8px;
+  }
+
+}
+
+
+@media (max-width: 700px) {
+
+  .app-shell {
+    display: block;
+  }
+
+
+  .sidebar {
+    min-height: auto;
+
+    border-right: none;
+
+    border-bottom: 5px solid #111111;
+  }
+
+
+  .sidebar-top {
+    padding-bottom: 10px;
+  }
+
+
+  .navigation {
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+
+  .sidebar-bottom {
+    display: grid;
+
+    grid-template-columns: 1fr auto;
+
+    align-items: center;
+
+    gap: 12px;
+  }
+
+
+  .user-block {
+    margin-bottom: 0;
+  }
+
+
+  .logout-button {
+    width: 120px;
+  }
+
+
+  .main-header {
+    min-height: 58px;
+
+    padding: 12px 16px;
+  }
+
+}
+
+
+@media (max-width: 480px) {
+
+  .navigation {
+    grid-template-columns: 1fr;
+  }
+
+
+  .sidebar-bottom {
+    display: block;
+  }
+
+
+  .logout-button {
+    width: 100%;
+  }
+
+
+  .user-block {
+    margin-bottom: 14px;
+  }
+
+
+  .system-status {
+    display: none;
+  }
+
+}

@@ -1,0 +1,144 @@
+<div class="login-page">
+
+  <!-- LEFT BRAND PANEL -->
+  <section class="brand-panel">
+
+    <div class="brand-content">
+
+      <p class="eyebrow">
+        FINANCIAL GOVERNANCE SYSTEM
+      </p>
+
+      <h1>
+        SEE WHERE<br>
+        THE MONEY<br>
+        GOES.
+      </h1>
+
+      <p class="brand-description">
+        AI-Based Budget Utilization Monitoring System for
+        transparent and accountable financial management.
+      </p>
+
+    </div>
+
+    <div class="brand-footer">
+      <span>2026</span>
+      <span>MONITOR / ANALYZE / ACT</span>
+    </div>
+
+  </section>
+
+
+  <!-- RIGHT LOGIN PANEL -->
+  <section class="login-panel">
+
+    <div class="login-card">
+
+      <div class="login-header">
+
+        <p class="eyebrow">
+          SECURE ACCESS
+        </p>
+
+        <h2>
+          WELCOME.
+        </h2>
+
+        <p class="login-description">
+          Sign in to access your financial monitoring workspace.
+        </p>
+
+      </div>
+
+
+      <form
+        (ngSubmit)="login()"
+        #loginForm="ngForm"
+      >
+
+        <!-- EMAIL -->
+        <div class="form-group">
+
+          <label for="email">
+            EMAIL ADDRESS
+          </label>
+
+          <input
+            id="email"
+            name="email"
+            type="email"
+            [(ngModel)]="email"
+            placeholder="Enter your email"
+            autocomplete="email"
+            required
+          >
+
+        </div>
+
+
+        <!-- PASSWORD -->
+        <div class="form-group">
+
+          <label for="password">
+            PASSWORD
+          </label>
+
+          <input
+            id="password"
+            name="password"
+            type="password"
+            [(ngModel)]="password"
+            placeholder="Enter your password"
+            autocomplete="current-password"
+            required
+          >
+
+        </div>
+
+
+        <!-- ERROR -->
+        <div
+          class="error-message"
+          *ngIf="errorMessage"
+        >
+          {{ errorMessage }}
+        </div>
+
+
+        <!-- LOGIN BUTTON -->
+        <button
+          type="submit"
+          class="login-button"
+          [disabled]="loading"
+        >
+
+          <span *ngIf="!loading">
+            ENTER SYSTEM →
+          </span>
+
+          <span *ngIf="loading">
+            AUTHENTICATING...
+          </span>
+
+        </button>
+
+      </form>
+
+
+      <!-- SECURITY STATUS -->
+      <div class="security-note">
+
+        <span class="security-dot"></span>
+
+        <span>
+          AUTHENTICATED ACCESS / ROLE CONTROLLED
+        </span>
+
+      </div>
+
+    </div>
+
+  </section>
+
+</div>

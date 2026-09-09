@@ -1,0 +1,514 @@
+<div class="dashboard-page">
+
+  <!-- =====================================================
+       ERROR
+       ===================================================== -->
+
+  <section
+    class="dashboard-error"
+    *ngIf="errorMessage"
+  >
+
+    <div class="error-icon">
+      !
+    </div>
+
+    <div class="error-content">
+
+      <h2>
+        Dashboard unavailable
+      </h2>
+
+      <p>
+        {{ errorMessage }}
+      </p>
+
+      <button
+        type="button"
+        class="button button-dark"
+        (click)="retry()"
+      >
+        TRY AGAIN
+      </button>
+
+    </div>
+
+  </section>
+
+
+  <!-- =====================================================
+       DASHBOARD CONTENT
+       ===================================================== -->
+
+  <ng-container *ngIf="!errorMessage">
+
+    <!-- ===================================================
+         HERO
+         =================================================== -->
+
+    <section class="dashboard-hero">
+
+      <div class="hero-main">
+
+        <p class="hero-context">
+          FINANCIAL OVERVIEW · 2026–27
+        </p>
+
+        <h1>
+          BUDGET
+          <br>
+          CONTROL.
+        </h1>
+
+      </div>
+
+
+      <div class="hero-side">
+
+        <p>
+          Monitor allocations, expenditures,
+          utilization and financial irregularities
+          from one workspace.
+        </p>
+
+        <div class="hero-status">
+          <span class="status-dot"></span>
+
+          LIVE FINANCIAL DATA
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ===================================================
+         SUMMARY
+         =================================================== -->
+
+    <section class="metrics-grid">
+
+      <!-- TOTAL ALLOCATED -->
+
+      <article class="metric-card metric-yellow">
+
+        <span class="metric-label">
+          TOTAL ALLOCATED
+        </span>
+
+        <strong
+          class="metric-value currency-value"
+          [class.skeleton]="loading"
+        >
+          <ng-container *ngIf="!loading">
+            {{ formatCurrency(summary.totalAllocated) }}
+          </ng-container>
+        </strong>
+
+        <span class="metric-description">
+          ACROSS {{ summary.totalBudgets }} BUDGETS
+        </span>
+
+      </article>
+
+
+      <!-- TOTAL SPENT -->
+
+      <article class="metric-card metric-white">
+
+        <span class="metric-label">
+          TOTAL SPENT
+        </span>
+
+        <strong
+          class="metric-value currency-value"
+          [class.skeleton]="loading"
+        >
+          <ng-container *ngIf="!loading">
+            {{ formatCurrency(summary.totalExpenditure) }}
+          </ng-container>
+        </strong>
+
+        <span class="metric-description">
+          RECORDED EXPENDITURE
+        </span>
+
+      </article>
+
+
+      <!-- UTILIZATION -->
+
+      <article class="metric-card metric-black">
+
+        <span class="metric-label">
+          UTILIZATION
+        </span>
+
+        <strong
+          class="metric-value"
+          [class.skeleton]="loading"
+        >
+          <ng-container *ngIf="!loading">
+            {{ formatPercentage(summary.overallUtilizationPercentage) }}
+          </ng-container>
+        </strong>
+
+        <span class="metric-description">
+          CURRENT UTILIZATION RATE
+        </span>
+
+      </article>
+
+
+      <!-- ALERTS -->
+
+      <article class="metric-card metric-red">
+
+        <span class="metric-label">
+          ACTIVE ALERTS
+        </span>
+
+        <strong
+          class="metric-value"
+          [class.skeleton]="loading"
+        >
+          <ng-container *ngIf="!loading">
+            {{ activeAlertCount }}
+          </ng-container>
+        </strong>
+
+        <span class="metric-description">
+          REQUIRES ATTENTION
+        </span>
+
+      </article>
+
+    </section>
+
+
+    <!-- ===================================================
+         ANALYSIS
+         =================================================== -->
+
+    <section class="analysis-grid">
+
+      <!-- UTILIZATION -->
+
+      <article class="panel utilization-panel">
+
+        <div class="panel-header">
+
+          <div>
+
+            <h2>
+              Budget utilization
+            </h2>
+
+            <p>
+              Overall expenditure against approved allocation
+            </p>
+
+          </div>
+
+          <span
+            class="panel-status"
+            [class.skeleton]="loading"
+          >
+            <ng-container *ngIf="!loading">
+              {{ utilizationStatus }}
+            </ng-container>
+          </span>
+
+        </div>
+
+
+        <div class="utilization-main">
+
+          <!-- UTILIZATION PERCENTAGE -->
+
+          <div
+            class="utilization-number"
+            [class.skeleton]="loading"
+          >
+            <ng-container *ngIf="!loading">
+              {{ formatPercentage(summary.overallUtilizationPercentage) }}
+            </ng-container>
+          </div>
+
+
+          <!-- PROGRESS -->
+
+          <div class="progress-track">
+
+            <div
+              class="progress-fill"
+              [style.width.%]="loading ? 0 : utilization"
+            ></div>
+
+          </div>
+
+
+          <!-- FINANCIAL VALUES -->
+
+          <div class="utilization-values">
+
+            <div>
+
+              <span>
+                SPENT
+              </span>
+
+              <strong
+                [class.skeleton]="loading"
+              >
+                <ng-container *ngIf="!loading">
+                  {{ formatCurrency(summary.totalExpenditure) }}
+                </ng-container>
+              </strong>
+
+            </div>
+
+
+            <div>
+
+              <span>
+                REMAINING
+              </span>
+
+              <strong
+                [class.skeleton]="loading"
+              >
+                <ng-container *ngIf="!loading">
+                  {{ formatCurrency(summary.totalRemaining) }}
+                </ng-container>
+              </strong>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </article>
+
+
+      <!-- ALERTS -->
+
+      <article
+        class="panel alert-panel"
+        [class.alert-active]="activeAlertCount > 0"
+      >
+
+        <div class="panel-header">
+
+          <div>
+
+            <h2>
+              Financial alerts
+            </h2>
+
+            <p>
+              Current monitoring status
+            </p>
+
+          </div>
+
+          <div class="alert-count">
+            {{ activeAlertCount }}
+          </div>
+
+        </div>
+
+
+        <div class="alert-body">
+
+          <ng-container
+            *ngIf="!loading && activeAlertCount > 0; else alertState"
+          >
+
+            <strong>
+              Attention required
+            </strong>
+
+            <p>
+              Active financial monitoring alerts
+              require review.
+            </p>
+
+          </ng-container>
+
+
+          <ng-template #alertState>
+
+            <ng-container *ngIf="loading; else noAlerts">
+
+              <strong>
+                Checking alerts
+              </strong>
+
+              <p>
+                Loading current financial monitoring status.
+              </p>
+
+            </ng-container>
+
+
+            <ng-template #noAlerts>
+
+              <strong>
+                No active alerts
+              </strong>
+
+              <p>
+                No financial irregularities currently
+                require attention.
+              </p>
+
+            </ng-template>
+
+          </ng-template>
+
+        </div>
+
+      </article>
+
+    </section>
+
+
+    <!-- ===================================================
+         CURRENT BUDGETS
+         =================================================== -->
+
+    <section class="budgets-panel">
+
+      <div class="panel-header budgets-header">
+
+        <div>
+
+          <h2>
+            Current budgets
+          </h2>
+
+          <p>
+            Approved allocations for financial year 2026–27
+          </p>
+
+        </div>
+
+        <span class="budget-count">
+          {{ summary.totalBudgets }}
+          {{ summary.totalBudgets === 1 ? 'BUDGET' : 'BUDGETS' }}
+        </span>
+
+      </div>
+
+
+      <!-- SKELETON -->
+
+      <div
+        class="budget-skeleton-list"
+        *ngIf="loading"
+      >
+
+        <div
+          class="budget-skeleton"
+          *ngFor="let item of [1, 2]"
+        >
+
+          <div class="skeleton-block skeleton-number"></div>
+
+          <div class="skeleton-content">
+
+            <div class="skeleton-block skeleton-title"></div>
+
+            <div class="skeleton-block skeleton-subtitle"></div>
+
+          </div>
+
+          <div class="skeleton-block skeleton-amount"></div>
+
+        </div>
+
+      </div>
+
+
+      <!-- BUDGET LIST -->
+
+      <div
+        class="budget-list"
+        *ngIf="!loading && budgets.length > 0"
+      >
+
+        <article
+          class="budget-row"
+          *ngFor="
+            let budget of budgets;
+            let i = index;
+            trackBy: trackByBudgetId
+          "
+        >
+
+          <div class="budget-index">
+            {{ (i + 1).toString().padStart(2, '0') }}
+          </div>
+
+
+          <div class="budget-information">
+
+            <h3>
+              {{ budget.department?.name || budget.project }}
+            </h3>
+
+            <p>
+              {{ budget.project }}
+
+              <span
+                *ngIf="budget.department?.code"
+              >
+                · {{ budget.department?.code }}
+              </span>
+            </p>
+
+          </div>
+
+
+          <div class="budget-financial">
+
+            <strong>
+              {{ formatCurrency(budget.allocatedAmount) }}
+            </strong>
+
+            <span>
+              {{ formatPercentage(budget.utilizationPercentage) }}
+              utilized
+            </span>
+
+          </div>
+
+        </article>
+
+      </div>
+
+
+      <!-- EMPTY -->
+
+      <div
+        class="empty-state"
+        *ngIf="!loading && budgets.length === 0"
+      >
+
+        <strong>
+          No budgets available
+        </strong>
+
+        <p>
+          No approved budgets are currently registered.
+        </p>
+
+      </div>
+
+    </section>
+
+  </ng-container>
+
+</div>

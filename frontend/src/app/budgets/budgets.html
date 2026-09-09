@@ -1,0 +1,1183 @@
+<div class="budgets-page">
+
+  <!-- =====================================================
+       PAGE HEADER
+       ===================================================== -->
+
+  <section class="budgets-hero">
+
+    <div class="hero-title">
+
+      <h1>
+        BUDGET<br>
+        ALLOCATION.
+      </h1>
+
+    </div>
+
+
+    <div class="hero-side">
+
+      <p>
+        Create, review and manage approved
+        departmental budgets from one workspace.
+      </p>
+
+      <button
+        type="button"
+        class="primary-button"
+        (click)="openCreateForm()"
+      >
+        + CREATE BUDGET
+      </button>
+
+    </div>
+
+  </section>
+
+
+  <!-- =====================================================
+       SUCCESS MESSAGE
+       ===================================================== -->
+
+  <div
+    class="message success-message"
+    *ngIf="successMessage"
+  >
+
+    <span>
+      {{ successMessage }}
+    </span>
+
+    <button
+      type="button"
+      class="message-close"
+      (click)="successMessage = ''"
+      aria-label="Close"
+    >
+      ×
+    </button>
+
+  </div>
+
+
+  <!-- =====================================================
+       ERROR MESSAGE
+       ===================================================== -->
+
+  <div
+    class="message error-message"
+    *ngIf="errorMessage && !showForm"
+  >
+
+    <span>
+      {{ errorMessage }}
+    </span>
+
+    <button
+      type="button"
+      class="message-close"
+      (click)="errorMessage = ''"
+      aria-label="Close"
+    >
+      ×
+    </button>
+
+  </div>
+
+
+  <!-- =====================================================
+       SUMMARY
+       ===================================================== -->
+
+  <section class="budget-summary">
+
+    <article class="summary-card yellow">
+
+      <span class="summary-label">
+        TOTAL BUDGETS
+      </span>
+
+      <strong class="summary-number">
+        {{
+          loading
+            ? '—'
+            : budgets.length
+        }}
+      </strong>
+
+      <small>
+        REGISTERED ALLOCATIONS
+      </small>
+
+    </article>
+
+
+    <article class="summary-card white">
+
+      <span class="summary-label">
+        TOTAL ALLOCATED
+      </span>
+
+      <strong class="summary-number summary-amount">
+        {{
+          loading
+            ? '—'
+            : formatCurrency(getTotalAllocated())
+        }}
+      </strong>
+
+      <small>
+        ACROSS ALL DEPARTMENTS
+      </small>
+
+    </article>
+
+
+    <article class="summary-card black">
+
+      <span class="summary-label">
+        ACTIVE
+      </span>
+
+      <strong class="summary-number">
+        {{
+          loading
+            ? '—'
+            : getBudgetCountByStatus('Active')
+        }}
+      </strong>
+
+      <small>
+        ACTIVE BUDGETS
+      </small>
+
+    </article>
+
+
+    <article class="summary-card red">
+
+      <span class="summary-label">
+        CLOSED
+      </span>
+
+      <strong class="summary-number">
+        {{
+          loading
+            ? '—'
+            : getBudgetCountByStatus('Closed')
+        }}
+      </strong>
+
+      <small>
+        CLOSED BUDGETS
+      </small>
+
+    </article>
+
+  </section>
+
+
+  <!-- =====================================================
+       CREATE / EDIT MODAL
+       ===================================================== -->
+
+  <div
+    class="modal-backdrop budget-form-backdrop"
+    *ngIf="showForm"
+    (click)="closeForm()"
+  >
+
+    <section
+      class="budget-form-panel"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="budgetFormTitle"
+      (click)="$event.stopPropagation()"
+    >
+
+      <!-- FORM HEADER -->
+
+      <div class="form-header">
+
+        <div>
+
+          <h2 id="budgetFormTitle">
+            {{
+              editingBudgetId
+                ? 'EDIT BUDGET'
+                : 'CREATE NEW BUDGET'
+            }}
+          </h2>
+
+        </div>
+
+
+        <button
+          type="button"
+          class="close-button"
+          (click)="closeForm()"
+          [disabled]="submitting"
+          aria-label="Close form"
+        >
+          ×
+        </button>
+
+      </div>
+
+
+      <!-- FORM ERROR -->
+
+      <div
+        class="message error-message form-message"
+        *ngIf="errorMessage"
+      >
+
+        <span>
+          {{ errorMessage }}
+        </span>
+
+        <button
+          type="button"
+          class="message-close"
+          (click)="errorMessage = ''"
+          aria-label="Close"
+        >
+          ×
+        </button>
+
+      </div>
+
+
+      <!-- BUDGET FORM -->
+
+      <form
+        class="budget-form"
+        (ngSubmit)="submitBudget()"
+      >
+
+        <!-- FINANCIAL YEAR -->
+
+        <div class="form-group">
+
+          <label for="financialYear">
+            FINANCIAL YEAR
+          </label>
+
+          <input
+            id="financialYear"
+            name="financialYear"
+            type="text"
+            [(ngModel)]="form.financialYear"
+            placeholder="2026-27"
+            required
+          />
+
+        </div>
+
+
+        <!-- PERIOD TYPE -->
+
+        <div class="form-group">
+
+          <label for="periodType">
+            PERIOD TYPE
+          </label>
+
+          <select
+            id="periodType"
+            name="periodType"
+            [(ngModel)]="form.periodType"
+            (ngModelChange)="onPeriodTypeChange()"
+            required
+          >
+
+            <option value="Annual">
+              Annual
+            </option>
+
+            <option value="Quarterly">
+              Quarterly
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <!-- QUARTER -->
+
+        <div
+          class="form-group"
+          *ngIf="form.periodType === 'Quarterly'"
+        >
+
+          <label for="quarter">
+            QUARTER
+          </label>
+
+          <select
+            id="quarter"
+            name="quarter"
+            [(ngModel)]="form.quarter"
+            required
+          >
+
+            <option [ngValue]="null">
+              Select quarter
+            </option>
+
+            <option value="Q1">
+              Q1
+            </option>
+
+            <option value="Q2">
+              Q2
+            </option>
+
+            <option value="Q3">
+              Q3
+            </option>
+
+            <option value="Q4">
+              Q4
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <!-- DEPARTMENT -->
+
+        <div class="form-group">
+
+          <label for="departmentId">
+            DEPARTMENT
+          </label>
+
+          <select
+            id="departmentId"
+            name="departmentId"
+            [(ngModel)]="form.departmentId"
+            required
+            [disabled]="departmentsLoading"
+          >
+
+            <option value="">
+              {{
+                departmentsLoading
+                  ? 'Loading departments...'
+                  : 'Select department'
+              }}
+            </option>
+
+            <option
+              *ngFor="let department of departments"
+              [value]="department._id"
+            >
+              {{ department.name }}
+              ({{ department.code }})
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <!-- PROJECT -->
+
+        <div class="form-group form-group-full">
+
+          <label for="project">
+            PROJECT / PROGRAM
+          </label>
+
+          <input
+            id="project"
+            name="project"
+            type="text"
+            [(ngModel)]="form.project"
+            placeholder="Enter approved project name"
+            required
+          />
+
+        </div>
+
+
+        <!-- ALLOCATED AMOUNT -->
+
+        <div class="form-group">
+
+          <label for="allocatedAmount">
+            ALLOCATED AMOUNT
+          </label>
+
+          <div class="currency-input">
+
+            <span>
+              ₹
+            </span>
+
+            <input
+              id="allocatedAmount"
+              name="allocatedAmount"
+              type="number"
+              [(ngModel)]="form.allocatedAmount"
+              min="1"
+              step="1"
+              placeholder="0"
+              required
+            />
+
+          </div>
+
+        </div>
+
+
+        <!-- ALLOCATION DATE -->
+
+        <div class="form-group">
+
+          <label for="allocationDate">
+            ALLOCATION DATE
+          </label>
+
+          <input
+            id="allocationDate"
+            name="allocationDate"
+            type="date"
+            [(ngModel)]="form.allocationDate"
+            required
+          />
+
+        </div>
+
+
+        <!-- STATUS -->
+
+        <div class="form-group">
+
+          <label for="status">
+            STATUS
+          </label>
+
+          <select
+            id="status"
+            name="status"
+            [(ngModel)]="form.status"
+            required
+          >
+
+            <option value="Active">
+              Active
+            </option>
+
+            <option value="Closed">
+              Closed
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <!-- DESCRIPTION -->
+
+        <div class="form-group form-group-full">
+
+          <label for="description">
+            DESCRIPTION
+          </label>
+
+          <textarea
+            id="description"
+            name="description"
+            [(ngModel)]="form.description"
+            rows="4"
+            placeholder="Optional budget description"
+          ></textarea>
+
+        </div>
+
+
+        <!-- FORM ACTIONS -->
+
+        <div class="form-actions">
+
+          <button
+            type="button"
+            class="secondary-button"
+            (click)="closeForm()"
+            [disabled]="submitting"
+          >
+            CANCEL
+          </button>
+
+          <button
+            type="submit"
+            class="primary-button"
+            [disabled]="submitting || departmentsLoading"
+          >
+
+            {{
+              submitting
+                ? 'SAVING...'
+                : (
+                  editingBudgetId
+                    ? 'UPDATE BUDGET'
+                    : 'CREATE BUDGET'
+                )
+            }}
+
+          </button>
+
+        </div>
+
+      </form>
+
+    </section>
+
+  </div>
+
+
+  <!-- =====================================================
+       BUDGET REGISTER
+       ===================================================== -->
+
+  <section class="budget-list-panel">
+
+    <div class="section-header">
+
+      <div>
+
+        <h2>
+          BUDGET REGISTER
+        </h2>
+
+      </div>
+
+      <span class="record-count">
+
+        {{
+          loading
+            ? 'LOADING'
+            : budgets.length + ' RECORDS'
+        }}
+
+      </span>
+
+    </div>
+
+
+    <!-- LOADING -->
+
+    <div
+      class="empty-state"
+      *ngIf="loading"
+    >
+
+      <strong>
+        LOADING BUDGET DATA...
+      </strong>
+
+      <span>
+        Fetching live records from the server.
+      </span>
+
+    </div>
+
+
+    <!-- ERROR -->
+
+    <div
+      class="empty-state"
+      *ngIf="
+        !loading &&
+        budgets.length === 0 &&
+        errorMessage
+      "
+    >
+
+      <strong>
+        UNABLE TO LOAD BUDGETS
+      </strong>
+
+      <span>
+        {{ errorMessage }}
+      </span>
+
+      <button
+        type="button"
+        class="primary-button"
+        (click)="loadBudgets()"
+      >
+        RETRY
+      </button>
+
+    </div>
+
+
+    <!-- NO DATA -->
+
+    <div
+      class="empty-state"
+      *ngIf="
+        !loading &&
+        budgets.length === 0 &&
+        !errorMessage
+      "
+    >
+
+      <strong>
+        NO BUDGETS FOUND
+      </strong>
+
+      <span>
+        Create the first approved budget allocation.
+      </span>
+
+      <button
+        type="button"
+        class="primary-button"
+        (click)="openCreateForm()"
+      >
+        + CREATE BUDGET
+      </button>
+
+    </div>
+
+
+    <!-- DESKTOP TABLE -->
+
+    <div
+      class="budget-table-wrapper"
+      *ngIf="
+        !loading &&
+        budgets.length > 0
+      "
+    >
+
+      <table class="budget-table">
+
+        <thead>
+
+          <tr>
+
+            <th>
+              #
+            </th>
+
+            <th>
+              DEPARTMENT
+            </th>
+
+            <th>
+              PROJECT
+            </th>
+
+            <th>
+              PERIOD
+            </th>
+
+            <th>
+              ALLOCATED
+            </th>
+
+            <th>
+              DATE
+            </th>
+
+            <th>
+              STATUS
+            </th>
+
+            <th>
+              ACTIONS
+            </th>
+
+          </tr>
+
+        </thead>
+
+
+        <tbody>
+
+          <tr
+            *ngFor="
+              let budget of budgets;
+              let i = index;
+              trackBy: trackByBudgetId
+            "
+          >
+
+            <!-- INDEX -->
+
+            <td class="index-cell">
+
+              {{
+                (i + 1)
+                  .toString()
+                  .padStart(2, '0')
+              }}
+
+            </td>
+
+
+            <!-- DEPARTMENT -->
+
+            <td>
+
+              <div class="department-cell">
+
+                <strong>
+                  {{ budget.departmentId?.name || '—' }}
+                </strong>
+
+                <span>
+                  {{ budget.departmentId?.code || '—' }}
+                </span>
+
+              </div>
+
+            </td>
+
+
+            <!-- PROJECT -->
+
+            <td>
+
+              <div class="project-cell">
+
+                <strong>
+                  {{ budget.project }}
+                </strong>
+
+                <span
+                  *ngIf="budget.description"
+                >
+                  {{ budget.description }}
+                </span>
+
+              </div>
+
+            </td>
+
+
+            <!-- PERIOD -->
+
+            <td>
+
+              <div class="period-cell">
+
+                <strong>
+                  {{ budget.financialYear }}
+                </strong>
+
+                <span>
+
+                  {{ budget.periodType }}
+
+                  <ng-container
+                    *ngIf="budget.quarter"
+                  >
+                    / {{ budget.quarter }}
+                  </ng-container>
+
+                </span>
+
+              </div>
+
+            </td>
+
+
+            <!-- ALLOCATED -->
+
+            <td class="amount-cell">
+
+              {{ formatCurrency(
+                budget.allocatedAmount
+              ) }}
+
+            </td>
+
+
+            <!-- DATE -->
+
+            <td class="date-cell">
+
+              {{ formatDate(
+                budget.allocationDate
+              ) }}
+
+            </td>
+
+
+            <!-- STATUS -->
+
+            <td>
+
+              <span
+                class="status-badge"
+                [class.active]="
+                  budget.status === 'Active'
+                "
+                [class.closed]="
+                  budget.status === 'Closed'
+                "
+              >
+                {{ budget.status }}
+              </span>
+
+            </td>
+
+
+            <!-- ACTIONS -->
+
+            <td>
+
+              <div class="action-buttons">
+
+                <button
+                  type="button"
+                  class="edit-button"
+                  (click)="openEditForm(budget)"
+                >
+                  EDIT
+                </button>
+
+                <button
+                  type="button"
+                  class="delete-button"
+                  (click)="deleteBudget(budget)"
+                >
+                  DELETE
+                </button>
+
+              </div>
+
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+
+    <!-- MOBILE CARDS -->
+
+    <div
+      class="budget-mobile-list"
+      *ngIf="
+        !loading &&
+        budgets.length > 0
+      "
+    >
+
+      <article
+        class="budget-mobile-card"
+        *ngFor="
+          let budget of budgets;
+          let i = index;
+          trackBy: trackByBudgetId
+        "
+      >
+
+        <div class="mobile-card-top">
+
+          <span class="mobile-index">
+
+            {{
+              (i + 1)
+                .toString()
+                .padStart(2, '0')
+            }}
+
+          </span>
+
+
+          <span
+            class="status-badge"
+            [class.active]="
+              budget.status === 'Active'
+            "
+            [class.closed]="
+              budget.status === 'Closed'
+            "
+          >
+            {{ budget.status }}
+          </span>
+
+        </div>
+
+
+        <div class="mobile-department">
+
+          <strong>
+            {{ budget.departmentId?.name || '—' }}
+          </strong>
+
+          <span>
+            {{ budget.departmentId?.code || '—' }}
+          </span>
+
+        </div>
+
+
+        <h3>
+          {{ budget.project }}
+        </h3>
+
+
+        <div class="mobile-details">
+
+          <div>
+
+            <span>
+              FINANCIAL YEAR
+            </span>
+
+            <strong>
+              {{ budget.financialYear }}
+            </strong>
+
+          </div>
+
+
+          <div>
+
+            <span>
+              PERIOD
+            </span>
+
+            <strong>
+
+              {{ budget.periodType }}
+
+              <ng-container
+                *ngIf="budget.quarter"
+              >
+                / {{ budget.quarter }}
+              </ng-container>
+
+            </strong>
+
+          </div>
+
+
+          <div>
+
+            <span>
+              ALLOCATED
+            </span>
+
+            <strong>
+              {{ formatCurrency(
+                budget.allocatedAmount
+              ) }}
+            </strong>
+
+          </div>
+
+
+          <div>
+
+            <span>
+              ALLOCATION DATE
+            </span>
+
+            <strong>
+              {{ formatDate(
+                budget.allocationDate
+              ) }}
+            </strong>
+
+          </div>
+
+        </div>
+
+
+        <p
+          class="mobile-description"
+          *ngIf="budget.description"
+        >
+          {{ budget.description }}
+        </p>
+
+
+        <div class="mobile-actions">
+
+          <button
+            type="button"
+            class="edit-button"
+            (click)="openEditForm(budget)"
+          >
+            EDIT
+          </button>
+
+          <button
+            type="button"
+            class="delete-button"
+            (click)="deleteBudget(budget)"
+          >
+            DELETE
+          </button>
+
+        </div>
+
+      </article>
+
+    </div>
+
+  </section>
+
+
+  <!-- =====================================================
+       DELETE CONFIRMATION MODAL
+       ===================================================== -->
+
+  <div
+    class="modal-backdrop"
+    *ngIf="deletingBudget"
+    (click)="cancelDeleteBudget()"
+  >
+
+    <section
+      class="delete-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="deleteBudgetTitle"
+      (click)="$event.stopPropagation()"
+    >
+
+      <!-- DELETE MODAL HEADER -->
+
+      <div class="delete-modal-header">
+
+        <div>
+
+          <p class="eyebrow">
+            CONFIRM ACTION
+          </p>
+
+          <h2 id="deleteBudgetTitle">
+            DELETE BUDGET
+          </h2>
+
+        </div>
+
+
+        <button
+          type="button"
+          class="close-button"
+          (click)="cancelDeleteBudget()"
+          [disabled]="deleting"
+          aria-label="Close confirmation"
+        >
+          ×
+        </button>
+
+      </div>
+
+
+      <!-- DELETE MODAL BODY -->
+
+      <div class="delete-modal-body">
+
+        <div class="delete-warning-icon">
+          !
+        </div>
+
+
+        <p class="delete-question">
+          Are you sure you want to delete this budget?
+        </p>
+
+
+        <div class="delete-budget-preview">
+
+          <span>
+            DEPARTMENT
+          </span>
+
+          <strong>
+            {{
+              deletingBudget?.departmentId?.name ||
+              '—'
+            }}
+          </strong>
+
+
+          <span>
+            PROJECT
+          </span>
+
+          <strong>
+            {{ deletingBudget?.project || '—' }}
+          </strong>
+
+
+          <span>
+            ALLOCATED AMOUNT
+          </span>
+
+          <strong>
+            {{
+              deletingBudget
+                ? formatCurrency(
+                    deletingBudget.allocatedAmount
+                  )
+                : '₹0'
+            }}
+          </strong>
+
+        </div>
+
+
+        <p class="delete-warning-text">
+          This action permanently removes the budget
+          allocation and cannot be undone.
+        </p>
+
+      </div>
+
+
+      <!-- DELETE MODAL ACTIONS -->
+
+      <div class="delete-modal-actions">
+
+        <button
+          type="button"
+          class="secondary-button"
+          (click)="cancelDeleteBudget()"
+          [disabled]="deleting"
+        >
+          CANCEL
+        </button>
+
+
+        <button
+          type="button"
+          class="delete-confirm-button"
+          (click)="confirmDeleteBudget()"
+          [disabled]="deleting"
+        >
+
+          {{
+            deleting
+              ? 'DELETING...'
+              : 'DELETE BUDGET'
+          }}
+
+        </button>
+
+      </div>
+
+    </section>
+
+  </div>
+
+</div>

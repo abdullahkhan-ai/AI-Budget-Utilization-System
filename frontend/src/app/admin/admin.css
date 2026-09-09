@@ -1,0 +1,1134 @@
+:host {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+:host *,
+:host *::before,
+:host *::after {
+  box-sizing: border-box;
+}
+
+
+/* =========================================
+   PAGE
+========================================= */
+
+.admin-page {
+  width: 100%;
+  max-width: 1500px;
+  min-width: 0;
+  margin: 0 auto;
+  padding: 32px;
+  color: #111111;
+  overflow-x: clip;
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+.admin-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 32px;
+  margin-bottom: 30px;
+}
+
+.admin-header > div {
+  min-width: 0;
+}
+
+.admin-header h1 {
+  margin: 0;
+  color: #111111;
+  font-size: clamp(32px, 4vw, 52px);
+  line-height: 0.98;
+  font-weight: 900;
+  letter-spacing: -0.045em;
+}
+
+.admin-header p {
+  margin: 12px 0 0;
+  color: #555555;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+
+/* =========================================
+   BUTTONS
+========================================= */
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+button {
+  border-radius: 0;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+.refresh-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  gap: 7px;
+  min-height: 42px;
+  padding: 0 18px;
+  border: 2px solid #111111;
+  background: #ffffff;
+  color: #111111;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition:
+    background 0.18s ease,
+    color 0.18s ease,
+    transform 0.18s ease;
+}
+
+.refresh-button:hover:not(:disabled) {
+  background: #111111;
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.refresh-button:disabled {
+  opacity: 0.5;
+}
+
+.refresh-button span {
+  font-size: 16px;
+}
+
+
+/* =========================================
+   MESSAGES
+========================================= */
+
+.admin-message {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+  margin-bottom: 20px;
+  padding: 14px 16px;
+  border: 2px solid #111111;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.admin-message button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border: 1px solid #111111;
+  background: transparent;
+  color: #111111;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.admin-message button:hover {
+  background: #111111;
+  color: #ffffff;
+}
+
+.success-message {
+  background: #dff7df;
+}
+
+.error-message {
+  background: #ffdede;
+}
+
+
+/* =========================================
+   TABS
+========================================= */
+
+.admin-tabs {
+  display: flex;
+  width: 100%;
+  margin-bottom: 28px;
+  border-bottom: 2px solid #111111;
+  overflow-x: auto;
+}
+
+.admin-tabs button {
+  min-width: 150px;
+  min-height: 50px;
+  padding: 0 22px;
+  border: 0;
+  border-right: 1px solid #111111;
+  background: transparent;
+  color: #555555;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition:
+    background 0.18s ease,
+    color 0.18s ease;
+}
+
+.admin-tabs button:first-child {
+  border-left: 1px solid #111111;
+}
+
+.admin-tabs button:hover {
+  background: #e9e6dc;
+  color: #111111;
+}
+
+.admin-tabs button.active {
+  background: #111111;
+  color: #ffffff;
+}
+
+
+/* =========================================
+   SECTION
+========================================= */
+
+.admin-section {
+  width: 100%;
+  min-width: 0;
+}
+
+.section-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.section-heading > div:first-child {
+  min-width: 0;
+}
+
+.section-heading h2 {
+  margin: 0;
+  color: #111111;
+  font-size: 25px;
+  line-height: 1.1;
+  font-weight: 900;
+  letter-spacing: -0.025em;
+}
+
+.section-heading p {
+  margin: 8px 0 0;
+  color: #666666;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.section-count {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  min-height: 42px;
+  padding: 0 13px;
+  border: 2px solid #111111;
+  background: #ffe500;
+  color: #111111;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+}
+
+
+/* =========================================
+   TOOLBAR
+========================================= */
+
+.admin-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.search-box {
+  position: relative;
+  width: min(100%, 360px);
+}
+
+.search-icon {
+  position: absolute;
+  top: 50%;
+  left: 13px;
+  z-index: 2;
+  transform: translateY(-50%);
+  color: #111111;
+  font-size: 18px;
+  pointer-events: none;
+}
+
+.search-box input {
+  width: 100%;
+  height: 44px;
+  padding: 0 14px 0 38px;
+  border: 2px solid #111111;
+  outline: none;
+  background: #ffffff;
+  color: #111111;
+  font-size: 13px;
+}
+
+.search-box input::placeholder {
+  color: #777777;
+}
+
+.search-box input:focus {
+  box-shadow: 4px 4px 0 #ffe500;
+}
+
+
+/* =========================================
+   TABLE
+========================================= */
+
+.admin-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  border: 2px solid #111111;
+  background: #ffffff;
+}
+
+.admin-table {
+  width: 100%;
+  min-width: 900px;
+  border-collapse: collapse;
+  table-layout: auto;
+}
+
+.admin-table thead {
+  background: #111111;
+  color: #ffffff;
+}
+
+.admin-table th {
+  padding: 14px;
+  border-right: 1px solid #444444;
+  text-align: left;
+  white-space: nowrap;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.07em;
+}
+
+.admin-table th:last-child {
+  border-right: 0;
+}
+
+.admin-table td {
+  padding: 16px 14px;
+  border-top: 1px solid #d8d5cc;
+  color: #222222;
+  font-size: 12px;
+  vertical-align: middle;
+}
+
+.admin-table tbody tr {
+  transition: background 0.15s ease;
+}
+
+.admin-table tbody tr:hover {
+  background: #fffbea;
+}
+
+
+/* =========================================
+   USER
+========================================= */
+
+.user-cell {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  min-width: 160px;
+}
+
+.user-cell strong {
+  color: #111111;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.department-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.department-cell strong {
+  color: #111111;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.department-cell span {
+  color: #777777;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+
+/* =========================================
+   ROLE BADGES
+========================================= */
+
+.role-badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 0 9px;
+  background: #111111;
+  color: #ffffff;
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.role-badge.admin {
+  background: #111111;
+}
+
+.role-badge.finance-officer {
+  background: #ffe500;
+  color: #111111;
+}
+
+.role-badge.department-head {
+  background: #e1e1e1;
+  color: #111111;
+}
+
+
+/* =========================================
+   TABLE ACTIONS
+========================================= */
+
+.table-actions {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.action-button {
+  min-height: 30px;
+  padding: 0 10px;
+  border: 1px solid #111111;
+  background: #ffffff;
+  color: #111111;
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease,
+    transform 0.15s ease;
+}
+
+.action-button:hover {
+  transform: translateY(-1px);
+}
+
+.edit-action:hover {
+  background: #ffe500;
+}
+
+.delete-action:hover {
+  background: #111111;
+  color: #ffffff;
+}
+
+
+/* =========================================
+   THRESHOLD CONFIGURATION
+========================================= */
+
+.threshold-panel {
+  width: 100%;
+}
+
+.threshold-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.threshold-card {
+  min-width: 0;
+  padding: 22px;
+  border: 2px solid #111111;
+  background: #ffffff;
+}
+
+.threshold-card:hover {
+  box-shadow: 5px 5px 0 #ffe500;
+}
+
+.threshold-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 22px;
+}
+
+.threshold-card-header > div {
+  min-width: 0;
+}
+
+.threshold-card h3 {
+  margin: 0;
+  color: #111111;
+  font-size: 14px;
+  line-height: 1.2;
+  font-weight: 900;
+  letter-spacing: 0.02em;
+}
+
+.threshold-card p {
+  margin: 8px 0 0;
+  color: #666666;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.threshold-unit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 34px;
+  height: 34px;
+  border: 2px solid #111111;
+  background: #ffe500;
+  color: #111111;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.threshold-input-wrapper {
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+}
+
+.threshold-input-wrapper input {
+  width: 100%;
+  min-width: 0;
+  height: 48px;
+  padding: 0 14px;
+  border: 2px solid #111111;
+  border-right: 0;
+  outline: none;
+  background: #f7f5ee;
+  color: #111111;
+  font-size: 20px;
+  font-weight: 900;
+}
+
+.threshold-input-wrapper input:focus {
+  background: #ffffff;
+  box-shadow: 4px 4px 0 #ffe500;
+}
+
+.threshold-input-wrapper span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  flex-shrink: 0;
+  border: 2px solid #111111;
+  background: #111111;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.threshold-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 18px;
+}
+
+.save-threshold-button {
+  min-height: 46px;
+  padding: 0 22px;
+  border: 2px solid #111111;
+  background: #ffe500;
+  color: #111111;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease,
+    transform 0.15s ease;
+}
+
+.save-threshold-button:hover:not(:disabled) {
+  background: #111111;
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.save-threshold-button:disabled {
+  opacity: 0.55;
+}
+
+
+/* =========================================
+   AUDIT TABLE
+========================================= */
+
+.audit-table {
+  min-width: 1050px;
+}
+
+.audit-user {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.audit-user strong {
+  color: #111111;
+  font-size: 12px;
+}
+
+.audit-user span {
+  color: #777777;
+  font-size: 10px;
+}
+
+.action-badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 27px;
+  padding: 0 9px;
+  background: #111111;
+  color: #ffffff;
+  font-size: 9px;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.action-badge.create {
+  background: #dff7df;
+  color: #111111;
+}
+
+.action-badge.update {
+  background: #ffe500;
+  color: #111111;
+}
+
+.action-badge.delete {
+  background: #111111;
+  color: #ffffff;
+}
+
+.action-badge.login {
+  background: #e1e1e1;
+  color: #111111;
+}
+
+.audit-description {
+  max-width: 360px;
+  line-height: 1.45;
+}
+
+
+/* =========================================
+   LOADING
+========================================= */
+
+.admin-loading {
+  width: 100%;
+  padding: 35px;
+  border: 2px solid #111111;
+  background: #ffffff;
+}
+
+.loading-line {
+  width: 100%;
+  height: 12px;
+  margin-bottom: 12px;
+  background: #e4e1d8;
+  animation: loadingPulse 1.1s ease-in-out infinite;
+}
+
+.loading-line:nth-child(2) {
+  width: 82%;
+}
+
+.loading-line:nth-child(3) {
+  width: 65%;
+}
+
+.loading-line:last-child {
+  margin-bottom: 0;
+}
+
+@keyframes loadingPulse {
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+
+/* =========================================
+   EMPTY STATE
+========================================= */
+
+.admin-empty {
+  padding: 50px 30px;
+  border: 2px solid #111111;
+  background: #ffffff;
+  text-align: center;
+}
+
+.admin-empty h3 {
+  margin: 0;
+  color: #111111;
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.admin-empty p {
+  margin: 8px 0 0;
+  color: #666666;
+  font-size: 13px;
+}
+
+
+/* =========================================
+   MODALS
+========================================= */
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(17, 17, 17, 0.72);
+  animation: backdropIn 0.18s ease-out;
+}
+
+.admin-modal {
+  width: min(100%, 560px);
+  max-height: calc(100vh - 48px);
+  overflow-y: auto;
+  border: 3px solid #111111;
+  background: #f7f5ee;
+  box-shadow: 12px 12px 0 #111111;
+  animation: modalIn 0.2s ease-out;
+}
+
+.delete-modal {
+  width: min(100%, 500px);
+}
+
+@keyframes backdropIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modalIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 22px 24px;
+  border-bottom: 2px solid #111111;
+  background: #ffffff;
+}
+
+.modal-header > div {
+  min-width: 0;
+}
+
+.modal-header h2 {
+  margin: 0;
+  color: #111111;
+  font-size: 24px;
+  font-weight: 900;
+}
+
+.modal-header p {
+  margin: 7px 0 0;
+  color: #666666;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.modal-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 34px;
+  height: 34px;
+  border: 2px solid #111111;
+  background: #ffffff;
+  color: #111111;
+  font-size: 23px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.modal-close:hover:not(:disabled) {
+  background: #111111;
+  color: #ffffff;
+}
+
+.modal-close:disabled {
+  opacity: 0.5;
+}
+
+.modal-body {
+  padding: 24px;
+}
+
+
+/* =========================================
+   FORM
+========================================= */
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group:last-child {
+  margin-bottom: 0;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 7px;
+  color: #111111;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  height: 44px;
+  padding: 0 12px;
+  border: 2px solid #111111;
+  outline: none;
+  border-radius: 0;
+  background: #ffffff;
+  color: #111111;
+  font-size: 13px;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  box-shadow: 4px 4px 0 #ffe500;
+}
+
+.form-group input::placeholder {
+  color: #888888;
+}
+
+
+/* =========================================
+   MODAL FOOTER
+========================================= */
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 18px 24px;
+  border-top: 2px solid #111111;
+  background: #ffffff;
+}
+
+.modal-secondary-button,
+.modal-primary-button,
+.modal-danger-button {
+  min-height: 42px;
+  padding: 0 17px;
+  border: 2px solid #111111;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease,
+    transform 0.15s ease;
+}
+
+.modal-secondary-button {
+  background: #ffffff;
+  color: #111111;
+}
+
+.modal-secondary-button:hover:not(:disabled) {
+  background: #eeeeee;
+}
+
+.modal-primary-button {
+  background: #ffe500;
+  color: #111111;
+}
+
+.modal-primary-button:hover:not(:disabled) {
+  background: #111111;
+  color: #ffffff;
+}
+
+.modal-danger-button {
+  background: #111111;
+  color: #ffffff;
+}
+
+.modal-danger-button:hover:not(:disabled) {
+  background: #333333;
+}
+
+.modal-secondary-button:hover:not(:disabled),
+.modal-primary-button:hover:not(:disabled),
+.modal-danger-button:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.modal-secondary-button:disabled,
+.modal-primary-button:disabled,
+.modal-danger-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+
+/* =========================================
+   DELETE WARNING
+========================================= */
+
+.delete-warning {
+  padding: 18px;
+  border: 2px solid #111111;
+  background: #fff8cc;
+}
+
+.delete-warning strong {
+  display: block;
+  color: #111111;
+  font-size: 15px;
+  line-height: 1.4;
+}
+
+.delete-warning p {
+  margin: 8px 0 0;
+  color: #555555;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 1100px) {
+
+  .admin-page {
+    padding: 26px;
+  }
+
+  .admin-header h1 {
+    font-size: 40px;
+  }
+
+  .admin-table {
+    min-width: 850px;
+  }
+
+}
+
+
+@media (max-width: 900px) {
+
+  .admin-page {
+    padding: 22px;
+  }
+
+  .admin-header {
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .refresh-button {
+    width: 100%;
+  }
+
+  .threshold-grid {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+
+@media (max-width: 650px) {
+
+  .admin-page {
+    padding: 18px;
+  }
+
+  .admin-header h1 {
+    font-size: 34px;
+  }
+
+  .admin-header p {
+    font-size: 12px;
+  }
+
+  .admin-tabs {
+    overflow-x: auto;
+  }
+
+  .admin-tabs button {
+    min-width: 125px;
+    padding: 0 16px;
+  }
+
+  .section-heading {
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .section-count {
+    align-self: flex-start;
+  }
+
+  .admin-toolbar {
+    width: 100%;
+  }
+
+  .search-box {
+    width: 100%;
+  }
+
+  .threshold-card {
+    padding: 18px;
+  }
+
+  .threshold-card-header {
+    gap: 12px;
+  }
+
+  .threshold-actions {
+    width: 100%;
+  }
+
+  .save-threshold-button {
+    width: 100%;
+  }
+
+  .modal-backdrop {
+    padding: 14px;
+  }
+
+  .admin-modal {
+    box-shadow: 7px 7px 0 #111111;
+  }
+
+  .modal-header,
+  .modal-body,
+  .modal-footer {
+    padding: 18px;
+  }
+
+}
+
+
+@media (max-width: 420px) {
+
+  .admin-page {
+    padding: 14px;
+  }
+
+  .admin-header h1 {
+    font-size: 29px;
+  }
+
+  .section-heading h2 {
+    font-size: 22px;
+  }
+
+  .admin-tabs button {
+    min-width: 115px;
+    font-size: 10px;
+  }
+
+  .modal-footer {
+    flex-direction: column-reverse;
+  }
+
+  .modal-secondary-button,
+  .modal-primary-button,
+  .modal-danger-button {
+    width: 100%;
+  }
+
+}

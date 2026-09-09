@@ -1,0 +1,1474 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+
+/* =========================================================
+   PAGE
+   ========================================================= */
+
+.expenditures-page {
+  width: 100%;
+  min-height: calc(100vh - 60px);
+
+  padding: 38px 28px 60px;
+
+  background: #f4f1e8;
+
+  color: #111;
+
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+}
+
+
+* {
+  box-sizing: border-box;
+}
+
+
+/* =========================================================
+   HERO
+   ========================================================= */
+
+.expenditures-hero {
+  width: 100%;
+
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1fr)
+    330px;
+
+  align-items: end;
+
+  gap: 50px;
+
+  padding-bottom: 30px;
+
+  border-bottom: 5px solid #111;
+}
+
+
+.eyebrow {
+  margin: 0 0 12px;
+
+  font-size: 9px;
+
+  line-height: 1.2;
+
+  font-weight: 950;
+
+  letter-spacing: 0.12em;
+
+  color: #111;
+}
+
+
+.expenditures-hero h1 {
+  margin: 0;
+
+  font-size: clamp(
+    58px,
+    7vw,
+    96px
+  );
+
+  line-height: 0.82;
+
+  font-weight: 1000;
+
+  letter-spacing: -5px;
+
+  color: #111;
+}
+
+
+.hero-side {
+  padding-bottom: 2px;
+}
+
+
+.hero-side p {
+  margin: 0 0 22px;
+
+  max-width: 330px;
+
+  font-size: 14px;
+
+  line-height: 1.45;
+
+  font-weight: 600;
+
+  color: #111;
+}
+
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+
+.primary-button,
+.secondary-button,
+.submit-button,
+.edit-button,
+.delete-button,
+.delete-confirm-button,
+.close-button,
+.message-close {
+  border-radius: 0;
+
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  cursor: pointer;
+
+  font-weight: 950;
+
+  transition:
+    transform 0.15s ease,
+    background 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+
+.primary-button {
+  min-height: 48px;
+
+  padding: 0 20px;
+
+  border: 3px solid #111;
+
+  background: #111;
+
+  color: #fff;
+
+  font-size: 10px;
+
+  letter-spacing: 0.04em;
+
+  box-shadow:
+    5px 5px 0 #111;
+}
+
+
+.primary-button:hover {
+  background: #ffdf00;
+
+  color: #111;
+
+  transform:
+    translate(2px, 2px);
+
+  box-shadow:
+    3px 3px 0 #111;
+}
+
+
+.primary-button:active {
+  transform:
+    translate(5px, 5px);
+
+  box-shadow: none;
+}
+
+
+/* =========================================================
+   MESSAGES
+   ========================================================= */
+
+.message {
+  width: 100%;
+
+  margin-top: 18px;
+
+  padding: 13px 16px;
+
+  border: 3px solid #111;
+
+  font-size: 11px;
+
+  line-height: 1.4;
+
+  font-weight: 900;
+}
+
+
+.success-message {
+  background: #b7e36b;
+
+  color: #111;
+}
+
+
+.error-message {
+  background: #ff666b;
+
+  color: #111;
+}
+
+
+.form-message {
+  margin: 20px 24px 0;
+
+  width: calc(100% - 48px);
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 15px;
+}
+
+
+.message-close {
+  width: 28px;
+
+  height: 28px;
+
+  flex: 0 0 auto;
+
+  padding: 0;
+
+  border: 2px solid #111;
+
+  background: #fff;
+
+  color: #111;
+
+  font-size: 17px;
+}
+
+
+.message-close:hover {
+  background: #111;
+
+  color: #fff;
+}
+
+
+/* =========================================================
+   SUMMARY
+   ========================================================= */
+
+.expenditure-summary {
+  width: 100%;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      4,
+      minmax(
+        0,
+        1fr
+      )
+    );
+
+  gap: 14px;
+
+  margin-top: 22px;
+}
+
+
+.summary-card {
+  min-width: 0;
+
+  min-height: 155px;
+
+  padding: 22px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: space-between;
+
+  border: 4px solid #111;
+
+  overflow: hidden;
+}
+
+
+.summary-card.yellow {
+  background: #ffdd00;
+}
+
+
+.summary-card.white {
+  background: #fff;
+}
+
+
+.summary-card.black {
+  background: #111;
+
+  color: #fff;
+}
+
+
+.summary-card.red {
+  background: #ff666b;
+}
+
+
+.summary-label {
+  font-size: 9px;
+
+  line-height: 1.2;
+
+  font-weight: 950;
+
+  letter-spacing: 0.07em;
+}
+
+
+.summary-card strong {
+  display: block;
+
+  margin: 15px 0;
+
+  font-size: clamp(
+    22px,
+    2.6vw,
+    36px
+  );
+
+  line-height: 1;
+
+  font-weight: 1000;
+
+  letter-spacing: -2px;
+
+  overflow-wrap: anywhere;
+}
+
+
+.summary-card small {
+  font-size: 8px;
+
+  line-height: 1.3;
+
+  font-weight: 900;
+
+  letter-spacing: 0.04em;
+}
+
+
+/* =========================================================
+   FORM PANEL
+   ========================================================= */
+
+.expenditure-form-panel {
+  width: 100%;
+
+  margin-top: 18px;
+
+  border: 4px solid #111;
+
+  background: #fff;
+}
+
+
+.form-header {
+  min-height: 82px;
+
+  padding: 18px 22px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 20px;
+
+  border-bottom: 4px solid #111;
+
+  background: #fff;
+}
+
+
+.form-header .eyebrow {
+  margin-bottom: 7px;
+}
+
+
+.form-header h2 {
+  margin: 0;
+
+  font-size: 25px;
+
+  line-height: 1;
+
+  font-weight: 1000;
+
+  letter-spacing: -1px;
+}
+
+
+.close-button {
+  width: 42px;
+
+  height: 42px;
+
+  flex: 0 0 auto;
+
+  padding: 0;
+
+  border: 3px solid #111;
+
+  background: #fff;
+
+  color: #111;
+
+  font-size: 25px;
+
+  line-height: 1;
+}
+
+
+.close-button:hover {
+  background: #ff666b;
+}
+
+
+/* =========================================================
+   FORM
+   ========================================================= */
+
+.expenditure-form {
+  width: 100%;
+
+  padding: 24px;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(
+        0,
+        1fr
+      )
+    );
+
+  gap: 20px 22px;
+}
+
+
+.form-group {
+  width: 100%;
+
+  min-width: 0;
+}
+
+
+.form-group-wide {
+  grid-column: 1 / -1;
+}
+
+
+.form-group label {
+  display: block;
+
+  margin-bottom: 8px;
+
+  font-size: 9px;
+
+  line-height: 1.2;
+
+  font-weight: 950;
+
+  letter-spacing: 0.08em;
+}
+
+
+.form-group input,
+.form-group select {
+  width: 100%;
+
+  height: 50px;
+
+  padding: 0 13px;
+
+  border: 3px solid #111;
+
+  border-radius: 0;
+
+  outline: none;
+
+  background: #f4f1e8;
+
+  color: #111;
+
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  font-size: 13px;
+
+  font-weight: 700;
+}
+
+
+.form-group input:focus,
+.form-group select:focus {
+  background: #ffdf00;
+
+  box-shadow:
+    4px 4px 0 #111;
+}
+
+
+.form-group input::placeholder {
+  color: #777;
+
+  opacity: 1;
+}
+
+
+.form-group input:disabled,
+.form-group select:disabled {
+  opacity: 0.55;
+
+  cursor: not-allowed;
+}
+
+
+/* =========================================================
+   FILE INPUT
+   ========================================================= */
+
+.form-group input[type="file"] {
+  height: 52px;
+
+  padding: 7px;
+
+  background: #f4f1e8;
+
+  cursor: pointer;
+}
+
+
+.form-group
+input[type="file"]::file-selector-button {
+  height: 34px;
+
+  margin-right: 10px;
+
+  padding: 0 13px;
+
+  border: 2px solid #111;
+
+  border-radius: 0;
+
+  background: #111;
+
+  color: #fff;
+
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  font-size: 9px;
+
+  font-weight: 950;
+
+  cursor: pointer;
+}
+
+
+.form-group
+input[type="file"]::file-selector-button:hover {
+  background: #ffdf00;
+
+  color: #111;
+}
+
+
+.form-help {
+  display: block;
+
+  margin-top: 7px;
+
+  font-size: 9px;
+
+  line-height: 1.4;
+
+  font-weight: 600;
+
+  color: #555;
+}
+
+
+/* =========================================================
+   SELECTED / EXISTING DOCUMENT
+   ========================================================= */
+
+.selected-file,
+.existing-document {
+  width: 100%;
+
+  margin-top: 9px;
+
+  padding: 9px 11px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 12px;
+
+  border: 2px solid #111;
+
+  background: #fff;
+
+  font-size: 9px;
+
+  font-weight: 800;
+}
+
+
+.selected-file span {
+  min-width: 0;
+
+  overflow-wrap: anywhere;
+}
+
+
+.selected-file button {
+  width: 28px;
+
+  height: 28px;
+
+  flex: 0 0 auto;
+
+  padding: 0;
+
+  border: 2px solid #111;
+
+  background: #fff;
+
+  color: #111;
+
+  font-size: 17px;
+
+  cursor: pointer;
+}
+
+
+.selected-file button:hover {
+  background: #ff666b;
+}
+
+
+.existing-document {
+  justify-content: flex-start;
+
+  flex-wrap: wrap;
+}
+
+
+.existing-document span {
+  padding: 5px 7px;
+
+  background: #111;
+
+  color: #fff;
+
+  font-size: 8px;
+
+  font-weight: 950;
+}
+
+
+.existing-document a {
+  max-width: 100%;
+
+  color: #111;
+
+  font-size: 10px;
+
+  font-weight: 900;
+
+  text-decoration: underline;
+
+  overflow-wrap: anywhere;
+}
+
+
+/* =========================================================
+   FORM ACTIONS
+   ========================================================= */
+
+.form-actions {
+  grid-column: 1 / -1;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: flex-end;
+
+  gap: 10px;
+
+  padding-top: 4px;
+}
+
+
+.secondary-button,
+.submit-button {
+  min-width: 145px;
+
+  min-height: 48px;
+
+  padding: 0 18px;
+
+  border: 3px solid #111;
+
+  font-size: 9px;
+
+  font-weight: 950;
+}
+
+
+.secondary-button {
+  background: #fff;
+
+  color: #111;
+}
+
+
+.secondary-button:hover {
+  background: #e8e4d9;
+}
+
+
+.submit-button {
+  background: #ffdf00;
+
+  color: #111;
+
+  box-shadow:
+    5px 5px 0 #111;
+}
+
+
+.submit-button:hover:not(:disabled) {
+  transform:
+    translate(2px, 2px);
+
+  box-shadow:
+    3px 3px 0 #111;
+
+  background: #ffd400;
+}
+
+
+.submit-button:disabled,
+.secondary-button:disabled {
+  opacity: 0.5;
+
+  cursor: not-allowed;
+
+  box-shadow: none;
+
+  transform: none;
+}
+
+
+/* =========================================================
+   RECORDS
+   ========================================================= */
+
+.records-panel {
+  width: 100%;
+
+  margin-top: 18px;
+
+  border: 4px solid #111;
+
+  background: #fff;
+}
+
+
+.section-header {
+  min-height: 82px;
+
+  padding: 18px 22px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 20px;
+
+  border-bottom: 4px solid #111;
+}
+
+
+.section-header .eyebrow {
+  margin-bottom: 7px;
+}
+
+
+.section-header h2 {
+  margin: 0;
+
+  font-size: 25px;
+
+  line-height: 1;
+
+  font-weight: 1000;
+
+  letter-spacing: -1px;
+}
+
+
+.record-count {
+  min-height: 32px;
+
+  padding: 0 10px;
+
+  display: flex;
+
+  align-items: center;
+
+  border: 3px solid #111;
+
+  background: #ffdf00;
+
+  font-size: 8px;
+
+  font-weight: 950;
+
+  letter-spacing: 0.05em;
+}
+
+
+/* =========================================================
+   LOADING / EMPTY
+   ========================================================= */
+
+.loading-state,
+.empty-state {
+  padding: 38px 22px;
+
+  font-size: 10px;
+
+  line-height: 1.4;
+
+  font-weight: 950;
+
+  letter-spacing: 0.06em;
+}
+
+
+/* =========================================================
+   TABLE
+   ========================================================= */
+
+.table-wrapper {
+  width: 100%;
+
+  overflow-x: auto;
+}
+
+
+table {
+  width: 100%;
+
+  min-width: 1100px;
+
+  border-collapse: collapse;
+
+  table-layout: auto;
+}
+
+
+thead {
+  background: #111;
+}
+
+
+th {
+  padding: 13px 14px;
+
+  background: #111;
+
+  color: #fff;
+
+  text-align: left;
+
+  white-space: nowrap;
+
+  font-size: 8px;
+
+  line-height: 1.2;
+
+  font-weight: 950;
+
+  letter-spacing: 0.08em;
+}
+
+
+td {
+  padding: 14px;
+
+  border-bottom: 3px solid #111;
+
+  vertical-align: middle;
+
+  font-size: 10px;
+
+  line-height: 1.35;
+
+  font-weight: 700;
+}
+
+
+tbody tr:hover {
+  background: #fff6a8;
+}
+
+
+tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+
+/* =========================================================
+   TABLE CONTENT
+   ========================================================= */
+
+.transaction-id {
+  display: inline-block;
+
+  padding: 7px 8px;
+
+  border: 2px solid #111;
+
+  background: #fff;
+
+  font-size: 9px;
+
+  font-weight: 950;
+}
+
+
+.budget-cell {
+  min-width: 250px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 5px;
+}
+
+
+.budget-cell strong {
+  font-size: 10px;
+
+  line-height: 1.25;
+
+  font-weight: 950;
+}
+
+
+.budget-cell span {
+  font-size: 8px;
+
+  line-height: 1.35;
+
+  font-weight: 700;
+
+  color: #555;
+}
+
+
+.amount {
+  white-space: nowrap;
+
+  font-size: 11px;
+
+  font-weight: 1000;
+}
+
+
+.category-tag {
+  display: inline-block;
+
+  padding: 6px 8px;
+
+  border: 2px solid #111;
+
+  background: #f4f1e8;
+
+  font-size: 8px;
+
+  font-weight: 950;
+}
+
+
+.document-cell {
+  min-width: 180px;
+
+  max-width: 240px;
+}
+
+
+.document-link {
+  display: inline-block;
+
+  max-width: 230px;
+
+  padding: 6px 8px;
+
+  border: 2px solid #111;
+
+  background: #ffdf00;
+
+  color: #111;
+
+  text-decoration: none;
+
+  font-size: 8px;
+
+  line-height: 1.3;
+
+  font-weight: 950;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+
+.document-link:hover {
+  background: #111;
+
+  color: #fff;
+}
+
+
+.document-reference {
+  font-size: 9px;
+
+  font-weight: 800;
+
+  overflow-wrap: anywhere;
+}
+
+
+.no-document {
+  color: #777;
+
+  font-size: 12px;
+
+  font-weight: 900;
+}
+
+
+/* =========================================================
+   ACTIONS
+   ========================================================= */
+
+.actions {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 6px;
+}
+
+
+.edit-button,
+.delete-button {
+  min-width: 58px;
+
+  height: 32px;
+
+  padding: 0 9px;
+
+  border: 2px solid #111;
+
+  font-size: 8px;
+
+  font-weight: 950;
+}
+
+
+.edit-button {
+  background: #fff;
+
+  color: #111;
+}
+
+
+.edit-button:hover {
+  background: #ffdf00;
+}
+
+
+.delete-button {
+  background: #ff666b;
+
+  color: #111;
+}
+
+
+.delete-button:hover {
+  background: #ff3f45;
+}
+
+
+/* =========================================================
+   DELETE MODAL
+   ========================================================= */
+
+.modal-backdrop {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 1000;
+
+  padding: 24px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  background:
+    rgba(
+      17,
+      17,
+      17,
+      0.72
+    );
+}
+
+
+.confirm-modal {
+  width: min(
+    500px,
+    100%
+  );
+
+  border: 5px solid #111;
+
+  background: #fff;
+
+  box-shadow:
+    9px 9px 0 #111;
+}
+
+
+.modal-header {
+  padding: 20px;
+
+  border-bottom: 4px solid #111;
+
+  background: #ff666b;
+}
+
+
+.modal-header .eyebrow {
+  margin-bottom: 8px;
+}
+
+
+.modal-header h2 {
+  margin: 0;
+
+  font-size: 27px;
+
+  line-height: 1;
+
+  font-weight: 1000;
+
+  letter-spacing: -1px;
+}
+
+
+.modal-body {
+  padding: 22px;
+
+  font-size: 12px;
+
+  line-height: 1.5;
+
+  font-weight: 600;
+}
+
+
+.modal-body p {
+  margin: 0;
+}
+
+
+.modal-record {
+  margin-top: 18px;
+
+  padding: 12px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 5px;
+
+  border: 3px solid #111;
+
+  background: #f4f1e8;
+}
+
+
+.modal-record span {
+  font-size: 8px;
+
+  font-weight: 950;
+
+  letter-spacing: 0.06em;
+}
+
+
+.modal-record strong {
+  font-size: 13px;
+
+  font-weight: 1000;
+}
+
+
+.modal-actions {
+  padding: 17px 22px;
+
+  display: flex;
+
+  justify-content: flex-end;
+
+  gap: 10px;
+
+  border-top: 3px solid #111;
+}
+
+
+.delete-confirm-button {
+  min-width: 145px;
+
+  min-height: 45px;
+
+  padding: 0 16px;
+
+  border: 3px solid #111;
+
+  background: #ff666b;
+
+  color: #111;
+
+  font-size: 9px;
+
+  font-weight: 950;
+}
+
+
+.delete-confirm-button:hover:not(:disabled) {
+  background: #ff3f45;
+}
+
+
+.delete-confirm-button:disabled {
+  opacity: 0.5;
+
+  cursor: not-allowed;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1050px) {
+
+  .expenditures-hero {
+    grid-template-columns: 1fr;
+  }
+
+
+  .hero-side {
+    max-width: 500px;
+  }
+
+
+  .expenditure-summary {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(
+          0,
+          1fr
+        )
+      );
+  }
+
+}
+
+
+@media (max-width: 700px) {
+
+  .expenditures-page {
+    padding: 26px 16px 45px;
+  }
+
+
+  .expenditures-hero {
+    gap: 25px;
+
+    padding-bottom: 25px;
+  }
+
+
+  .expenditures-hero h1 {
+    font-size: clamp(
+      50px,
+      14vw,
+      78px
+    );
+
+    letter-spacing: -3px;
+  }
+
+
+  .hero-side p {
+    font-size: 13px;
+  }
+
+
+  .expenditure-summary {
+    grid-template-columns: 1fr;
+
+    gap: 12px;
+  }
+
+
+  .summary-card {
+    min-height: 135px;
+
+    padding: 20px;
+  }
+
+
+  .expenditure-form {
+    grid-template-columns: 1fr;
+
+    padding: 20px 16px;
+  }
+
+
+  .form-group-wide {
+    grid-column: 1;
+  }
+
+
+  .form-actions {
+    flex-direction: column-reverse;
+
+    align-items: stretch;
+  }
+
+
+  .form-actions
+  button {
+    width: 100%;
+  }
+
+
+  .section-header {
+    align-items: flex-start;
+
+    padding: 16px;
+  }
+
+
+  .section-header h2 {
+    font-size: 21px;
+  }
+
+
+  .record-count {
+    font-size: 7px;
+  }
+
+
+  .modal-actions {
+    flex-direction: column-reverse;
+
+    padding: 16px;
+  }
+
+
+  .modal-actions button {
+    width: 100%;
+  }
+
+}
+
+
+@media (max-width: 480px) {
+
+  .expenditures-page {
+    padding: 22px 12px 35px;
+  }
+
+
+  .expenditures-hero h1 {
+    font-size: 48px;
+
+    line-height: 0.85;
+  }
+
+
+  .expenditure-form-panel,
+  .records-panel {
+    border-width: 4px;
+  }
+
+
+  .form-header,
+  .section-header {
+    padding: 14px;
+  }
+
+
+  .form-header h2,
+  .section-header h2 {
+    font-size: 19px;
+  }
+
+
+  .form-header .close-button {
+    width: 38px;
+
+    height: 38px;
+  }
+
+}

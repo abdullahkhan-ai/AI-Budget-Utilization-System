@@ -1,0 +1,1184 @@
+<div class="reports-page">
+
+  <!-- HEADER -->
+
+  <div class="page-header">
+
+    <div>
+      <h1>Reports</h1>
+
+      <p>
+        Budget utilization and expenditure reporting
+      </p>
+    </div>
+
+
+    <div class="header-actions">
+
+      <!-- EXPORT MENU -->
+
+      <div class="export-wrapper">
+
+        <button
+          type="button"
+          class="export-btn"
+          (click)="toggleExportMenu()"
+          [disabled]="loading || exporting"
+        >
+
+          <span>
+            {{ exporting ? 'GENERATING...' : 'EXPORT REPORT' }}
+          </span>
+
+          <span
+            class="export-arrow"
+            [class.open]="exportMenuOpen"
+          >
+            ▼
+          </span>
+
+        </button>
+
+
+        <div
+          class="export-menu"
+          *ngIf="exportMenuOpen && !exporting"
+        >
+
+          <button
+            type="button"
+            class="export-option"
+            (click)="exportPDF()"
+          >
+
+            <span class="export-option-icon">
+              PDF
+            </span>
+
+            <span class="export-option-text">
+
+              <strong>
+                Export PDF
+              </strong>
+
+              <small>
+                Clean printable report
+              </small>
+
+            </span>
+
+          </button>
+
+
+          <button
+            type="button"
+            class="export-option"
+            (click)="exportExcel()"
+          >
+
+            <span class="export-option-icon">
+              XLS
+            </span>
+
+            <span class="export-option-text">
+
+              <strong>
+                Export Excel
+              </strong>
+
+              <small>
+                Detailed spreadsheet report
+              </small>
+
+            </span>
+
+          </button>
+
+
+          <button
+            type="button"
+            class="export-option"
+            (click)="exportCSV()"
+          >
+
+            <span class="export-option-icon">
+              CSV
+            </span>
+
+            <span class="export-option-text">
+
+              <strong>
+                Export CSV
+              </strong>
+
+              <small>
+                Expenditure transaction data
+              </small>
+
+            </span>
+
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <!-- REFRESH -->
+
+      <button
+        class="refresh-btn"
+        type="button"
+        (click)="loadReports()"
+        [disabled]="loading || exporting"
+      >
+
+        <span *ngIf="!loading">
+          ↻
+        </span>
+
+        <span *ngIf="loading">
+          Loading...
+        </span>
+
+        <span *ngIf="!loading">
+          Refresh
+        </span>
+
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- ERROR -->
+
+  <div
+    class="error-box"
+    *ngIf="errorMessage"
+  >
+
+    <strong>
+      Unable to load report
+    </strong>
+
+    <span>
+      {{ errorMessage }}
+    </span>
+
+    <button
+      type="button"
+      (click)="loadReports()"
+    >
+      Try Again
+    </button>
+
+  </div>
+
+
+  <!-- LOADING -->
+
+  <div
+    class="loading-state"
+    *ngIf="loading"
+  >
+
+    <div class="loading-bar"></div>
+
+    <div class="loading-grid">
+
+      <div
+        class="loading-card"
+        *ngFor="let item of [1, 2, 3, 4]"
+      ></div>
+
+    </div>
+
+  </div>
+
+
+  <!-- REPORT CONTENT -->
+
+  <div
+    *ngIf="!loading && !errorMessage"
+    class="report-content"
+  >
+
+    <!-- SUMMARY CARDS -->
+
+    <section class="summary-grid">
+
+      <div class="summary-card">
+
+        <div class="summary-card-top">
+
+          <span>
+            Allocated
+          </span>
+
+          <span class="card-mark">
+            A
+          </span>
+
+        </div>
+
+        <strong>
+          {{ formatCurrency(summary.totalAllocated) }}
+        </strong>
+
+        <small>
+          {{ summary.totalBudgets }} budgets
+        </small>
+
+      </div>
+
+
+      <div class="summary-card">
+
+        <div class="summary-card-top">
+
+          <span>
+            Expenditure
+          </span>
+
+          <span class="card-mark">
+            E
+          </span>
+
+        </div>
+
+        <strong>
+          {{ formatCurrency(summary.totalExpenditure) }}
+        </strong>
+
+        <small>
+          {{ summary.totalExpenditures }} transactions
+        </small>
+
+      </div>
+
+
+      <div class="summary-card">
+
+        <div class="summary-card-top">
+
+          <span>
+            Remaining
+          </span>
+
+          <span class="card-mark">
+            R
+          </span>
+
+        </div>
+
+        <strong>
+          {{ formatCurrency(summary.totalRemaining) }}
+        </strong>
+
+        <small>
+          Current available balance
+        </small>
+
+      </div>
+
+
+      <div class="summary-card utilization-card">
+
+        <div class="summary-card-top">
+
+          <span>
+            Utilization
+          </span>
+
+          <span
+            class="status-mark"
+            [ngClass]="utilizationClass"
+          >
+            {{ formatPercentage(
+              summary.overallUtilizationPercentage
+            ) }}
+          </span>
+
+        </div>
+
+        <strong
+          [ngClass]="utilizationClass"
+        >
+          {{ formatPercentage(
+            summary.overallUtilizationPercentage
+          ) }}
+        </strong>
+
+        <small>
+          Overall budget utilization
+        </small>
+
+      </div>
+
+    </section>
+
+
+    <!-- SECTION NAVIGATION -->
+
+    <div class="section-navigation">
+
+      <button
+        type="button"
+        [class.active]="activeSection === 'overview'"
+        (click)="setSection('overview')"
+      >
+        Overview
+      </button>
+
+      <button
+        type="button"
+        [class.active]="activeSection === 'budgets'"
+        (click)="setSection('budgets')"
+      >
+        Budget Report
+      </button>
+
+      <button
+        type="button"
+        [class.active]="activeSection === 'departments'"
+        (click)="setSection('departments')"
+      >
+        Department Report
+      </button>
+
+      <button
+        type="button"
+        [class.active]="activeSection === 'expenditures'"
+        (click)="setSection('expenditures')"
+      >
+        Expenditure Report
+      </button>
+
+    </div>
+
+
+    <!-- OVERVIEW -->
+
+    <section
+      class="report-section"
+      *ngIf="activeSection === 'overview'"
+    >
+
+      <div class="section-heading">
+
+        <div>
+
+          <h2>
+            Report Overview
+          </h2>
+
+          <p>
+            Current financial position across all budgets.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <div class="overview-layout">
+
+        <!-- UTILIZATION -->
+
+        <div class="overview-panel">
+
+          <div class="panel-heading">
+
+            <span>
+              Overall Utilization
+            </span>
+
+            <strong
+              [ngClass]="utilizationClass"
+            >
+              {{ formatPercentage(
+                summary.overallUtilizationPercentage
+              ) }}
+            </strong>
+
+          </div>
+
+
+          <div class="large-progress">
+
+            <div
+              class="progress-fill"
+              [ngClass]="utilizationClass"
+              [style.width.%]="
+                summary.overallUtilizationPercentage > 100
+                  ? 100
+                  : summary.overallUtilizationPercentage
+              "
+            ></div>
+
+          </div>
+
+
+          <div class="progress-labels">
+
+            <span>
+              Spent
+              {{ formatCurrency(summary.totalExpenditure) }}
+            </span>
+
+            <span>
+              Allocated
+              {{ formatCurrency(summary.totalAllocated) }}
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <!-- FINANCIAL POSITION -->
+
+        <div class="overview-panel">
+
+          <div class="panel-heading">
+
+            <span>
+              Financial Position
+            </span>
+
+          </div>
+
+
+          <div class="position-list">
+
+            <div class="position-row">
+
+              <span>
+                Total Allocated
+              </span>
+
+              <strong>
+                {{ formatCurrency(
+                  summary.totalAllocated
+                ) }}
+              </strong>
+
+            </div>
+
+
+            <div class="position-row">
+
+              <span>
+                Total Spent
+              </span>
+
+              <strong>
+                {{ formatCurrency(
+                  summary.totalExpenditure
+                ) }}
+              </strong>
+
+            </div>
+
+
+            <div class="position-row">
+
+              <span>
+                Total Remaining
+              </span>
+
+              <strong>
+                {{ formatCurrency(
+                  summary.totalRemaining
+                ) }}
+              </strong>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- BUDGET UTILIZATION -->
+
+      <div class="table-panel">
+
+        <div class="table-heading">
+
+          <div>
+
+            <h3>
+              Budget Utilization
+            </h3>
+
+            <p>
+              Utilization across current budgets.
+            </p>
+
+          </div>
+
+
+          <button
+            type="button"
+            (click)="setSection('budgets')"
+          >
+            View All
+          </button>
+
+        </div>
+
+
+        <div
+          class="empty-state"
+          *ngIf="budgets.length === 0"
+        >
+          No budget data available.
+        </div>
+
+
+        <div
+          class="table-wrapper"
+          *ngIf="budgets.length > 0"
+        >
+
+          <table>
+
+            <thead>
+
+              <tr>
+
+                <th>
+                  Financial Year
+                </th>
+
+                <th>
+                  Department
+                </th>
+
+                <th>
+                  Project
+                </th>
+
+                <th>
+                  Allocated
+                </th>
+
+                <th>
+                  Expenditure
+                </th>
+
+                <th>
+                  Utilization
+                </th>
+
+              </tr>
+
+            </thead>
+
+
+            <tbody>
+
+              <tr
+                *ngFor="
+                  let budget of budgets.slice(0, 5);
+                  trackBy: trackBudget
+                "
+              >
+
+                <td>
+                  <strong>
+                    {{ budget.financialYear }}
+                  </strong>
+                </td>
+
+
+                <td>
+
+                  <div class="department-cell">
+
+                    <strong>
+                      {{ getDepartmentName(
+                        budget.department
+                      ) }}
+                    </strong>
+
+                    <small>
+                      {{ getDepartmentCode(
+                        budget.department
+                      ) }}
+                    </small>
+
+                  </div>
+
+                </td>
+
+
+                <td>
+                  {{ budget.project }}
+                </td>
+
+
+                <td>
+                  {{ formatCurrency(
+                    budget.allocatedAmount
+                  ) }}
+                </td>
+
+
+                <td>
+                  {{ formatCurrency(
+                    budget.expenditureAmount
+                  ) }}
+                </td>
+
+
+                <td>
+
+                  <div class="utilization-cell">
+
+                    <div class="mini-progress">
+
+                      <div
+                        class="progress-fill"
+                        [ngClass]="
+                          getBudgetUtilizationClass(
+                            budget.utilizationPercentage
+                          )
+                        "
+                        [style.width.%]="
+                          budget.utilizationPercentage > 100
+                            ? 100
+                            : budget.utilizationPercentage
+                        "
+                      ></div>
+
+                    </div>
+
+
+                    <span
+                      [ngClass]="
+                        getBudgetUtilizationClass(
+                          budget.utilizationPercentage
+                        )
+                      "
+                    >
+                      {{ formatPercentage(
+                        budget.utilizationPercentage
+                      ) }}
+                    </span>
+
+                  </div>
+
+                </td>
+
+              </tr>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- BUDGET REPORT -->
+
+    <section
+      class="report-section"
+      *ngIf="activeSection === 'budgets'"
+    >
+
+      <div class="section-heading">
+
+        <div>
+
+          <h2>
+            Budget Report
+          </h2>
+
+          <p>
+            Detailed utilization of every budget.
+          </p>
+
+        </div>
+
+
+        <span class="record-count">
+          {{ getBudgetCount() }} budgets
+        </span>
+
+      </div>
+
+
+      <div class="table-panel">
+
+        <div
+          class="empty-state"
+          *ngIf="budgets.length === 0"
+        >
+          No budget records available.
+        </div>
+
+
+        <div
+          class="table-wrapper"
+          *ngIf="budgets.length > 0"
+        >
+
+          <table>
+
+            <thead>
+
+              <tr>
+
+                <th>
+                  Financial Year
+                </th>
+
+                <th>
+                  Department
+                </th>
+
+                <th>
+                  Project
+                </th>
+
+                <th>
+                  Allocated
+                </th>
+
+                <th>
+                  Expenditure
+                </th>
+
+                <th>
+                  Remaining
+                </th>
+
+                <th>
+                  Utilization
+                </th>
+
+                <th>
+                  Transactions
+                </th>
+
+              </tr>
+
+            </thead>
+
+
+            <tbody>
+
+              <tr
+                *ngFor="
+                  let budget of budgets;
+                  trackBy: trackBudget
+                "
+              >
+
+                <td>
+                  <strong>
+                    {{ budget.financialYear }}
+                  </strong>
+                </td>
+
+
+                <td>
+
+                  <div class="department-cell">
+
+                    <strong>
+                      {{ getDepartmentName(
+                        budget.department
+                      ) }}
+                    </strong>
+
+                    <small>
+                      {{ getDepartmentCode(
+                        budget.department
+                      ) }}
+                    </small>
+
+                  </div>
+
+                </td>
+
+
+                <td>
+                  {{ budget.project }}
+                </td>
+
+
+                <td>
+                  {{ formatCurrency(
+                    budget.allocatedAmount
+                  ) }}
+                </td>
+
+
+                <td>
+                  {{ formatCurrency(
+                    budget.expenditureAmount
+                  ) }}
+                </td>
+
+
+                <td>
+                  {{ formatCurrency(
+                    budget.remainingAmount
+                  ) }}
+                </td>
+
+
+                <td>
+
+                  <span
+                    class="utilization-badge"
+                    [ngClass]="
+                      getBudgetUtilizationClass(
+                        budget.utilizationPercentage
+                      )
+                    "
+                  >
+                    {{ formatPercentage(
+                      budget.utilizationPercentage
+                    ) }}
+                  </span>
+
+                </td>
+
+
+                <td>
+                  {{ budget.expenditureCount }}
+                </td>
+
+              </tr>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- DEPARTMENT REPORT -->
+
+    <section
+      class="report-section"
+      *ngIf="activeSection === 'departments'"
+    >
+
+      <div class="section-heading">
+
+        <div>
+
+          <h2>
+            Department Report
+          </h2>
+
+          <p>
+            Budget allocation and expenditure by department.
+          </p>
+
+        </div>
+
+
+        <span class="record-count">
+          {{ getDepartmentCount() }} departments
+        </span>
+
+      </div>
+
+
+      <div class="table-panel">
+
+        <div
+          class="empty-state"
+          *ngIf="departments.length === 0"
+        >
+          No department records available.
+        </div>
+
+
+        <div
+          class="table-wrapper"
+          *ngIf="departments.length > 0"
+        >
+
+          <table>
+
+            <thead>
+
+              <tr>
+
+                <th>
+                  Department
+                </th>
+
+                <th>
+                  Code
+                </th>
+
+                <th>
+                  Budgets
+                </th>
+
+                <th>
+                  Allocated
+                </th>
+
+                <th>
+                  Expenditure
+                </th>
+
+                <th>
+                  Remaining
+                </th>
+
+                <th>
+                  Utilization
+                </th>
+
+              </tr>
+
+            </thead>
+
+
+            <tbody>
+
+              <tr
+                *ngFor="
+                  let department of departments;
+                  trackBy: trackDepartment
+                "
+              >
+
+                <td>
+                  <strong>
+                    {{ department.departmentName }}
+                  </strong>
+                </td>
+
+
+                <td>
+
+                  <span class="code-badge">
+                    {{ department.departmentCode }}
+                  </span>
+
+                </td>
+
+
+                <td>
+                  {{ department.budgetCount }}
+                </td>
+
+
+                <td>
+                  {{ formatCurrency(
+                    department.allocatedAmount
+                  ) }}
+                </td>
+
+
+                <td>
+                  {{ formatCurrency(
+                    department.expenditureAmount
+                  ) }}
+                </td>
+
+
+                <td>
+                  {{ formatCurrency(
+                    department.remainingAmount
+                  ) }}
+                </td>
+
+
+                <td>
+
+                  <span
+                    class="utilization-badge"
+                    [ngClass]="
+                      getBudgetUtilizationClass(
+                        department.utilizationPercentage
+                      )
+                    "
+                  >
+                    {{ formatPercentage(
+                      department.utilizationPercentage
+                    ) }}
+                  </span>
+
+                </td>
+
+              </tr>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- EXPENDITURE REPORT -->
+
+    <section
+      class="report-section"
+      *ngIf="activeSection === 'expenditures'"
+    >
+
+      <div class="section-heading">
+
+        <div>
+
+          <h2>
+            Expenditure Report
+          </h2>
+
+          <p>
+            Detailed expenditure transactions recorded against budgets.
+          </p>
+
+        </div>
+
+
+        <span class="record-count">
+          {{ getExpenditureCount() }} transactions
+        </span>
+
+      </div>
+
+
+      <div class="table-panel">
+
+        <div
+          class="empty-state"
+          *ngIf="expenditures.length === 0"
+        >
+          No expenditure records available.
+        </div>
+
+
+        <div
+          class="table-wrapper"
+          *ngIf="expenditures.length > 0"
+        >
+
+          <table>
+
+            <thead>
+
+              <tr>
+
+                <th>
+                  Transaction ID
+                </th>
+
+                <th>
+                  Budget ID
+                </th>
+
+                <th>
+                  Category
+                </th>
+
+                <th>
+                  Date
+                </th>
+
+                <th>
+                  Amount
+                </th>
+
+                <th>
+                  Document Reference
+                </th>
+
+              </tr>
+
+            </thead>
+
+
+            <tbody>
+
+              <tr
+                *ngFor="
+                  let expenditure of expenditures;
+                  trackBy: trackExpenditure
+                "
+              >
+
+                <td>
+
+                  <strong>
+                    {{ expenditure.transactionId }}
+                  </strong>
+
+                </td>
+
+
+                <td>
+
+                  <span class="code-badge">
+                    {{ expenditure.budgetId }}
+                  </span>
+
+                </td>
+
+
+                <td>
+                  {{ expenditure.expenseCategory }}
+                </td>
+
+
+                <td>
+                  {{ formatDate(
+                    expenditure.date
+                  ) }}
+                </td>
+
+
+                <td class="amount-cell">
+                  {{ formatCurrency(
+                    expenditure.amountSpent
+                  ) }}
+                </td>
+
+
+                <td>
+                  {{ expenditure.supportingDocumentReference || '—' }}
+                </td>
+
+              </tr>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </div>
+
+</div>

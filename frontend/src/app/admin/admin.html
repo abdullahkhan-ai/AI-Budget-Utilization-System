@@ -1,0 +1,995 @@
+<div class="admin-page">
+
+  <!-- HEADER -->
+  <header class="admin-header">
+
+    <div>
+      <h1>ADMINISTRATION</h1>
+      <p>Manage users, thresholds and system audit records.</p>
+    </div>
+
+    <button
+      type="button"
+      class="refresh-button"
+      (click)="refresh()"
+      [disabled]="
+        loadingUsers ||
+        loadingAuditLogs ||
+        loadingDepartments ||
+        loadingThresholds
+      "
+    >
+      <span>↻</span>
+      REFRESH
+    </button>
+
+  </header>
+
+
+  <!-- MESSAGES -->
+  <div
+    *ngIf="successMessage"
+    class="admin-message success-message"
+  >
+    <span>{{ successMessage }}</span>
+
+    <button
+      type="button"
+      (click)="successMessage = ''"
+    >
+      ×
+    </button>
+  </div>
+
+
+  <div
+    *ngIf="errorMessage"
+    class="admin-message error-message"
+  >
+    <span>{{ errorMessage }}</span>
+
+    <button
+      type="button"
+      (click)="errorMessage = ''"
+    >
+      ×
+    </button>
+  </div>
+
+
+  <!-- TABS -->
+  <nav class="admin-tabs">
+
+    <button
+      type="button"
+      [class.active]="activeSection === 'users'"
+      (click)="setSection('users')"
+    >
+      USERS
+    </button>
+
+    <button
+      type="button"
+      [class.active]="activeSection === 'thresholds'"
+      (click)="setSection('thresholds')"
+    >
+      THRESHOLDS
+    </button>
+
+    <button
+      type="button"
+      [class.active]="activeSection === 'audit'"
+      (click)="setSection('audit')"
+    >
+      AUDIT LOGS
+    </button>
+
+  </nav>
+
+
+  <!-- =========================
+       USERS
+       ========================= -->
+
+  <section
+    *ngIf="activeSection === 'users'"
+    class="admin-section"
+  >
+
+    <div class="section-heading">
+
+      <div>
+        <h2>USER MANAGEMENT</h2>
+        <p>
+          Manage system users, roles and department assignments.
+        </p>
+      </div>
+
+      <div class="section-count">
+        {{ filteredUsers.length }} USERS
+      </div>
+
+    </div>
+
+
+    <!-- SEARCH -->
+    <div class="admin-toolbar">
+
+      <div class="search-box">
+
+        <span class="search-icon">⌕</span>
+
+        <input
+          type="text"
+          [(ngModel)]="searchTerm"
+          placeholder="Search users..."
+        />
+
+      </div>
+
+    </div>
+
+
+    <!-- LOADING -->
+    <div
+      *ngIf="loadingUsers"
+      class="admin-loading"
+    >
+      <div class="loading-line"></div>
+      <div class="loading-line"></div>
+      <div class="loading-line"></div>
+    </div>
+
+
+    <!-- EMPTY -->
+    <div
+      *ngIf="
+        !loadingUsers &&
+        filteredUsers.length === 0
+      "
+      class="admin-empty"
+    >
+      <h3>NO USERS FOUND</h3>
+      <p>
+        No users match the current search.
+      </p>
+    </div>
+
+
+    <!-- TABLE -->
+    <div
+      *ngIf="
+        !loadingUsers &&
+        filteredUsers.length > 0
+      "
+      class="admin-table-wrapper"
+    >
+
+      <table class="admin-table">
+
+        <thead>
+
+          <tr>
+            <th>USER</th>
+            <th>EMAIL</th>
+            <th>ROLE</th>
+            <th>DEPARTMENT</th>
+            <th>CREATED</th>
+            <th>ACTIONS</th>
+          </tr>
+
+        </thead>
+
+        <tbody>
+
+          <tr
+            *ngFor="
+              let user of filteredUsers;
+              trackBy: trackUser
+            "
+          >
+
+            <td>
+
+              <div class="user-cell">
+
+                <strong>
+                  {{ user.name }}
+                </strong>
+
+              </div>
+
+            </td>
+
+
+            <td>
+              {{ user.email }}
+            </td>
+
+
+            <td>
+
+              <span
+                class="role-badge"
+                [ngClass]="getRoleClass(user.role)"
+              >
+                {{ user.role }}
+              </span>
+
+            </td>
+
+
+            <td>
+
+              <div class="department-cell">
+
+                <strong>
+                  {{ getDepartmentName(user) }}
+                </strong>
+
+                <span>
+                  {{ getDepartmentCode(user) }}
+                </span>
+
+              </div>
+
+            </td>
+
+
+            <td>
+              {{ formatDate(user.createdAt) }}
+            </td>
+
+
+            <td>
+
+              <div class="table-actions">
+
+                <button
+                  type="button"
+                  class="action-button edit-action"
+                  (click)="openEditModal(user)"
+                >
+                  EDIT
+                </button>
+
+                <button
+                  type="button"
+                  class="action-button delete-action"
+                  (click)="openDeleteModal(user)"
+                >
+                  DELETE
+                </button>
+
+              </div>
+
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       THRESHOLDS
+       ========================= -->
+
+  <section
+    *ngIf="activeSection === 'thresholds'"
+    class="admin-section"
+  >
+
+    <div class="section-heading">
+
+      <div>
+        <h2>THRESHOLD CONFIGURATION</h2>
+
+        <p>
+          Configure the utilization and spending thresholds used
+          by the monitoring and alert system.
+        </p>
+      </div>
+
+    </div>
+
+
+    <!-- LOADING -->
+    <div
+      *ngIf="loadingThresholds"
+      class="admin-loading"
+    >
+      <div class="loading-line"></div>
+      <div class="loading-line"></div>
+      <div class="loading-line"></div>
+    </div>
+
+
+    <!-- THRESHOLD FORM -->
+    <div
+      *ngIf="!loadingThresholds"
+      class="threshold-panel"
+    >
+
+      <div class="threshold-grid">
+
+
+        <!-- UNDER UTILIZATION -->
+        <div class="threshold-card">
+
+          <div class="threshold-card-header">
+
+            <div>
+              <h3>
+                UNDER-UTILIZATION
+              </h3>
+
+              <p>
+                Budget utilization below this percentage
+                is considered under-utilized.
+              </p>
+            </div>
+
+            <span class="threshold-unit">
+              %
+            </span>
+
+          </div>
+
+
+          <div class="threshold-input-wrapper">
+
+            <input
+              type="number"
+              name="underUtilizationThreshold"
+              [(ngModel)]="
+                thresholdForm.underUtilizationThreshold
+              "
+              min="0"
+              max="100"
+              step="1"
+            />
+
+            <span>%</span>
+
+          </div>
+
+        </div>
+
+
+        <!-- HIGH UTILIZATION -->
+        <div class="threshold-card">
+
+          <div class="threshold-card-header">
+
+            <div>
+              <h3>
+                HIGH UTILIZATION
+              </h3>
+
+              <p>
+                Utilization at or above this percentage
+                is considered high.
+              </p>
+            </div>
+
+            <span class="threshold-unit">
+              %
+            </span>
+
+          </div>
+
+
+          <div class="threshold-input-wrapper">
+
+            <input
+              type="number"
+              name="highUtilizationThreshold"
+              [(ngModel)]="
+                thresholdForm.highUtilizationThreshold
+              "
+              min="0"
+              max="100"
+              step="1"
+            />
+
+            <span>%</span>
+
+          </div>
+
+        </div>
+
+
+        <!-- CRITICAL UTILIZATION -->
+        <div class="threshold-card">
+
+          <div class="threshold-card-header">
+
+            <div>
+              <h3>
+                CRITICAL UTILIZATION
+              </h3>
+
+              <p>
+                Utilization at or above this percentage
+                is considered critical.
+              </p>
+            </div>
+
+            <span class="threshold-unit">
+              %
+            </span>
+
+          </div>
+
+
+          <div class="threshold-input-wrapper">
+
+            <input
+              type="number"
+              name="criticalUtilizationThreshold"
+              [(ngModel)]="
+                thresholdForm.criticalUtilizationThreshold
+              "
+              min="0"
+              max="100"
+              step="1"
+            />
+
+            <span>%</span>
+
+          </div>
+
+        </div>
+
+
+        <!-- SPENDING SPIKE -->
+        <div class="threshold-card">
+
+          <div class="threshold-card-header">
+
+            <div>
+              <h3>
+                SPENDING SPIKE
+              </h3>
+
+              <p>
+                Percentage increase used to identify
+                unusual spending spikes.
+              </p>
+            </div>
+
+            <span class="threshold-unit">
+              %
+            </span>
+
+          </div>
+
+
+          <div class="threshold-input-wrapper">
+
+            <input
+              type="number"
+              name="spendingSpikeThreshold"
+              [(ngModel)]="
+                thresholdForm.spendingSpikeThreshold
+              "
+              min="0"
+              max="100"
+              step="1"
+            />
+
+            <span>%</span>
+
+          </div>
+
+        </div>
+
+
+        <!-- UNDER UTILIZATION TIME -->
+        <div class="threshold-card">
+
+          <div class="threshold-card-header">
+
+            <div>
+              <h3>
+                UNDER-UTILIZATION TIME
+              </h3>
+
+              <p>
+                Time-progress threshold used when identifying
+                delayed budget utilization.
+              </p>
+            </div>
+
+            <span class="threshold-unit">
+              %
+            </span>
+
+          </div>
+
+
+          <div class="threshold-input-wrapper">
+
+            <input
+              type="number"
+              name="underUtilizationTimeThreshold"
+              [(ngModel)]="
+                thresholdForm.underUtilizationTimeThreshold
+              "
+              min="0"
+              max="100"
+              step="1"
+            />
+
+            <span>%</span>
+
+          </div>
+
+        </div>
+
+
+      </div>
+
+
+      <!-- SAVE -->
+      <div class="threshold-actions">
+
+        <button
+          type="button"
+          class="save-threshold-button"
+          (click)="saveThresholds()"
+          [disabled]="savingThresholds"
+        >
+
+          <span
+            *ngIf="!savingThresholds"
+          >
+            SAVE THRESHOLDS
+          </span>
+
+          <span
+            *ngIf="savingThresholds"
+          >
+            SAVING...
+          </span>
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       AUDIT LOGS
+       ========================= -->
+
+  <section
+    *ngIf="activeSection === 'audit'"
+    class="admin-section"
+  >
+
+    <div class="section-heading">
+
+      <div>
+        <h2>AUDIT LOGS</h2>
+
+        <p>
+          Review administrative actions recorded by the system.
+        </p>
+      </div>
+
+      <div class="section-count">
+        {{ auditLogs.length }} LOGS
+      </div>
+
+    </div>
+
+
+    <!-- LOADING -->
+    <div
+      *ngIf="loadingAuditLogs"
+      class="admin-loading"
+    >
+      <div class="loading-line"></div>
+      <div class="loading-line"></div>
+      <div class="loading-line"></div>
+    </div>
+
+
+    <!-- EMPTY -->
+    <div
+      *ngIf="
+        !loadingAuditLogs &&
+        auditLogs.length === 0
+      "
+      class="admin-empty"
+    >
+      <h3>NO AUDIT LOGS</h3>
+
+      <p>
+        No administrative activity has been recorded.
+      </p>
+    </div>
+
+
+    <!-- TABLE -->
+    <div
+      *ngIf="
+        !loadingAuditLogs &&
+        auditLogs.length > 0
+      "
+      class="admin-table-wrapper"
+    >
+
+      <table class="admin-table audit-table">
+
+        <thead>
+
+          <tr>
+            <th>USER</th>
+            <th>ACTION</th>
+            <th>ENTITY</th>
+            <th>DESCRIPTION</th>
+            <th>DATE</th>
+          </tr>
+
+        </thead>
+
+
+        <tbody>
+
+          <tr
+            *ngFor="
+              let log of auditLogs;
+              trackBy: trackAuditLog
+            "
+          >
+
+            <td>
+
+              <div class="audit-user">
+
+                <strong>
+                  {{ log.userId?.name || 'System' }}
+                </strong>
+
+                <span>
+                  {{ log.userId?.email || '—' }}
+                </span>
+
+              </div>
+
+            </td>
+
+
+            <td>
+
+              <span
+                class="action-badge"
+                [ngClass]="getActionClass(log.action)"
+              >
+                {{ log.action }}
+              </span>
+
+            </td>
+
+
+            <td>
+              {{ log.entityType || '—' }}
+            </td>
+
+
+            <td class="audit-description">
+              {{ log.description || '—' }}
+            </td>
+
+
+            <td>
+              {{ formatDateTime(log.createdAt) }}
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </section>
+
+
+</div>
+
+
+<!-- =========================
+     EDIT USER MODAL
+     ========================= -->
+
+<div
+  *ngIf="editModalOpen"
+  class="modal-backdrop"
+>
+
+  <div class="admin-modal">
+
+    <div class="modal-header">
+
+      <div>
+        <h2>EDIT USER</h2>
+
+        <p>
+          Update user account information and access.
+        </p>
+      </div>
+
+      <button
+        type="button"
+        class="modal-close"
+        (click)="closeEditModal()"
+        [disabled]="savingUser"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <div class="modal-body">
+
+      <!-- NAME -->
+      <div class="form-group">
+
+        <label for="edit-name">
+          NAME
+        </label>
+
+        <input
+          id="edit-name"
+          type="text"
+          name="editName"
+          [(ngModel)]="editForm.name"
+          autocomplete="off"
+        />
+
+      </div>
+
+
+      <!-- EMAIL -->
+      <div class="form-group">
+
+        <label for="edit-email">
+          EMAIL
+        </label>
+
+        <input
+          id="edit-email"
+          type="email"
+          name="editEmail"
+          [(ngModel)]="editForm.email"
+          autocomplete="off"
+        />
+
+      </div>
+
+
+      <!-- ROLE -->
+      <div class="form-group">
+
+        <label for="edit-role">
+          ROLE
+        </label>
+
+        <select
+          id="edit-role"
+          name="editRole"
+          [(ngModel)]="editForm.role"
+        >
+
+          <option value="Admin">
+            Admin
+          </option>
+
+          <option value="Finance Officer">
+            Finance Officer
+          </option>
+
+          <option value="Department Head">
+            Department Head
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <!-- DEPARTMENT -->
+      <div class="form-group">
+
+        <label for="edit-department">
+          DEPARTMENT
+        </label>
+
+        <select
+          id="edit-department"
+          name="editDepartment"
+          [(ngModel)]="editForm.departmentId"
+        >
+
+          <option value="">
+            Unassigned
+          </option>
+
+          <option
+            *ngFor="
+              let department of departments
+            "
+            [value]="department._id"
+          >
+            {{ department.name }}
+            ({{ department.code }})
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <!-- PASSWORD -->
+      <div class="form-group">
+
+        <label for="edit-password">
+          NEW PASSWORD
+        </label>
+
+        <input
+          id="edit-password"
+          type="password"
+          name="editPassword"
+          [(ngModel)]="editForm.password"
+          autocomplete="new-password"
+          placeholder="Leave blank to keep current password"
+        />
+
+      </div>
+
+    </div>
+
+
+    <div class="modal-footer">
+
+      <button
+        type="button"
+        class="modal-secondary-button"
+        (click)="closeEditModal()"
+        [disabled]="savingUser"
+      >
+        CANCEL
+      </button>
+
+      <button
+        type="button"
+        class="modal-primary-button"
+        (click)="saveUser()"
+        [disabled]="savingUser"
+      >
+
+        <span
+          *ngIf="!savingUser"
+        >
+          SAVE CHANGES
+        </span>
+
+        <span
+          *ngIf="savingUser"
+        >
+          SAVING...
+        </span>
+
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- =========================
+     DELETE USER MODAL
+     ========================= -->
+
+<div
+  *ngIf="deleteModalOpen"
+  class="modal-backdrop"
+>
+
+  <div class="admin-modal delete-modal">
+
+    <div class="modal-header">
+
+      <div>
+        <h2>DELETE USER</h2>
+
+        <p>
+          This action cannot be undone.
+        </p>
+      </div>
+
+      <button
+        type="button"
+        class="modal-close"
+        (click)="closeDeleteModal()"
+        [disabled]="deletingUser"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <div class="modal-body">
+
+      <div class="delete-warning">
+
+        <strong>
+          Are you sure you want to delete
+          {{ selectedUser?.name }}?
+        </strong>
+
+        <p>
+          The user account will be permanently removed
+          from the system.
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <div class="modal-footer">
+
+      <button
+        type="button"
+        class="modal-secondary-button"
+        (click)="closeDeleteModal()"
+        [disabled]="deletingUser"
+      >
+        CANCEL
+      </button>
+
+      <button
+        type="button"
+        class="modal-danger-button"
+        (click)="deleteUser()"
+        [disabled]="deletingUser"
+      >
+
+        <span
+          *ngIf="!deletingUser"
+        >
+          DELETE USER
+        </span>
+
+        <span
+          *ngIf="deletingUser"
+        >
+          DELETING...
+        </span>
+
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
