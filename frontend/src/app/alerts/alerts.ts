@@ -109,7 +109,7 @@ export class Alerts implements OnInit {
     inject(ChangeDetectorRef);
 
   private readonly apiUrl =
-    'http://localhost:5000/api/alerts';
+    'https://ai-budget-utilization-system.onrender.com/api/alerts';
 
 
   /* =========================

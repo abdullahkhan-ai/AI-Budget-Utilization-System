@@ -484,3 +484,10 @@
   }
 
 }
+.system-status.offline {
+  background: #ffe0e0;
+}
+
+.system-status.offline .status-dot {
+  background: #d00000;
+}

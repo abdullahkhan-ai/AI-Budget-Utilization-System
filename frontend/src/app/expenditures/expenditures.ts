@@ -70,7 +70,7 @@ export class Expenditures implements OnInit {
 
 
   private readonly backendUrl =
-    'http://localhost:5000';
+    'https://ai-budget-utilization-system.onrender.com';
 
 
   expenditures: Expenditure[] = [];

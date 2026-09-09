@@ -47,7 +47,7 @@ export class Departments implements OnInit {
   private readonly cdr = inject(ChangeDetectorRef);
 
   private readonly apiUrl =
-    'http://localhost:5000/api/departments';
+    'https://ai-budget-utilization-system.onrender.com/api/departments';
 
   departments: Department[] = [];
 

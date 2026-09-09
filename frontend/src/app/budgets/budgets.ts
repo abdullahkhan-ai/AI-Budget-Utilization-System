@@ -162,10 +162,10 @@ export class Budgets implements OnInit {
      ======================================================= */
 
   private readonly budgetsApi =
-    'http://localhost:5000/api/budgets';
+    'https://ai-budget-utilization-system.onrender.com/api/budgets';
 
   private readonly departmentsApi =
-    'http://localhost:5000/api/departments';
+    'https://ai-budget-utilization-system.onrender.com/api/departments';
 
 
   /* =======================================================

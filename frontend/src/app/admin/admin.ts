@@ -94,16 +94,16 @@ export class Admin implements OnInit {
 
 
   private readonly usersApi =
-    'http://localhost:5000/api/users';
+    'https://ai-budget-utilization-system.onrender.com/api/users';
 
   private readonly auditApi =
-    'http://localhost:5000/api/audit-logs';
+    'https://ai-budget-utilization-system.onrender.com/api/audit-logs';
 
   private readonly departmentsApi =
-    'http://localhost:5000/api/departments';
+    'https://ai-budget-utilization-system.onrender.com/api/departments';
 
   private readonly thresholdsApi =
-    'http://localhost:5000/api/thresholds';
+    'https://ai-budget-utilization-system.onrender.com/api/thresholds';
 
 
   users: User[] = [];

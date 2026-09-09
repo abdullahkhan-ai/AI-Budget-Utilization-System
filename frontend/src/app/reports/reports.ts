@@ -114,7 +114,7 @@ export class Reports implements OnInit {
     inject(ChangeDetectorRef);
 
   private readonly apiUrl =
-    'http://localhost:5000/api/reports';
+    'https://ai-budget-utilization-system.onrender.com/api/reports';
 
 
   summary: ReportSummary = {

@@ -51,7 +51,7 @@ export class Dashboard implements OnInit {
   private readonly cdr = inject(ChangeDetectorRef);
 
   private readonly apiUrl =
-    'http://localhost:5000/api/dashboard';
+    'https://ai-budget-utilization-system.onrender.com/api/dashboard';
 
   summary: DashboardSummary = {
     totalBudgets: 0,

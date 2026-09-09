@@ -109,11 +109,11 @@ export class ExpenditureService {
 
 
   private readonly apiUrl =
-    'http://localhost:5000/api/expenditures';
+    'https://ai-budget-utilization-system.onrender.com/api/expenditures';
 
 
   private readonly budgetApiUrl =
-    'http://localhost:5000/api/budgets';
+    'https://ai-budget-utilization-system.onrender.com/api/budgets';
 
 
   getExpenditures():
