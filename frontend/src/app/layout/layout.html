@@ -80,7 +80,9 @@
         </a>
 
 
+        <!-- ADMIN — ADMIN ROLE ONLY -->
         <a
+          *ngIf="user?.role === 'Admin'"
           routerLink="/admin"
           routerLinkActive="active"
         >

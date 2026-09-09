@@ -1,3 +1,5 @@
+import { CommonModule } from '@angular/common';
+
 import { Component, inject } from '@angular/core';
 
 import {
@@ -14,6 +16,7 @@ import { AuthService } from '../core/services/auth.service';
   standalone: true,
 
   imports: [
+    CommonModule,
     RouterOutlet,
     RouterLink,
     RouterLinkActive,
