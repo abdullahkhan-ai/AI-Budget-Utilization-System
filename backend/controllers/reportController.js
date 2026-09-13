@@ -24,7 +24,8 @@ const getReports = async (req, res) => {
 
       const budgetExpenditures = expenditures.filter(
         (expenditure) =>
-          expenditure.budgetId === budgetId
+          expenditure.budgetId &&
+          expenditure.budgetId.toString() === budgetId
       );
 
       const expenditureAmount =
