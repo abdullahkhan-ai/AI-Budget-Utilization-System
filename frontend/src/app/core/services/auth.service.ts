@@ -79,6 +79,10 @@ export class AuthService {
     'https://ai-budget-utilization-system.onrender.com/api/auth';
 
 
+  private readonly healthUrl =
+    'https://ai-budget-utilization-system.onrender.com/api/health';
+
+
   /*
    * SYSTEM STATUS
    *
@@ -170,6 +174,55 @@ export class AuthService {
           this.setSystemStatus(
             'online'
           );
+
+        })
+
+      );
+
+  }
+
+
+  /*
+   * Wakes the Render backend before
+   * the user attempts to log in.
+   *
+   * This endpoint does not require
+   * authentication and does not access
+   * MongoDB.
+   */
+
+  healthCheck(): Observable<boolean> {
+
+    return this.http
+      .get<{ status: string }>(
+        this.healthUrl
+      )
+      .pipe(
+
+        map((response) => {
+
+          const isHealthy =
+            response?.status === 'ok';
+
+          if (isHealthy) {
+
+            this.setSystemStatus(
+              'online'
+            );
+
+          }
+
+          return isHealthy;
+
+        }),
+
+        catchError(() => {
+
+          this.setSystemStatus(
+            'offline'
+          );
+
+          return of(false);
 
         })
 
