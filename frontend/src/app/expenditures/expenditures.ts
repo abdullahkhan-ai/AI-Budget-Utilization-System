@@ -21,32 +21,50 @@ import {
 
 
 interface BudgetDepartment {
+
   _id: string;
+
   name: string;
+
   code: string;
+
 }
 
 
 interface Budget {
+
   _id: string;
+
   financialYear: string;
+
   departmentId: BudgetDepartment | null;
+
   project: string;
+
   allocatedAmount: number;
+
   allocationDate: string;
+
 }
 
 
 interface ExpenditureForm {
+
   budgetId: string;
+
   amountSpent: number | null;
+
   expenseCategory: string;
+
   date: string;
+
   supportingDocumentReference: string;
+
 }
 
 
 @Component({
+
   selector: 'app-expenditures',
 
   standalone: true,
@@ -59,21 +77,24 @@ interface ExpenditureForm {
   templateUrl: './expenditures.html',
 
   styleUrl: './expenditures.css',
+
 })
-export class Expenditures implements OnInit {
+
+
+export class Expenditures
+  implements OnInit {
+
 
   private readonly expenditureService =
     inject(ExpenditureService);
+
 
   private readonly cdr =
     inject(ChangeDetectorRef);
 
 
-  private readonly backendUrl =
-    'https://ai-budget-utilization-system.onrender.com';
-
-
   expenditures: Expenditure[] = [];
+
 
   budgets: Budget[] = [];
 
@@ -111,20 +132,24 @@ export class Expenditures implements OnInit {
     File | null = null;
 
 
-  selectedFileName = '';
-
-
   form: ExpenditureForm =
     this.getEmptyForm();
 
 
   readonly categories = [
+
     'Infrastructure',
+
     'Salaries',
+
     'Operations',
+
     'Procurement',
+
     'Services',
+
     'Other',
+
   ];
 
 
@@ -151,7 +176,9 @@ export class Expenditures implements OnInit {
       date: '',
 
       supportingDocumentReference: '',
+
     };
+
   }
 
 
@@ -161,6 +188,7 @@ export class Expenditures implements OnInit {
 
 
     this.expenditureService
+
       .getBudgets()
 
       .pipe(
@@ -200,9 +228,11 @@ export class Expenditures implements OnInit {
           this.formErrorMessage =
             error?.error?.message ||
             'Unable to load approved budgets.';
+
         },
 
       });
+
   }
 
 
@@ -214,6 +244,7 @@ export class Expenditures implements OnInit {
 
 
     this.expenditureService
+
       .getExpenditures()
 
       .pipe(
@@ -253,9 +284,11 @@ export class Expenditures implements OnInit {
           this.errorMessage =
             error?.error?.message ||
             'Unable to load expenditure records.';
+
         },
 
       });
+
   }
 
 
@@ -266,9 +299,7 @@ export class Expenditures implements OnInit {
     this.form =
       this.getEmptyForm();
 
-
-    this.clearSelectedFile();
-
+    this.selectedFile = null;
 
     this.formErrorMessage = '';
 
@@ -276,8 +307,8 @@ export class Expenditures implements OnInit {
 
     this.showForm = true;
 
-
     this.cdr.detectChanges();
+
   }
 
 
@@ -310,11 +341,11 @@ export class Expenditures implements OnInit {
       supportingDocumentReference:
         expenditure.supportingDocumentReference ||
         '',
+
     };
 
 
-    this.clearSelectedFile();
-
+    this.selectedFile = null;
 
     this.formErrorMessage = '';
 
@@ -322,15 +353,17 @@ export class Expenditures implements OnInit {
 
     this.showForm = true;
 
-
     this.cdr.detectChanges();
+
   }
 
 
   closeForm(): void {
 
     if (this.submitting) {
+
       return;
+
     }
 
 
@@ -338,16 +371,15 @@ export class Expenditures implements OnInit {
 
     this.editingExpenditure = null;
 
+    this.selectedFile = null;
+
     this.formErrorMessage = '';
 
     this.form =
       this.getEmptyForm();
 
-
-    this.clearSelectedFile();
-
-
     this.cdr.detectChanges();
+
   }
 
 
@@ -360,96 +392,19 @@ export class Expenditures implements OnInit {
 
 
     if (
-      !input.files ||
-      input.files.length === 0
+      input.files &&
+      input.files.length > 0
     ) {
 
-      this.clearSelectedFile();
+      this.selectedFile =
+        input.files[0];
 
-      return;
+    } else {
+
+      this.selectedFile = null;
+
     }
 
-
-    const file =
-      input.files[0];
-
-
-    const allowedExtensions = [
-      '.pdf',
-      '.doc',
-      '.docx',
-      '.xls',
-      '.xlsx',
-      '.csv',
-      '.jpg',
-      '.jpeg',
-      '.png',
-    ];
-
-
-    const fileName =
-      file.name.toLowerCase();
-
-
-    const hasAllowedExtension =
-      allowedExtensions.some(
-        (extension) =>
-          fileName.endsWith(
-            extension
-          )
-      );
-
-
-    if (!hasAllowedExtension) {
-
-      this.formErrorMessage =
-        'Unsupported supporting document format.';
-
-      this.clearSelectedFile();
-
-      input.value = '';
-
-      return;
-    }
-
-
-    const maxFileSize =
-      10 * 1024 * 1024;
-
-
-    if (
-      file.size >
-      maxFileSize
-    ) {
-
-      this.formErrorMessage =
-        'Supporting document must be 10 MB or smaller.';
-
-      this.clearSelectedFile();
-
-      input.value = '';
-
-      return;
-    }
-
-
-    this.formErrorMessage = '';
-
-    this.selectedFile = file;
-
-    this.selectedFileName =
-      file.name;
-
-
-    this.cdr.detectChanges();
-  }
-
-
-  clearSelectedFile(): void {
-
-    this.selectedFile = null;
-
-    this.selectedFileName = '';
   }
 
 
@@ -468,13 +423,13 @@ export class Expenditures implements OnInit {
         'Please complete all required fields.';
 
       return;
+
     }
 
 
-    const amount =
-      Number(
-        this.form.amountSpent
-      );
+    const amount = Number(
+      this.form.amountSpent
+    );
 
 
     if (!this.form.budgetId) {
@@ -483,6 +438,7 @@ export class Expenditures implements OnInit {
         'Please select a budget.';
 
       return;
+
     }
 
 
@@ -492,6 +448,7 @@ export class Expenditures implements OnInit {
         'Please select an expense category.';
 
       return;
+
     }
 
 
@@ -501,6 +458,7 @@ export class Expenditures implements OnInit {
         'Please select the expenditure date.';
 
       return;
+
     }
 
 
@@ -513,8 +471,14 @@ export class Expenditures implements OnInit {
         'Amount spent must be greater than zero.';
 
       return;
+
     }
 
+
+    /*
+     * The backend expects multipart/form-data
+     * because supporting documents can be uploaded.
+     */
 
     const formData =
       new FormData();
@@ -556,6 +520,7 @@ export class Expenditures implements OnInit {
         'supportingDocument',
         this.selectedFile
       );
+
     }
 
 
@@ -567,9 +532,13 @@ export class Expenditures implements OnInit {
     ) {
 
       this.expenditureService
+
         .updateExpenditure(
+
           this.editingExpenditure._id,
+
           formData
+
         )
 
         .pipe(
@@ -595,21 +564,19 @@ export class Expenditures implements OnInit {
 
             this.showForm = false;
 
-            this.editingExpenditure =
-              null;
+            this.editingExpenditure = null;
 
+            this.selectedFile = null;
 
             this.form =
               this.getEmptyForm();
-
-
-            this.clearSelectedFile();
 
 
             form.resetForm();
 
 
             this.loadExpenditures();
+
           },
 
 
@@ -624,16 +591,19 @@ export class Expenditures implements OnInit {
             this.formErrorMessage =
               error?.error?.message ||
               'Unable to update expenditure.';
+
           },
 
         });
 
 
       return;
+
     }
 
 
     this.expenditureService
+
       .createExpenditure(
         formData
       )
@@ -661,18 +631,17 @@ export class Expenditures implements OnInit {
 
           this.showForm = false;
 
+          this.selectedFile = null;
 
           this.form =
             this.getEmptyForm();
-
-
-          this.clearSelectedFile();
 
 
           form.resetForm();
 
 
           this.loadExpenditures();
+
         },
 
 
@@ -687,9 +656,11 @@ export class Expenditures implements OnInit {
           this.formErrorMessage =
             error?.error?.message ||
             'Unable to record expenditure.';
+
         },
 
       });
+
   }
 
 
@@ -700,30 +671,30 @@ export class Expenditures implements OnInit {
     this.expenditureToDelete =
       expenditure;
 
-
     this.showDeleteModal = true;
 
     this.deleting = false;
 
-
     this.cdr.detectChanges();
+
   }
 
 
   closeDeleteModal(): void {
 
     if (this.deleting) {
+
       return;
+
     }
 
 
     this.showDeleteModal = false;
 
-    this.expenditureToDelete =
-      null;
-
+    this.expenditureToDelete = null;
 
     this.cdr.detectChanges();
+
   }
 
 
@@ -734,7 +705,9 @@ export class Expenditures implements OnInit {
 
 
     if (!expenditure?._id) {
+
       return;
+
     }
 
 
@@ -742,6 +715,7 @@ export class Expenditures implements OnInit {
 
 
     this.expenditureService
+
       .deleteExpenditure(
         expenditure._id
       )
@@ -774,6 +748,7 @@ export class Expenditures implements OnInit {
 
 
           this.loadExpenditures();
+
         },
 
 
@@ -787,13 +762,14 @@ export class Expenditures implements OnInit {
 
           this.successMessage = '';
 
-
           this.errorMessage =
             error?.error?.message ||
             'Unable to delete expenditure.';
+
         },
 
       });
+
   }
 
 
@@ -809,17 +785,22 @@ export class Expenditures implements OnInit {
 
 
     if (!budget) {
+
       return budgetId;
+
     }
 
 
     const department =
       budget.departmentId
+
         ? `${budget.departmentId.code} — ${budget.departmentId.name}`
+
         : 'Department not assigned';
 
 
     return `${budget.project} · ${department} · ${budget.financialYear}`;
+
   }
 
 
@@ -834,34 +815,26 @@ export class Expenditures implements OnInit {
       );
 
 
-    return (
-      budget?.project ||
-      '—'
-    );
+    return budget?.project || '—';
+
   }
 
 
   formatCurrency(
-    value:
-      number |
-      null |
-      undefined
+    value: number | null | undefined
   ): string {
 
     return new Intl.NumberFormat(
       'en-IN',
       {
         style: 'currency',
-
         currency: 'INR',
-
         maximumFractionDigits: 0,
       }
     ).format(
-      Number(
-        value || 0
-      )
+      Number(value || 0)
     );
+
   }
 
 
@@ -870,7 +843,9 @@ export class Expenditures implements OnInit {
   ): string {
 
     if (!value) {
+
       return '';
+
     }
 
 
@@ -885,6 +860,7 @@ export class Expenditures implements OnInit {
     ) {
 
       return '';
+
     }
 
 
@@ -911,95 +887,28 @@ export class Expenditures implements OnInit {
 
 
     return `${year}-${month}-${day}`;
+
   }
 
 
   get totalExpenditure(): number {
 
     return this.expenditures.reduce(
+
       (
         total,
         expenditure
       ) =>
+
         total +
         Number(
-          expenditure.amountSpent ||
-          0
+          expenditure.amountSpent || 0
         ),
+
       0
+
     );
-  }
 
-
-  getDocumentUrl(
-    fileUrl:
-      string |
-      null |
-      undefined
-  ): string {
-
-    if (!fileUrl) {
-      return '';
-    }
-
-
-    if (
-      fileUrl.startsWith(
-        'http://'
-      ) ||
-      fileUrl.startsWith(
-        'https://'
-      )
-    ) {
-
-      return fileUrl;
-    }
-
-
-    if (
-      fileUrl.startsWith('/')
-    ) {
-
-      return `${this.backendUrl}${fileUrl}`;
-    }
-
-
-    return `${this.backendUrl}/${fileUrl}`;
-  }
-
-
-  getDocumentName(
-    document:
-      string |
-      {
-        originalName?: string;
-        fileName?: string;
-        fileUrl?: string;
-        mimeType?: string;
-        size?: number;
-      } |
-      null |
-      undefined
-  ): string {
-
-    if (!document) {
-      return 'View document';
-    }
-
-
-    if (
-      typeof document === 'string'
-    ) {
-
-      return document;
-    }
-
-
-    return (
-      document.originalName ||
-      document.fileName ||
-      'View document'
-    );
   }
 
 
@@ -1009,10 +918,15 @@ export class Expenditures implements OnInit {
   ): string {
 
     return (
+
       expenditure._id ||
+
       expenditure.transactionId ||
+
       String(index)
+
     );
+
   }
 
 }
