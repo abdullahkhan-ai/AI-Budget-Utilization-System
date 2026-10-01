@@ -42,14 +42,6 @@ export class Login implements OnInit {
   errorMessage = '';
 
 
-  /*
-   * Warm up the Render backend as soon
-   * as the login page is opened.
-   *
-   * This runs independently from the
-   * actual login request.
-   */
-
   ngOnInit(): void {
 
     this.authService
@@ -73,7 +65,6 @@ export class Login implements OnInit {
         'Email and password are required.';
 
       return;
-
     }
 
 
@@ -110,6 +101,15 @@ export class Login implements OnInit {
         },
 
       });
+
+  }
+
+
+  goToRegister(): void {
+
+    this.router.navigate([
+      '/register',
+    ]);
 
   }
 

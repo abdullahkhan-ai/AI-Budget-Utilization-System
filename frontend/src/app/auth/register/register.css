@@ -8,17 +8,22 @@
    MAIN PAGE
 ========================================= */
 
-.login-page {
+.register-page {
   width: 100%;
   min-height: 100vh;
 
   display: grid;
+
   grid-template-columns: 56% 44%;
 
   background: #f4f1e8;
+
   color: #111111;
 
-  font-family: Arial, Helvetica, sans-serif;
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
 
   overflow: hidden;
 }
@@ -34,7 +39,9 @@
   box-sizing: border-box;
 
   display: flex;
+
   flex-direction: column;
+
   justify-content: space-between;
 
   padding: 56px 40px 30px;
@@ -47,6 +54,7 @@
 
 .brand-content {
   width: 100%;
+
   max-width: 850px;
 }
 
@@ -55,6 +63,7 @@
   margin: 0 0 30px;
 
   font-size: 12px;
+
   line-height: 1;
 
   font-weight: 900;
@@ -66,7 +75,12 @@
 .brand-content h1 {
   margin: 0;
 
-  font-size: clamp(64px, 7.8vw, 126px);
+  font-size:
+    clamp(
+      64px,
+      7.8vw,
+      126px
+    );
 
   line-height: 0.82;
 
@@ -80,6 +94,7 @@
 
 .brand-description {
   width: 100%;
+
   max-width: 560px;
 
   margin: 42px 0 0;
@@ -104,6 +119,7 @@
   display: flex;
 
   justify-content: space-between;
+
   align-items: center;
 
   gap: 20px;
@@ -124,7 +140,7 @@
    RIGHT SIDE
 ========================================= */
 
-.login-panel {
+.register-panel {
   min-height: 100vh;
 
   box-sizing: border-box;
@@ -138,48 +154,49 @@
   padding: 50px 46px;
 
   background: #ffffff;
+
+  overflow-y: auto;
 }
 
 
 /* =========================================
-   LOGIN CARD
+   REGISTER CARD
 ========================================= */
 
-.login-card {
+.register-card {
   width: 100%;
 
   max-width: 540px;
 
   box-sizing: border-box;
 
-  padding: 0;
-
-  background: transparent;
-
-  border: none;
-
-  box-shadow: none;
+  padding: 25px 0;
 }
 
 
 /* =========================================
-   LOGIN HEADER
+   HEADER
 ========================================= */
 
-.login-header {
-  margin-bottom: 48px;
+.register-header {
+  margin-bottom: 38px;
 }
 
 
-.login-header .eyebrow {
+.register-header .eyebrow {
   margin-bottom: 22px;
 }
 
 
-.login-header h2 {
+.register-header h2 {
   margin: 0;
 
-  font-size: clamp(54px, 5.5vw, 82px);
+  font-size:
+    clamp(
+      54px,
+      5.5vw,
+      82px
+    );
 
   line-height: 0.82;
 
@@ -191,7 +208,7 @@
 }
 
 
-.login-description {
+.register-description {
   margin: 28px 0 0;
 
   font-size: 15px;
@@ -207,7 +224,7 @@
 ========================================= */
 
 .form-group {
-  margin-bottom: 28px;
+  margin-bottom: 22px;
 }
 
 
@@ -226,12 +243,13 @@
 }
 
 
-.form-group input {
+.form-group input,
+.form-group select {
   display: block;
 
   width: 100%;
 
-  height: 60px;
+  height: 58px;
 
   box-sizing: border-box;
 
@@ -247,9 +265,12 @@
 
   color: #111111;
 
-  font-family: Arial, Helvetica, sans-serif;
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
 
-  font-size: 16px;
+  font-size: 15px;
 
   font-weight: 700;
 
@@ -266,10 +287,19 @@
 }
 
 
-.form-group input:focus {
+.form-group input:focus,
+.form-group select:focus {
   background: #ffdf00;
 
-  box-shadow: 5px 5px 0 #111111;
+  box-shadow:
+    5px 5px 0 #111111;
+}
+
+
+.form-group select {
+  cursor: pointer;
+
+  appearance: auto;
 }
 
 
@@ -295,10 +325,31 @@
 
 
 /* =========================================
-   LOGIN BUTTON
+   SUCCESS
 ========================================= */
 
-.login-button {
+.success-message {
+  margin-bottom: 20px;
+
+  padding: 14px;
+
+  border: 4px solid #111111;
+
+  background: #9cffb0;
+
+  color: #111111;
+
+  font-size: 13px;
+
+  font-weight: 900;
+}
+
+
+/* =========================================
+   REGISTER BUTTON
+========================================= */
+
+.register-button {
   display: block;
 
   width: 100%;
@@ -319,7 +370,10 @@
 
   color: #ffffff;
 
-  font-family: Arial, Helvetica, sans-serif;
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
 
   font-size: 15px;
 
@@ -337,25 +391,27 @@
 }
 
 
-.login-button:hover:not(:disabled) {
+.register-button:hover:not(:disabled) {
   background: #ffdf00;
 
   color: #111111;
 
-  transform: translate(-4px, -4px);
+  transform:
+    translate(-4px, -4px);
 
-  box-shadow: 8px 8px 0 #111111;
+  box-shadow:
+    8px 8px 0 #111111;
 }
 
 
-.login-button:active:not(:disabled) {
+.register-button:active:not(:disabled) {
   transform: translate(0, 0);
 
   box-shadow: none;
 }
 
 
-.login-button:disabled {
+.register-button:disabled {
   opacity: 0.6;
 
   cursor: not-allowed;
@@ -363,10 +419,10 @@
 
 
 /* =========================================
-   REGISTER LINK
+   LOGIN LINK
 ========================================= */
 
-.register-link {
+.login-link {
   display: flex;
 
   align-items: center;
@@ -383,7 +439,7 @@
 }
 
 
-.register-link span {
+.login-link span {
   font-size: 10px;
 
   font-weight: 1000;
@@ -392,14 +448,17 @@
 }
 
 
-.register-link button {
+.login-link button {
   border: none;
 
   background: transparent;
 
   color: #111111;
 
-  font-family: Arial, Helvetica, sans-serif;
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
 
   font-size: 11px;
 
@@ -408,18 +467,16 @@
   letter-spacing: 0.08em;
 
   cursor: pointer;
-
-  padding: 5px 0;
 }
 
 
-.register-link button:hover {
+.login-link button:hover {
   color: #555555;
 }
 
 
 /* =========================================
-   SECURITY NOTE
+   SECURITY
 ========================================= */
 
 .security-note {
@@ -429,7 +486,7 @@
 
   gap: 10px;
 
-  margin-top: 30px;
+  margin-top: 25px;
 
   padding-top: 18px;
 
@@ -464,20 +521,28 @@
 
 @media (max-width: 1000px) {
 
-  .login-page {
-    grid-template-columns: 52% 48%;
+  .register-page {
+    grid-template-columns:
+      52% 48%;
   }
 
   .brand-panel {
-    padding: 42px 30px 26px;
+    padding:
+      42px 30px 26px;
   }
 
-  .login-panel {
-    padding: 40px 30px;
+  .register-panel {
+    padding:
+      40px 30px;
   }
 
   .brand-content h1 {
-    font-size: clamp(58px, 8vw, 92px);
+    font-size:
+      clamp(
+        58px,
+        8vw,
+        92px
+      );
   }
 
 }
@@ -489,7 +554,7 @@
 
 @media (max-width: 760px) {
 
-  .login-page {
+  .register-page {
     display: block;
 
     overflow: visible;
@@ -499,16 +564,23 @@
   .brand-panel {
     min-height: auto;
 
-    padding: 36px 24px 28px;
+    padding:
+      36px 24px 28px;
 
     border-right: none;
 
-    border-bottom: 5px solid #111111;
+    border-bottom:
+      5px solid #111111;
   }
 
 
   .brand-content h1 {
-    font-size: clamp(58px, 15vw, 100px);
+    font-size:
+      clamp(
+        58px,
+        15vw,
+        100px
+      );
   }
 
 
@@ -524,19 +596,20 @@
   }
 
 
-  .login-panel {
+  .register-panel {
     min-height: auto;
 
-    padding: 48px 24px 60px;
+    padding:
+      48px 24px 60px;
   }
 
 
-  .login-card {
+  .register-card {
     max-width: 600px;
   }
 
 
-  .login-header {
+  .register-header {
     margin-bottom: 38px;
   }
 
@@ -550,7 +623,8 @@
 @media (max-width: 480px) {
 
   .brand-panel {
-    padding: 30px 20px 24px;
+    padding:
+      30px 20px 24px;
   }
 
 
@@ -570,32 +644,25 @@
   }
 
 
-  .login-panel {
-    padding: 40px 18px 50px;
+  .register-panel {
+    padding:
+      40px 18px 50px;
   }
 
 
-  .login-header h2 {
+  .register-header h2 {
     font-size: 56px;
   }
 
 
-  .form-group input {
+  .form-group input,
+  .form-group select {
     height: 58px;
   }
 
 
-  .login-button {
+  .register-button {
     height: 62px;
-  }
-
-
-  .register-link {
-    flex-direction: column;
-
-    align-items: flex-start;
-
-    gap: 8px;
   }
 
 }

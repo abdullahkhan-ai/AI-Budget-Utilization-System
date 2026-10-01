@@ -1,0 +1,280 @@
+<div class="register-page">
+
+  <!-- LEFT BRAND PANEL -->
+
+  <section class="brand-panel">
+
+    <div class="brand-content">
+
+      <p class="eyebrow">
+        FINANCIAL GOVERNANCE SYSTEM
+      </p>
+
+      <h1>
+        JOIN THE<br>
+        SYSTEM.
+      </h1>
+
+      <p class="brand-description">
+        Create your authorized account and access
+        the financial monitoring workspace.
+      </p>
+
+    </div>
+
+
+    <div class="brand-footer">
+
+      <span>
+        2026
+      </span>
+
+      <span>
+        MONITOR / ANALYZE / ACT
+      </span>
+
+    </div>
+
+  </section>
+
+
+  <!-- RIGHT REGISTER PANEL -->
+
+  <section class="register-panel">
+
+    <div class="register-card">
+
+
+      <!-- HEADER -->
+
+      <div class="register-header">
+
+        <p class="eyebrow">
+          NEW ACCOUNT
+        </p>
+
+        <h2>
+          REGISTER.
+        </h2>
+
+        <p class="register-description">
+          Create your account to access the
+          financial monitoring workspace.
+        </p>
+
+      </div>
+
+
+      <!-- REGISTRATION FORM -->
+
+      <form
+        (ngSubmit)="register()"
+        #registerForm="ngForm"
+      >
+
+
+        <!-- NAME -->
+
+        <div class="form-group">
+
+          <label for="name">
+            FULL NAME
+          </label>
+
+          <input
+            id="name"
+            name="name"
+            type="text"
+            [(ngModel)]="name"
+            placeholder="Enter your full name"
+            autocomplete="name"
+            required
+          >
+
+        </div>
+
+
+        <!-- EMAIL -->
+
+        <div class="form-group">
+
+          <label for="email">
+            EMAIL ADDRESS
+          </label>
+
+          <input
+            id="email"
+            name="email"
+            type="email"
+            [(ngModel)]="email"
+            placeholder="Enter your email"
+            autocomplete="email"
+            required
+          >
+
+        </div>
+
+
+        <!-- PASSWORD -->
+
+        <div class="form-group">
+
+          <label for="password">
+            PASSWORD
+          </label>
+
+          <input
+            id="password"
+            name="password"
+            type="password"
+            [(ngModel)]="password"
+            placeholder="Create a password"
+            autocomplete="new-password"
+            required
+          >
+
+        </div>
+
+
+        <!-- CONFIRM PASSWORD -->
+
+        <div class="form-group">
+
+          <label for="confirmPassword">
+            CONFIRM PASSWORD
+          </label>
+
+          <input
+            id="confirmPassword"
+            name="confirmPassword"
+            type="password"
+            [(ngModel)]="confirmPassword"
+            placeholder="Confirm your password"
+            autocomplete="new-password"
+            required
+          >
+
+        </div>
+
+
+        <!-- ROLE -->
+
+        <div class="form-group">
+
+          <label for="role">
+            ACCOUNT ROLE
+          </label>
+
+          <select
+            id="role"
+            name="role"
+            [(ngModel)]="role"
+            required
+          >
+
+            <option
+              value=""
+              disabled
+            >
+              Select your role
+            </option>
+
+            <option
+              value="Finance Officer"
+            >
+              Finance Officer
+            </option>
+
+            <option
+              value="Department Head"
+            >
+              Department Head
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <!-- ERROR -->
+
+        <div
+          class="error-message"
+          *ngIf="errorMessage"
+        >
+
+          {{ errorMessage }}
+
+        </div>
+
+
+        <!-- SUCCESS -->
+
+        <div
+          class="success-message"
+          *ngIf="successMessage"
+        >
+
+          {{ successMessage }}
+
+        </div>
+
+
+        <!-- CREATE ACCOUNT -->
+
+        <button
+          type="submit"
+          class="register-button"
+          [disabled]="loading"
+        >
+
+          <span *ngIf="!loading">
+            CREATE ACCOUNT →
+          </span>
+
+          <span *ngIf="loading">
+            CREATING ACCOUNT...
+          </span>
+
+        </button>
+
+
+      </form>
+
+
+      <!-- LOGIN LINK -->
+
+      <div class="login-link">
+
+        <span>
+          ALREADY HAVE AN ACCOUNT?
+        </span>
+
+        <button
+          type="button"
+          (click)="goToLogin()"
+        >
+          SIGN IN →
+        </button>
+
+      </div>
+
+
+      <!-- SECURITY -->
+
+      <div class="security-note">
+
+        <span class="security-dot"></span>
+
+        <span>
+          AUTHENTICATED ACCESS / ROLE CONTROLLED
+        </span>
+
+      </div>
+
+
+    </div>
+
+  </section>
+
+</div>

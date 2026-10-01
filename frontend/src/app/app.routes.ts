@@ -1,6 +1,8 @@
 import { Routes } from '@angular/router';
 
 import { Login } from './auth/login/login';
+import { Register } from './auth/register/register';
+
 import { Layout } from './layout/layout';
 
 import { Dashboard } from './dashboard/dashboard';
@@ -14,12 +16,27 @@ import { Admin } from './admin/admin';
 import { authGuard } from './core/guards/auth.guard';
 import { adminGuard } from './core/guards/admin.guard';
 
+
 export const routes: Routes = [
+
+  /*
+   * PUBLIC ROUTES
+   */
 
   {
     path: 'login',
     component: Login,
   },
+
+  {
+    path: 'register',
+    component: Register,
+  },
+
+
+  /*
+   * PROTECTED APPLICATION
+   */
 
   {
     path: '',
@@ -67,11 +84,21 @@ export const routes: Routes = [
     ],
   },
 
+
+  /*
+   * DEFAULT ROUTE
+   */
+
   {
     path: '',
     redirectTo: '/dashboard',
     pathMatch: 'full',
   },
+
+
+  /*
+   * UNKNOWN ROUTES
+   */
 
   {
     path: '**',

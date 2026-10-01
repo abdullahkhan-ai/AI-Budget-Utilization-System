@@ -1,6 +1,7 @@
 <div class="login-page">
 
   <!-- LEFT BRAND PANEL -->
+
   <section class="brand-panel">
 
     <div class="brand-content">
@@ -22,18 +23,28 @@
 
     </div>
 
+
     <div class="brand-footer">
-      <span>2026</span>
-      <span>MONITOR / ANALYZE / ACT</span>
+
+      <span>
+        2026
+      </span>
+
+      <span>
+        MONITOR / ANALYZE / ACT
+      </span>
+
     </div>
 
   </section>
 
 
   <!-- RIGHT LOGIN PANEL -->
+
   <section class="login-panel">
 
     <div class="login-card">
+
 
       <div class="login-header">
 
@@ -57,7 +68,9 @@
         #loginForm="ngForm"
       >
 
+
         <!-- EMAIL -->
+
         <div class="form-group">
 
           <label for="email">
@@ -78,6 +91,7 @@
 
 
         <!-- PASSWORD -->
+
         <div class="form-group">
 
           <label for="password">
@@ -98,15 +112,19 @@
 
 
         <!-- ERROR -->
+
         <div
           class="error-message"
           *ngIf="errorMessage"
         >
+
           {{ errorMessage }}
+
         </div>
 
 
         <!-- LOGIN BUTTON -->
+
         <button
           type="submit"
           class="login-button"
@@ -123,10 +141,30 @@
 
         </button>
 
+
       </form>
 
 
+      <!-- REGISTER LINK -->
+
+      <div class="register-link">
+
+        <span>
+          NEW USER?
+        </span>
+
+        <button
+          type="button"
+          (click)="goToRegister()"
+        >
+          CREATE ACCOUNT →
+        </button>
+
+      </div>
+
+
       <!-- SECURITY STATUS -->
+
       <div class="security-note">
 
         <span class="security-dot"></span>
@@ -136,6 +174,7 @@
         </span>
 
       </div>
+
 
     </div>
 

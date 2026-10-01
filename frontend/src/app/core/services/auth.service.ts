@@ -1,8 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 
-import {
-  HttpClient,
-} from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 
 import {
   BehaviorSubject,
@@ -11,9 +9,14 @@ import {
   map,
   of,
   tap,
-  throwError,
 } from 'rxjs';
 
+
+/*
+ * =========================================
+ * LOGIN RESPONSE
+ * =========================================
+ */
 
 interface LoginResponse {
 
@@ -38,6 +41,12 @@ interface LoginResponse {
 }
 
 
+/*
+ * =========================================
+ * REGISTER RESPONSE
+ * =========================================
+ */
+
 interface RegisterResponse {
 
   message: string;
@@ -61,10 +70,22 @@ interface RegisterResponse {
 }
 
 
+/*
+ * =========================================
+ * SYSTEM STATUS
+ * =========================================
+ */
+
 export type SystemStatus =
   | 'online'
   | 'offline';
 
+
+/*
+ * =========================================
+ * AUTH SERVICE
+ * =========================================
+ */
 
 @Injectable({
   providedIn: 'root',
@@ -75,19 +96,26 @@ export class AuthService {
     inject(HttpClient);
 
 
+  /*
+   * =========================================
+   * API URLS
+   * =========================================
+   */
+
   private readonly apiUrl =
     'https://ai-budget-utilization-system.onrender.com/api/auth';
-
 
   private readonly healthUrl =
     'https://ai-budget-utilization-system.onrender.com/api/health';
 
+  private readonly dashboardUrl =
+    'https://ai-budget-utilization-system.onrender.com/api/dashboard';
+
 
   /*
+   * =========================================
    * SYSTEM STATUS
-   *
-   * online  = network available + valid session
-   * offline = no network OR invalid/expired session
+   * =========================================
    */
 
   private readonly systemStatusSubject =
@@ -99,6 +127,12 @@ export class AuthService {
   readonly systemStatus$ =
     this.systemStatusSubject.asObservable();
 
+
+  /*
+   * =========================================
+   * LOGIN
+   * =========================================
+   */
 
   login(
     email: string,
@@ -117,15 +151,29 @@ export class AuthService {
 
         tap((response) => {
 
+          /*
+           * Save JWT
+           */
+
           localStorage.setItem(
             'token',
             response.token
           );
 
+
+          /*
+           * Save user information
+           */
+
           localStorage.setItem(
             'user',
             JSON.stringify(response.user)
           );
+
+
+          /*
+           * System is online
+           */
 
           this.setSystemStatus(
             'online'
@@ -137,6 +185,26 @@ export class AuthService {
 
   }
 
+
+  /*
+   * =========================================
+   * REGISTER
+   * =========================================
+   *
+   * PUBLIC REGISTRATION
+   *
+   * Allowed roles:
+   *
+   * Finance Officer
+   * Department Head
+   *
+   * Admin is NOT created from the
+   * public registration page.
+   *
+   * No department-loading request
+   * happens here.
+   * =========================================
+   */
 
   register(
     name: string,
@@ -161,15 +229,29 @@ export class AuthService {
 
         tap((response) => {
 
+          /*
+           * Save JWT
+           */
+
           localStorage.setItem(
             'token',
             response.token
           );
 
+
+          /*
+           * Save user
+           */
+
           localStorage.setItem(
             'user',
             JSON.stringify(response.user)
           );
+
+
+          /*
+           * System is online
+           */
 
           this.setSystemStatus(
             'online'
@@ -183,12 +265,13 @@ export class AuthService {
 
 
   /*
-   * Wakes the Render backend before
-   * the user attempts to log in.
+   * =========================================
+   * HEALTH CHECK
+   * =========================================
    *
-   * This endpoint does not require
-   * authentication and does not access
-   * MongoDB.
+   * Used to wake the Render backend
+   * when the login page opens.
+   * =========================================
    */
 
   healthCheck(): Observable<boolean> {
@@ -204,6 +287,7 @@ export class AuthService {
           const isHealthy =
             response?.status === 'ok';
 
+
           if (isHealthy) {
 
             this.setSystemStatus(
@@ -212,9 +296,11 @@ export class AuthService {
 
           }
 
+
           return isHealthy;
 
         }),
+
 
         catchError(() => {
 
@@ -231,6 +317,12 @@ export class AuthService {
   }
 
 
+  /*
+   * =========================================
+   * LOGOUT
+   * =========================================
+   */
+
   logout(): void {
 
     localStorage.removeItem(
@@ -241,12 +333,19 @@ export class AuthService {
       'user'
     );
 
+
     this.setSystemStatus(
       'offline'
     );
 
   }
 
+
+  /*
+   * =========================================
+   * GET TOKEN
+   * =========================================
+   */
 
   getToken(): string | null {
 
@@ -256,6 +355,12 @@ export class AuthService {
 
   }
 
+
+  /*
+   * =========================================
+   * GET USER
+   * =========================================
+   */
 
   getUser():
     LoginResponse['user'] | null {
@@ -288,12 +393,24 @@ export class AuthService {
   }
 
 
+  /*
+   * =========================================
+   * CHECK LOGIN
+   * =========================================
+   */
+
   isLoggedIn(): boolean {
 
     return !!this.getToken();
 
   }
 
+
+  /*
+   * =========================================
+   * GET ROLE
+   * =========================================
+   */
 
   getRole(): string | null {
 
@@ -305,6 +422,12 @@ export class AuthService {
   }
 
 
+  /*
+   * =========================================
+   * GET SYSTEM STATUS
+   * =========================================
+   */
+
   getSystemStatus():
     SystemStatus {
 
@@ -314,16 +437,20 @@ export class AuthService {
 
 
   /*
-   * Called by Layout when the application
-   * starts and whenever the browser comes
-   * back online.
+   * =========================================
+   * CHECK SESSION
+   * =========================================
    *
-   * The dashboard endpoint is protected,
-   * so a 401 means the JWT session is no
-   * longer valid.
+   * Checks whether the stored JWT
+   * is still valid.
+   * =========================================
    */
 
   checkSession(): Observable<boolean> {
+
+    /*
+     * Browser has no internet
+     */
 
     if (!navigator.onLine) {
 
@@ -335,6 +462,10 @@ export class AuthService {
 
     }
 
+
+    /*
+     * No JWT
+     */
 
     const token =
       this.getToken();
@@ -351,9 +482,13 @@ export class AuthService {
     }
 
 
+    /*
+     * Check protected dashboard
+     */
+
     return this.http
       .get(
-        'https://ai-budget-utilization-system.onrender.com/api/dashboard'
+        this.dashboardUrl
       )
       .pipe(
 
@@ -367,10 +502,12 @@ export class AuthService {
 
         }),
 
+
         catchError((error) => {
 
           /*
-           * 401 = expired/invalid JWT
+           * 401 means JWT is invalid
+           * or expired.
            */
 
           if (
@@ -385,7 +522,7 @@ export class AuthService {
 
 
           /*
-           * Network/server unavailable
+           * Network unavailable
            */
 
           if (
@@ -402,12 +539,9 @@ export class AuthService {
 
 
           /*
-           * A server error does not
-           * automatically mean the
-           * session is expired.
-           *
-           * The browser still has
-           * network connectivity.
+           * Server error does not
+           * automatically mean that
+           * the JWT is invalid.
            */
 
           this.setSystemStatus(
@@ -423,6 +557,12 @@ export class AuthService {
   }
 
 
+  /*
+   * =========================================
+   * SET SYSTEM STATUS
+   * =========================================
+   */
+
   setSystemStatus(
     status: SystemStatus
   ): void {
@@ -433,6 +573,12 @@ export class AuthService {
 
   }
 
+
+  /*
+   * =========================================
+   * INITIAL SYSTEM STATUS
+   * =========================================
+   */
 
   private getInitialSystemStatus():
     SystemStatus {
